@@ -124,6 +124,7 @@ store.on<User>(User, '减肥').subscribe(o => {
     };
 
     created() {
+      // 需要自行取消订阅
       store.on<User>(User).subscribe(o => {
         console.log('user change', o);
       });

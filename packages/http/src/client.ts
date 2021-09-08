@@ -1,4 +1,5 @@
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { HttpResponse } from '.';
 import { HttpBackend, HttpHandler } from './backend';
 import { WxHttpBackend } from './backends';
 import { HttpInterceptor, HttpInterceptorHandler } from './interceptor';
@@ -21,9 +22,115 @@ export class HttpClient {
     }
   }
 
-  request(request: HttpRequest) {
+  request<R>(request: HttpRequest<any>): Observable<HttpResponse<R>> {
     return this.chain.handle(request).pipe(
       map(response => response.data)
     );
+  }
+
+  delete<R>(url: string, options: {
+    data?: HttpRequest<any>['data'],
+    header?: HttpRequest<any>['header'],
+    responseType?: HttpRequest<any>['responseType'],
+    dataType?: HttpRequest<any>['dataType'],
+    timeout?: HttpRequest<any>['timeout']
+  } = {}) {
+    return this.request<R>(new HttpRequest(
+      'DELETE',
+      url,
+      options.data,
+      options.header,
+      options.responseType,
+      options.dataType,
+      options.timeout,
+    ));
+  }
+
+  get<R>(url: string, options: {
+    data?: HttpRequest<any>['data'],
+    header?: HttpRequest<any>['header'],
+    responseType?: HttpRequest<any>['responseType'],
+    dataType?: HttpRequest<any>['dataType'],
+    timeout?: HttpRequest<any>['timeout']
+  } = {}) {
+    return this.request<R>(new HttpRequest(
+      'GET',
+      url,
+      options.data,
+      options.header,
+      options.responseType,
+      options.dataType,
+      options.timeout,
+    ));
+  }
+
+  head<R>(url: string, options: {
+    data?: HttpRequest<any>['data'],
+    header?: HttpRequest<any>['header'],
+    responseType?: HttpRequest<any>['responseType'],
+    dataType?: HttpRequest<any>['dataType'],
+    timeout?: HttpRequest<any>['timeout']
+  } = {}) {
+    return this.request<R>(new HttpRequest(
+      'HEAD',
+      url,
+      options.data,
+      options.header,
+      options.responseType,
+      options.dataType,
+      options.timeout,
+    ));
+  }
+
+  options<R>(url: string, options: {
+    data?: HttpRequest<any>['data'],
+    header?: HttpRequest<any>['header'],
+    responseType?: HttpRequest<any>['responseType'],
+    dataType?: HttpRequest<any>['dataType'],
+    timeout?: HttpRequest<any>['timeout']
+  } = {}) {
+    return this.request<R>(new HttpRequest(
+      'OPTIONS',
+      url,
+      options.data,
+      options.header,
+      options.responseType,
+      options.dataType,
+      options.timeout,
+    ));
+  }
+
+  post<R>(url: string, data?: HttpRequest<any>['data'], options: {
+    header?: HttpRequest<any>['header'],
+    responseType?: HttpRequest<any>['responseType'],
+    dataType?: HttpRequest<any>['dataType'],
+    timeout?: HttpRequest<any>['timeout']
+  } = {}) {
+    return this.request<R>(new HttpRequest(
+      'POST',
+      url,
+      data,
+      options.header,
+      options.responseType,
+      options.dataType,
+      options.timeout,
+    ));
+  }
+
+  put<R>(url: string, data?: HttpRequest<any>['data'], options: {
+    header?: HttpRequest<any>['header'],
+    responseType?: HttpRequest<any>['responseType'],
+    dataType?: HttpRequest<any>['dataType'],
+    timeout?: HttpRequest<any>['timeout']
+  } = {}) {
+    return this.request<R>(new HttpRequest(
+      'PUT',
+      url,
+      data,
+      options.header,
+      options.responseType,
+      options.dataType,
+      options.timeout,
+    ));
   }
 }

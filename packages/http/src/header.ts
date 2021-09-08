@@ -1,6 +1,5 @@
 export class HttpHeader {
   private headers: Map<string, string[]> = new Map<string, string[]>();
-  private normalizedNames: Map<string, string> = new Map();
 
   constructor(headers?: { [name: string]: string | string[] }) {
     if (headers) {
