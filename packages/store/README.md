@@ -41,7 +41,7 @@ export class User {
     this.weight -= 5;
   }
 
-  // 当需要异步修改状态时，需要使用 async/await 或者返回一个 Promise
+  // 当需要异步修改状态时，需要使用 async/await 或者返回一个 Promise / Observable
   @Action()
   async asyncLoseWeight() {
     await new Promise(resolve => {

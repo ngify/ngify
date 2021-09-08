@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import { Observable } from 'rxjs';
 import { store } from "./store";
 import { SymbolKey } from "./symbols";
 
@@ -22,6 +23,8 @@ export function Action(action?: string): MethodDecorator {
 
       if (returnValue instanceof Promise) {
         returnValue.then(() => store.dispatch(stateName, action || propertyKey, this));
+      } else if (returnValue instanceof Observable) {
+        returnValue.subscribe(() => store.dispatch(stateName, action || propertyKey, this));
       } else {
         store.dispatch(stateName, action || propertyKey, this);
       }
