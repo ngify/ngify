@@ -6,6 +6,8 @@
   "scripts": {
     "dev:store": "node scripts/build.js --pkg=store",
     "build:store": "node scripts/build.js --pkg=store --prod",
+    "dev:http": "node scripts/build.js --pkg=http",
+    "build:http": "node scripts/build.js --pkg=http --prod",
     "build": "node scripts/build.js --prod",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,7 +16,6 @@
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@rollup/plugin-typescript": "^8.2.5",
-    "@types/wechat-miniprogram": "^3.4.0",
     "minimist": "^1.2.5",
     "rollup": "^2.56.3",
     "rollup-plugin-terser": "^7.0.2",

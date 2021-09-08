@@ -5,7 +5,7 @@
 ## 概念
 
 应用程序中有一个仓库（Store），存储着一些全局状态（State）。
-每一个状态都是一个对象。对象拥有属性，这些属性便是这个状态的值；对象拥有方法，这些方法可以修改对象的值。按照约定，只有对象的方法才可以修改状态值。
+每一个状态都是一个对象。对象拥有属性，这些属性便是这个状态的值；对象拥有方法，这些方法可以修改对象的值。按照约定，只有状态类对象的方法才可以修改状态值。
 
 ## 用法
 
@@ -122,10 +122,6 @@ store.on<User>(User, '减肥').subscribe(o => {
         this.user.loseWeight();
       }
     };
-
-    beforeCreate() {
-      this.$options.computed.user.weight = 1;
-    }
 
     created() {
       store.on<User>(User).subscribe(o => {

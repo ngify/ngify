@@ -1,0 +1,30 @@
+{
+  "name": "@ngify/http",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "scripts": {
+    "declaration": "tsc --emitDeclarationOnly"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngify/ngify.git"
+  },
+  "author": "HyperLife1119",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ngify/ngify/issues"
+  },
+  "homepage": "https://github.com/ngify/ngify#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "rxjs": "^7.3.0"
+  },
+  "devDependencies": {
+    "@types/wechat-miniprogram": "^3.4.0"
+  }
+}
