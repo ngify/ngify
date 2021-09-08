@@ -1,0 +1,31 @@
+{
+  "include": [
+    "packages/**/src/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "*.d.ts"
+  ],
+  "compilerOptions": {
+    "target": "es2015",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "removeComments": true,
+    "importHelpers": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  },
+  "references": [
+    {
+      "path": "packages/types"
+    }
+  ]
+}

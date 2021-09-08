@@ -1,0 +1,22 @@
+{
+  "name": "@ngify/types",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "scripts": {
+    "declaration": "tsc --emitDeclarationOnly"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngify/ngify.git"
+  },
+  "author": "HyperLife1119",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ngify/ngify/issues"
+  },
+  "homepage": "https://github.com/ngify/ngify#readme",
+  "devDependencies": {}
+}
