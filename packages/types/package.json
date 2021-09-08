@@ -18,5 +18,8 @@
     "url": "https://github.com/ngify/ngify/issues"
   },
   "homepage": "https://github.com/ngify/ngify#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {}
 }

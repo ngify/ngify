@@ -6,6 +6,7 @@
   "scripts": {
     "dev:store": "node scripts/build.js --pkg=store",
     "build:store": "node scripts/build.js --pkg=store --prod",
+    "build": "node scripts/build.js --prod",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "HyperLife1119",

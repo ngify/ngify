@@ -18,6 +18,9 @@
     "url": "https://github.com/ngify/ngify/issues"
   },
   "homepage": "https://github.com/ngify/ngify#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.3.0"
