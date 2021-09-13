@@ -17,6 +17,7 @@ export const store = new class Store {
   }
 
   dispatch<T = any>(name: string, action: string, state: T) {
+    state = { ...state };
     Object.assign(this.states[name], state);
     this.subject.next({ name, action, state });
   }
@@ -25,7 +26,8 @@ export const store = new class Store {
     const stateName = Utils.getStateName(clazz.prototype);
 
     return this.subject.asObservable().pipe(
-      filter(o => o.name === stateName && action ? o.action === action : true),
+      filter(o => o.name === stateName),
+      filter(o => action ? o.action === action : true),
       map(o => o.state)
     );
   }
