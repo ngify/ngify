@@ -23,7 +23,7 @@ export class HttpClient {
   }
 
   request<R>(request: HttpRequest<any>): Observable<R> {
-    request.header ??= new HttpHeader();
+    request.header ||= new HttpHeader();
     return this.chain.handle(request).pipe(
       map(response => response.data)
     );
