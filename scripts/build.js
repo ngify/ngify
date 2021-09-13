@@ -3,6 +3,7 @@ const rollup = require('rollup');
 const typescript = require('@rollup/plugin-typescript');
 const minimist = require('minimist');
 const { terser } = require('rollup-plugin-terser');
+const { exec } = require('child_process');
 
 const { pkg, prod } = minimist(process.argv.slice(2));
 const pkgs = pkg ? [pkg] : ['store', 'http', 'types'];
@@ -45,9 +46,19 @@ if (prod) {
         // or write the bundle to disk
         await bundle.write(outputOptions);
 
-        log(chalk.green(`[@ngify/${pkg}] ${fmt} format Build is complete!`));
+        log(chalk.green(`[@ngify/${pkg}] ${fmt} format build is complete!`));
       })(pkg, fmt);
     }
+
+    log(chalk.magenta(`[@ngify/${pkg}] emitting declaration file...`));
+    exec(`tsc --project ./packages/${pkg}/tsconfig.json --emitDeclarationOnly`, error => {
+      if (error) {
+        log(chalk.red(`[@ngify/${pkg}] failed to emit declaration file!`));
+        log(error);
+      } else {
+        log(chalk.magenta(`[@ngify/${pkg}] declaration file emit is complete!`));
+      }
+    });
   }
 } else {
   for (const pkg of pkgs) {

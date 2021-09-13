@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "dev:store": "node scripts/build.js --pkg=store",
-    "build:store": "node scripts/build.js --pkg=store --prod",
     "dev:http": "node scripts/build.js --pkg=http",
+    "dev:core": "node scripts/build.js --pkg=core",
+    "build:store": "node scripts/build.js --pkg=store --prod",
     "build:http": "node scripts/build.js --pkg=http --prod",
-    "build": "node scripts/build.js --prod",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:core": "node scripts/build.js --pkg=core --prod"
   },
   "author": "HyperLife1119",
   "license": "MIT",
