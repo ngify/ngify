@@ -74,17 +74,27 @@ import { store } from '@ngify/store';
 import { map } from 'rxjs';
 import { User } from './xxx';
 
-store.on<User>(User).subscribe(o => {
+store.on(User).subscribe(o => {
   console.log('User change', o);
 });
 
-store.on<User>(User, 'changeName').pipe(
+store.on(User, 'changeName').pipe(
   map(o => o.name)
 ).subscribe(name => {
   console.log('User 改名了', name);
 });
 
-store.on<User>(User, '减肥').subscribe(o => {
+store.on(User, '减肥').subscribe(o => {
   console.log('User 减肥成功', o);
 });
+```
+
+获取状态对象：
+
+```ts
+import { store } from '@ngify/store';
+import { User } from './xxx';
+
+const user = store.get(User);
+user.changeName('小红');
 ```
