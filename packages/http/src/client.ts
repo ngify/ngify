@@ -1,7 +1,7 @@
 import { map, Observable } from 'rxjs';
-import { HttpResponse } from '.';
 import { HttpBackend, HttpHandler } from './backend';
 import { WxHttpBackend } from './backends';
+import { HttpHeader } from './header';
 import { HttpInterceptor, HttpInterceptorHandler } from './interceptor';
 import { HttpRequest } from './request';
 
@@ -22,7 +22,8 @@ export class HttpClient {
     }
   }
 
-  request<R>(request: HttpRequest<any>): Observable<HttpResponse<R>> {
+  request<R>(request: HttpRequest<any>): Observable<R> {
+    request.header ??= new HttpHeader();
     return this.chain.handle(request).pipe(
       map(response => response.data)
     );
