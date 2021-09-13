@@ -1,17 +1,19 @@
 import { Type } from '@ngify/types';
 import { filter, map, Observable, Subject } from "rxjs";
-import { SymbolKey } from './symbols';
+import { Utils } from './utils';
 
 export const store = new class Store {
   subject = new Subject<{ name: string, action: string, state: any }>();
   states = {};
 
-  get(name: string) {
-    return this.states[name];
+  get<T = any>(clazz: Type<T>): T {
+    const stateName = Utils.getStateName(clazz.prototype);
+    return this.states[stateName];
   }
 
-  put(name: string, state: Object) {
-    this.states[name] = state;
+  put<T = any>(clazz: Type<T>, state: T) {
+    const stateName = Utils.getStateName(clazz.prototype);
+    this.states[stateName] = state;
   }
 
   dispatch<T = any>(name: string, action: string, state: T) {
@@ -20,7 +22,7 @@ export const store = new class Store {
   }
 
   on<T = any>(clazz: Type<T>, action?: string): Observable<T> {
-    const stateName = Reflect.getMetadata(Symbol.for(SymbolKey.StateName), clazz.prototype);
+    const stateName = Utils.getStateName(clazz.prototype);
 
     return this.subject.asObservable().pipe(
       filter(o => o.name === stateName && action ? o.action === action : true),

@@ -4,7 +4,7 @@
   "description": "",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
-  "types": "index.d.ts",
+  "types": "./dist/types/index.d.ts",
   "scripts": {
     "declaration": "tsc --emitDeclarationOnly"
   },
@@ -23,6 +23,6 @@
   },
   "dependencies": {
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.3.0"
+    "rxjs": "^7.0.0"
   }
 }

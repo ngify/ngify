@@ -22,7 +22,7 @@
     "access": "public"
   },
   "dependencies": {
-    "rxjs": "^7.3.0"
+    "rxjs": "^7.0.0"
   },
   "devDependencies": {
     "@types/wechat-miniprogram": "^3.4.0"
