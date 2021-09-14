@@ -2,9 +2,9 @@ import { Type } from '@ngify/types';
 import { filter, map, Observable, Subject } from "rxjs";
 import { Utils } from './utils';
 
-export const store = new class Store {
-  subject = new Subject<{ name: string, action: string, state: any }>();
-  states = {};
+class Store {
+  private subject = new Subject<{ name: string, action: string, state: any }>();
+  private states = {};
 
   get<T = any>(clazz: Type<T>): T {
     const stateName = Utils.getStateName(clazz.prototype);
@@ -32,3 +32,5 @@ export const store = new class Store {
     );
   }
 }
+
+export const store = new Store();
