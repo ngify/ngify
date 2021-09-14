@@ -1,18 +1,18 @@
 export class HttpHeader {
   private headers: Map<string, string[]> = new Map<string, string[]>();
+  /** lowercase name => normalized name */
+  private normalizedNames: Map<string, string> = new Map();
 
   constructor(headers?: { [name: string]: string | string[] }) {
-    if (headers) {
-      Object.keys(headers).forEach(name => {
-        let value = headers[name];
+    headers && Object.keys(headers).forEach(name => {
+      let value = headers[name];
 
-        if (Array.isArray(value)) {
-          this.set(name, value);
-        } else {
-          this.set(name, value.split(/,\s/));
-        }
-      });
-    }
+      if (Array.isArray(value)) {
+        this.set(name, value);
+      } else {
+        this.set(name, value.split(/,[\s]?/));
+      }
+    });
   }
 
   append(name: string, value: string | string[]): HttpHeader {
@@ -21,16 +21,15 @@ export class HttpHeader {
 
     base.push(...value);
     this.headers.set(key, base);
+    this.normalizedNames.has(key) || this.normalizedNames.set(key, name);
     return this;
   }
 
   delete(name: string) {
-    this.headers.delete(name.toLowerCase());
+    const key = name.toLowerCase();
+    this.headers.delete(key);
+    this.normalizedNames.delete(key);
     return this;
-  }
-
-  entries() {
-    return this.headers.entries();
   }
 
   get(name: string) {
@@ -46,20 +45,29 @@ export class HttpHeader {
     return this.headers.has(name.toLowerCase());
   }
 
-  keys() {
-    return this.headers.keys();
+  forEach(fn: (name: string, value: string[]) => void) {
+    for (const [name, value] of this.headers.entries()) {
+      fn(this.normalizedNames.get(name), value);
+    }
   }
 
-  set(name: string, value: string | string[]): HttpHeader {
-    if (!Array.isArray(value)) {
-      value = [value];
-    }
-
-    this.headers.set(name.toLowerCase(), value);
-    return this;
+  keys() {
+    return this.normalizedNames.values();
   }
 
   values() {
     return this.headers.values();
+  }
+
+  set(name: string, value: string | string[]): HttpHeader {
+    const key = name.toLowerCase();
+
+    if (!Array.isArray(value)) {
+      value = [value];
+    }
+
+    this.headers.set(key, value);
+    this.normalizedNames.has(key) || this.normalizedNames.set(key, name);
+    return this;
   }
 }

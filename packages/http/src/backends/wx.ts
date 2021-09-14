@@ -8,9 +8,9 @@ export class WxHttpBackend implements HttpBackend {
   handle(request: HttpRequest<any>): Observable<HttpResponse<any>> {
     return new Observable((observer: Observer<any>) => {
       const header = {};
-      for (const [name, value] of request.header.entries()) {
+      request.header.forEach((name, value) => {
         header[name] = value.join(',');
-      }
+      });
 
       wx.request({
         url: request.url,

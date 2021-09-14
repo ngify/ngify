@@ -6,10 +6,10 @@
   "scripts": {
     "dev:store": "node scripts/build.js --pkg=store",
     "dev:http": "node scripts/build.js --pkg=http",
-    "dev:core": "node scripts/build.js --pkg=core",
+    "dev:types": "node scripts/build.js --pkg=types",
     "build:store": "node scripts/build.js --pkg=store --prod",
     "build:http": "node scripts/build.js --pkg=http --prod",
-    "build:core": "node scripts/build.js --pkg=core --prod"
+    "build:types": "node scripts/build.js --pkg=types --prod"
   },
   "author": "HyperLife1119",
   "license": "MIT",
