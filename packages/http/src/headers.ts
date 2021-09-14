@@ -1,4 +1,4 @@
-export class HttpHeader {
+export class HttpHeaders {
   private headers: Map<string, string[]> = new Map<string, string[]>();
   /** lowercase name => normalized name */
   private normalizedNames: Map<string, string> = new Map();
@@ -15,7 +15,7 @@ export class HttpHeader {
     });
   }
 
-  append(name: string, value: string | string[]): HttpHeader {
+  append(name: string, value: string | string[]): HttpHeaders {
     const key = name.toLowerCase();
     const base = this.headers.get(key) || [];
 
@@ -59,7 +59,7 @@ export class HttpHeader {
     return this.headers.values();
   }
 
-  set(name: string, value: string | string[]): HttpHeader {
+  set(name: string, value: string | string[]): HttpHeaders {
     const key = name.toLowerCase();
 
     if (!Array.isArray(value)) {

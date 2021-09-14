@@ -1,22 +1,22 @@
 import { Observable, Observer } from 'rxjs';
 import { HttpBackend } from '../backend';
-import { HttpHeader } from '../header';
+import { HttpHeaders } from '../headers';
 import { HttpRequest } from '../request';
 import { HttpResponse } from '../response';
 
 export class WxHttpBackend implements HttpBackend {
   handle(request: HttpRequest<any>): Observable<HttpResponse<any>> {
     return new Observable((observer: Observer<any>) => {
-      const header = {};
-      request.header.forEach((name, value) => {
-        header[name] = value.join(',');
+      const headers = {};
+      request.headers.forEach((name, value) => {
+        headers[name] = value.join(',');
       });
 
       wx.request({
         url: request.url,
         method: request.method,
         data: request.data,
-        header: header,
+        header: headers,
         responseType: request.responseType,
         dataType: request.dataType as 'json' | '其他',
         timeout: request.timeout,
@@ -26,16 +26,16 @@ export class WxHttpBackend implements HttpBackend {
             request.url,
             data,
             statusCode,
-            new HttpHeader(header),
+            new HttpHeaders(header),
             cookies
           );
 
           ok ? observer.next(response) : observer.error(response);
         },
-        fail: ({ errMsg }) => {
+        fail: error => {
           observer.error(new HttpResponse(
             request.url,
-            errMsg,
+            error,
             0,
             null,
             null

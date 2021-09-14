@@ -1,7 +1,7 @@
 import { map, Observable } from 'rxjs';
 import { HttpBackend, HttpHandler } from './backend';
 import { WxHttpBackend } from './backends';
-import { HttpHeader } from './header';
+import { HttpHeaders } from './headers';
 import { HttpInterceptor, HttpInterceptorHandler } from './interceptor';
 import { HttpRequest } from './request';
 
@@ -23,7 +23,7 @@ export class HttpClient {
   }
 
   request<R>(request: HttpRequest<any>): Observable<R> {
-    request.header ||= new HttpHeader();
+    request.headers ||= new HttpHeaders();
     return this.chain.handle(request).pipe(
       map(response => response.data)
     );
@@ -31,7 +31,7 @@ export class HttpClient {
 
   delete<R>(url: string, options: {
     data?: HttpRequest<any>['data'],
-    header?: HttpRequest<any>['header'],
+    headers?: HttpRequest<any>['headers'],
     responseType?: HttpRequest<any>['responseType'],
     dataType?: HttpRequest<any>['dataType'],
     timeout?: HttpRequest<any>['timeout']
@@ -40,7 +40,7 @@ export class HttpClient {
       'DELETE',
       url,
       options.data,
-      options.header,
+      options.headers,
       options.responseType,
       options.dataType,
       options.timeout,
@@ -49,7 +49,7 @@ export class HttpClient {
 
   get<R>(url: string, options: {
     data?: HttpRequest<any>['data'],
-    header?: HttpRequest<any>['header'],
+    headers?: HttpRequest<any>['headers'],
     responseType?: HttpRequest<any>['responseType'],
     dataType?: HttpRequest<any>['dataType'],
     timeout?: HttpRequest<any>['timeout']
@@ -58,7 +58,7 @@ export class HttpClient {
       'GET',
       url,
       options.data,
-      options.header,
+      options.headers,
       options.responseType,
       options.dataType,
       options.timeout,
@@ -67,7 +67,7 @@ export class HttpClient {
 
   head<R>(url: string, options: {
     data?: HttpRequest<any>['data'],
-    header?: HttpRequest<any>['header'],
+    headers?: HttpRequest<any>['headers'],
     responseType?: HttpRequest<any>['responseType'],
     dataType?: HttpRequest<any>['dataType'],
     timeout?: HttpRequest<any>['timeout']
@@ -76,7 +76,7 @@ export class HttpClient {
       'HEAD',
       url,
       options.data,
-      options.header,
+      options.headers,
       options.responseType,
       options.dataType,
       options.timeout,
@@ -85,7 +85,7 @@ export class HttpClient {
 
   options<R>(url: string, options: {
     data?: HttpRequest<any>['data'],
-    header?: HttpRequest<any>['header'],
+    headers?: HttpRequest<any>['headers'],
     responseType?: HttpRequest<any>['responseType'],
     dataType?: HttpRequest<any>['dataType'],
     timeout?: HttpRequest<any>['timeout']
@@ -94,7 +94,7 @@ export class HttpClient {
       'OPTIONS',
       url,
       options.data,
-      options.header,
+      options.headers,
       options.responseType,
       options.dataType,
       options.timeout,
@@ -102,7 +102,7 @@ export class HttpClient {
   }
 
   post<R>(url: string, data?: HttpRequest<any>['data'], options: {
-    header?: HttpRequest<any>['header'],
+    headers?: HttpRequest<any>['headers'],
     responseType?: HttpRequest<any>['responseType'],
     dataType?: HttpRequest<any>['dataType'],
     timeout?: HttpRequest<any>['timeout']
@@ -111,7 +111,7 @@ export class HttpClient {
       'POST',
       url,
       data,
-      options.header,
+      options.headers,
       options.responseType,
       options.dataType,
       options.timeout,
@@ -119,7 +119,7 @@ export class HttpClient {
   }
 
   put<R>(url: string, data?: HttpRequest<any>['data'], options: {
-    header?: HttpRequest<any>['header'],
+    headers?: HttpRequest<any>['headers'],
     responseType?: HttpRequest<any>['responseType'],
     dataType?: HttpRequest<any>['dataType'],
     timeout?: HttpRequest<any>['timeout']
@@ -128,7 +128,7 @@ export class HttpClient {
       'PUT',
       url,
       data,
-      options.header,
+      options.headers,
       options.responseType,
       options.dataType,
       options.timeout,
