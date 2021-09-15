@@ -22,5 +22,9 @@
   "dependencies": {
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0"
+  },
+  "peerDependencies": {
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.0.0"
   }
 }
