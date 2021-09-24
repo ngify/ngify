@@ -29,8 +29,7 @@ export class HttpClient {
     );
   }
 
-  delete<R>(url: string, options: {
-    data?: HttpRequest<any>['data'],
+  delete<R>(url: string, data?: HttpRequest<any>['data'], options: {
     headers?: HttpRequest<any>['headers'],
     responseType?: HttpRequest<any>['responseType'],
     dataType?: HttpRequest<any>['dataType'],
@@ -39,7 +38,7 @@ export class HttpClient {
     return this.request<R>(new HttpRequest(
       'DELETE',
       url,
-      options.data,
+      data,
       options.headers,
       options.responseType,
       options.dataType,
@@ -47,8 +46,7 @@ export class HttpClient {
     ));
   }
 
-  get<R>(url: string, options: {
-    data?: HttpRequest<any>['data'],
+  get<R>(url: string, data?: HttpRequest<any>['data'], options: {
     headers?: HttpRequest<any>['headers'],
     responseType?: HttpRequest<any>['responseType'],
     dataType?: HttpRequest<any>['dataType'],
@@ -57,7 +55,7 @@ export class HttpClient {
     return this.request<R>(new HttpRequest(
       'GET',
       url,
-      options.data,
+      data,
       options.headers,
       options.responseType,
       options.dataType,
@@ -65,8 +63,7 @@ export class HttpClient {
     ));
   }
 
-  head<R>(url: string, options: {
-    data?: HttpRequest<any>['data'],
+  head<R>(url: string, data?: HttpRequest<any>['data'], options: {
     headers?: HttpRequest<any>['headers'],
     responseType?: HttpRequest<any>['responseType'],
     dataType?: HttpRequest<any>['dataType'],
@@ -75,7 +72,7 @@ export class HttpClient {
     return this.request<R>(new HttpRequest(
       'HEAD',
       url,
-      options.data,
+      data,
       options.headers,
       options.responseType,
       options.dataType,
@@ -83,8 +80,7 @@ export class HttpClient {
     ));
   }
 
-  options<R>(url: string, options: {
-    data?: HttpRequest<any>['data'],
+  options<R>(url: string, data?: HttpRequest<any>['data'], options: {
     headers?: HttpRequest<any>['headers'],
     responseType?: HttpRequest<any>['responseType'],
     dataType?: HttpRequest<any>['dataType'],
@@ -93,7 +89,7 @@ export class HttpClient {
     return this.request<R>(new HttpRequest(
       'OPTIONS',
       url,
-      options.data,
+      data,
       options.headers,
       options.responseType,
       options.dataType,
