@@ -1,6 +1,6 @@
 {
   "name": "@ngify/store",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -28,7 +28,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@ngify/types": "^1.0.0",
+    "@ngify/types": "^1.0.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0"
   },
