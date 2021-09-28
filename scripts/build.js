@@ -7,7 +7,7 @@ const { terser } = require('rollup-plugin-terser');
 const { exec } = require('child_process');
 
 const { pkg, prod } = minimist(process.argv.slice(2));
-const pkgs = pkg ? [pkg] : ['store', 'http', 'types'];
+const pkgs = pkg ? [pkg] : ['types', 'store', 'http'];
 const formats = ['cjs', 'esm'];
 const log = console.log;
 
@@ -34,12 +34,13 @@ const createOutputOptions = (pkg, fmt) => ({
 });
 
 if (prod) {
-  for (const pkg of pkgs) {
-    const directory = `packages/${pkg}/dist`;
-    fs.existsSync(directory) && fs.rmSync(directory, { recursive: true });
+  (async function () {
+    for (const pkg of pkgs) {
+      // delete the dist directory
+      const directory = `packages/${pkg}/dist`;
+      fs.existsSync(directory) && fs.rmSync(directory, { recursive: true });
 
-    for (const fmt of formats) {
-      (async function (pkg, fmt) {
+      for (const fmt of formats) {
         log(chalk.blue(`[@ngify/${pkg}] start to build ${fmt} format...`));
 
         const outputOptions = createOutputOptions(pkg, fmt);
@@ -51,19 +52,20 @@ if (prod) {
         await bundle.write(outputOptions);
 
         log(chalk.green(`[@ngify/${pkg}] ${fmt} format build is complete!`));
-      })(pkg, fmt);
-    }
-
-    log(chalk.magenta(`[@ngify/${pkg}] emitting declaration file...`));
-    exec(`tsc --project ./packages/${pkg}/tsconfig.json --emitDeclarationOnly`, error => {
-      if (error) {
-        log(chalk.red(`[@ngify/${pkg}] failed to emit declaration file!`));
-        log(error);
-      } else {
-        log(chalk.magenta(`[@ngify/${pkg}] declaration file emit is complete!`));
       }
-    });
-  }
+
+      // emit declaration file
+      log(chalk.magenta(`[@ngify/${pkg}] emitting declaration file...`));
+      exec(`tsc --project ./packages/${pkg}/tsconfig.json --emitDeclarationOnly`, error => {
+        if (error) {
+          log(chalk.red(`[@ngify/${pkg}] failed to emit declaration file!`));
+          log(error);
+        } else {
+          log(chalk.magenta(`[@ngify/${pkg}] declaration file emit is complete!`));
+        }
+      });
+    }
+  })();
 } else {
   for (const pkg of pkgs) {
     const watchOptions = {
