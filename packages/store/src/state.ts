@@ -2,32 +2,31 @@ import 'reflect-metadata';
 import { Observable } from 'rxjs';
 import { store } from "./store";
 import { SymbolKey } from "./symbols";
-import { Utils } from './utils';
 
-export function State(stateName: string): ClassDecorator {
+export function State(): ClassDecorator {
   return (target: any) => class extends target {
     constructor() {
       super(...arguments);
-      Reflect.defineMetadata(Symbol.for(SymbolKey.StateName), stateName, target.prototype);
+      Reflect.defineMetadata(Symbol.for(SymbolKey.StateKey), target, target.prototype);
       store.put(target, this);
     }
   } as typeof target;
 }
 
 export function Action(action?: string): MethodDecorator {
-  return (target: Object, propertyKey: string, descriptor: PropertyDescriptor) => {
+  return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
     const fn = descriptor.value;
 
     descriptor.value = function () {
-      const stateName = Utils.getStateName(target);
+      // const key = Utils.getStateKey(target);
       const returnValue = fn.apply(this, arguments);
 
       if (returnValue instanceof Promise) {
-        returnValue.then(() => store.dispatch(stateName, action || propertyKey, this));
+        returnValue.then(() => store.dispatch(action || propertyKey, this));
       } else if (returnValue instanceof Observable) {
-        returnValue.subscribe(() => store.dispatch(stateName, action || propertyKey, this));
+        returnValue.subscribe(() => store.dispatch(action || propertyKey, this));
       } else {
-        store.dispatch(stateName, action || propertyKey, this);
+        store.dispatch(action || propertyKey, this);
       }
 
       return returnValue;

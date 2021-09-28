@@ -14,7 +14,8 @@
 ```ts
 import { Action, State } from '@ngify/store';
 
-@State('user') // 使用 State 将 User 装饰为一个状态类
+// 使用 State 将 User 装饰为一个状态类
+@State()
 export class User {
   // 声明状态的属性
   constructor(

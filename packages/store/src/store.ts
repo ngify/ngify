@@ -3,30 +3,31 @@ import { filter, map, Observable, Subject } from "rxjs";
 import { Utils } from './utils';
 
 class Store {
-  private subject = new Subject<{ name: string, action: string, state: any }>();
-  private states = {};
+  private readonly subject = new Subject<{ key: object, action: string, state: any }>();
+  private readonly states = new Map<object, object>();
 
-  get<T = any>(clazz: Type<T>): T {
-    const stateName = Utils.getStateName(clazz.prototype);
-    return this.states[stateName];
+  get<T extends object = any>(clazz: Type<T>): T {
+    const key = Utils.getStateKey(clazz.prototype);
+    return this.states.get(key) as T;
   }
 
-  put<T = any>(clazz: Type<T>, state: T) {
-    const stateName = Utils.getStateName(clazz.prototype);
-    this.states[stateName] = state;
+  put<T extends object = any>(clazz: Type<T>, state: T) {
+    const key = Utils.getStateKey(clazz.prototype);
+    this.states.set(key, state);
   }
 
-  dispatch<T = any>(name: string, action: string, state: T) {
+  dispatch<T extends object = any>(action: string, state: T) {
+    const key = Utils.getStateKey(state);
     state = { ...state };
-    Object.assign(this.states[name], state);
-    this.subject.next({ name, action, state });
+    this.states.set(key, Object.assign(this.states.get(key), state));
+    this.subject.next({ key, action, state });
   }
 
-  on<T = any>(clazz: Type<T>, action?: string): Observable<T> {
-    const stateName = Utils.getStateName(clazz.prototype);
+  on<T extends object = any>(clazz: Type<T>, action?: string): Observable<T> {
+    const key = Utils.getStateKey(clazz.prototype);
 
     return this.subject.asObservable().pipe(
-      filter(o => o.name === stateName),
+      filter(o => o.key === key),
       filter(o => action ? o.action === action : true),
       map(o => o.state)
     );
