@@ -33,6 +33,7 @@
   },
   "peerDependencies": {
     "@types/wechat-miniprogram": "^3.4.0",
+    "@ngify/types": "^1.0.0",
     "rxjs": "^7.0.0"
   }
 }

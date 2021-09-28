@@ -33,6 +33,7 @@
     "rxjs": "^7.0.0"
   },
   "peerDependencies": {
+    "@ngify/types": "^1.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0"
   }
