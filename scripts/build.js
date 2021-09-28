@@ -1,7 +1,8 @@
-const { bold: chalk } = require('chalk');
+const fs = require('fs');
+const minimist = require('minimist');
 const rollup = require('rollup');
 const typescript = require('@rollup/plugin-typescript');
-const minimist = require('minimist');
+const { bold: chalk } = require('chalk');
 const { terser } = require('rollup-plugin-terser');
 const { exec } = require('child_process');
 
@@ -34,6 +35,9 @@ const createOutputOptions = (pkg, fmt) => ({
 
 if (prod) {
   for (const pkg of pkgs) {
+    const directory = `packages/${pkg}/dist`;
+    fs.existsSync(directory) && fs.rmSync(directory, { recursive: true });
+
     for (const fmt of formats) {
       (async function (pkg, fmt) {
         log(chalk.blue(`[@ngify/${pkg}] start to build ${fmt} format...`));

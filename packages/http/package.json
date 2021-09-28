@@ -10,12 +10,15 @@
     "type": "git",
     "url": "git+https://github.com/ngify/ngify.git"
   },
-  "author": "HyperLife1119",
+  "author": "HyperLife1119 <hyperlife1119@qq.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ngify/ngify/issues"
   },
-  "homepage": "https://github.com/ngify/ngify#readme",
+  "homepage": "https://github.com/ngify/ngify/tree/main/packages/http",
+  "keywords": [
+    "http"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -26,7 +29,7 @@
     "@types/wechat-miniprogram": "^3.4.0"
   },
   "peerDependencies": {
-    "rxjs": "^7.0.0",
-    "@types/wechat-miniprogram": "^3.4.0"
+    "@types/wechat-miniprogram": "^3.4.0",
+    "rxjs": "^7.0.0"
   }
 }

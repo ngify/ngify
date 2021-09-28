@@ -23,9 +23,5 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
-  "references": [
-    {
-      "path": "packages/types"
-    }
-  ]
+  "references": []
 }

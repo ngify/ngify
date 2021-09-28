@@ -10,16 +10,25 @@
     "type": "git",
     "url": "git+https://github.com/ngify/ngify.git"
   },
-  "author": "HyperLife1119",
+  "author": "HyperLife1119 <hyperlife1119@qq.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ngify/ngify/issues"
   },
-  "homepage": "https://github.com/ngify/ngify#readme",
+  "homepage": "https://github.com/ngify/ngify/tree/main/packages/store",
+  "keywords": [
+    "state",
+    "state management",
+    "decorator",
+    "observable",
+    "reactive",
+    "rxjs"
+  ],
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
+    "@ngify/types": "^1.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0"
   },
