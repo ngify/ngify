@@ -25,6 +25,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@ngify/types": "^1.0.0",
     "rxjs": "^7.0.0"
   },
   "devDependencies": {

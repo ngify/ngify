@@ -10,6 +10,7 @@
 		"build:store": "node scripts/build.js --pkg=store --prod",
 		"build:http": "node scripts/build.js --pkg=http --prod",
 		"build:types": "node scripts/build.js --pkg=types --prod",
+		"build": "node scripts/build.js --prod",
 		"bootstrap": "lerna bootstrap --hoist"
 	},
 	"author": "HyperLife1119 <hyperlife1119@qq.com>",
