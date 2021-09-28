@@ -1,9 +1,10 @@
 import { map, Observable } from 'rxjs';
 import { HttpBackend, HttpHandler } from './backend';
 import { WxHttpBackend } from './backends';
-import { HttpHeaders } from './headers';
 import { HttpInterceptor, HttpInterceptorHandler } from './interceptor';
 import { HttpRequest } from './request';
+
+type Options = Partial<Omit<HttpRequest<any>, 'method' | 'url' | 'data'>>;
 
 export class HttpClient {
   private chain: HttpHandler;
@@ -23,108 +24,83 @@ export class HttpClient {
   }
 
   request<R>(request: HttpRequest<any>): Observable<R> {
-    request.headers ||= new HttpHeaders();
     return this.chain.handle(request).pipe(
       map(response => response.data)
     );
   }
 
-  delete<R>(url: string, data?: HttpRequest<any>['data'], options: {
-    headers?: HttpRequest<any>['headers'],
-    responseType?: HttpRequest<any>['responseType'],
-    dataType?: HttpRequest<any>['dataType'],
-    timeout?: HttpRequest<any>['timeout']
-  } = {}) {
+  delete<R>(url: string, data?: HttpRequest<any>['data'], options: Options = {}) {
     return this.request<R>(new HttpRequest(
       'DELETE',
       url,
       data,
       options.headers,
+      options.context,
       options.responseType,
       options.dataType,
       options.timeout,
     ));
   }
 
-  get<R>(url: string, data?: HttpRequest<any>['data'], options: {
-    headers?: HttpRequest<any>['headers'],
-    responseType?: HttpRequest<any>['responseType'],
-    dataType?: HttpRequest<any>['dataType'],
-    timeout?: HttpRequest<any>['timeout']
-  } = {}) {
+  get<R>(url: string, data?: HttpRequest<any>['data'], options: Options = {}) {
     return this.request<R>(new HttpRequest(
       'GET',
       url,
       data,
       options.headers,
+      options.context,
       options.responseType,
       options.dataType,
       options.timeout,
     ));
   }
 
-  head<R>(url: string, data?: HttpRequest<any>['data'], options: {
-    headers?: HttpRequest<any>['headers'],
-    responseType?: HttpRequest<any>['responseType'],
-    dataType?: HttpRequest<any>['dataType'],
-    timeout?: HttpRequest<any>['timeout']
-  } = {}) {
+  head<R>(url: string, data?: HttpRequest<any>['data'], options: Options = {}) {
     return this.request<R>(new HttpRequest(
       'HEAD',
       url,
       data,
       options.headers,
+      options.context,
       options.responseType,
       options.dataType,
       options.timeout,
     ));
   }
 
-  options<R>(url: string, data?: HttpRequest<any>['data'], options: {
-    headers?: HttpRequest<any>['headers'],
-    responseType?: HttpRequest<any>['responseType'],
-    dataType?: HttpRequest<any>['dataType'],
-    timeout?: HttpRequest<any>['timeout']
-  } = {}) {
+  options<R>(url: string, data?: HttpRequest<any>['data'], options: Options = {}) {
     return this.request<R>(new HttpRequest(
       'OPTIONS',
       url,
       data,
       options.headers,
+      options.context,
       options.responseType,
       options.dataType,
       options.timeout,
     ));
   }
 
-  post<R>(url: string, data?: HttpRequest<any>['data'], options: {
-    headers?: HttpRequest<any>['headers'],
-    responseType?: HttpRequest<any>['responseType'],
-    dataType?: HttpRequest<any>['dataType'],
-    timeout?: HttpRequest<any>['timeout']
-  } = {}) {
+  post<R>(url: string, data?: HttpRequest<any>['data'], options: Options = {}) {
     return this.request<R>(new HttpRequest(
       'POST',
       url,
       data,
       options.headers,
+      options.context,
       options.responseType,
       options.dataType,
       options.timeout,
     ));
   }
 
-  put<R>(url: string, data?: HttpRequest<any>['data'], options: {
-    headers?: HttpRequest<any>['headers'],
-    responseType?: HttpRequest<any>['responseType'],
-    dataType?: HttpRequest<any>['dataType'],
-    timeout?: HttpRequest<any>['timeout']
-  } = {}) {
+  put<R>(url: string, data?: HttpRequest<any>['data'], options: Options = {}) {
     return this.request<R>(new HttpRequest(
       'PUT',
       url,
       data,
       options.headers,
+      options.context,
       options.responseType,
       options.dataType,
       options.timeout,

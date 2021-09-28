@@ -5,7 +5,9 @@
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
-  "scripts": {},
+  "scripts": {
+    "test": "tsc ./src/test --outDir test & node ./test/test.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ngify/ngify.git"

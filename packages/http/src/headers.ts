@@ -46,9 +46,7 @@ export class HttpHeaders {
   }
 
   forEach(fn: (name: string, value: string[]) => void) {
-    for (const [name, value] of this.headers.entries()) {
-      fn(this.normalizedNames.get(name), value);
-    }
+    this.headers.forEach((value, name) => fn(this.normalizedNames.get(name), value));
   }
 
   keys() {

@@ -4,7 +4,7 @@ import { HttpHandler } from './backend';
 import { HttpRequest } from './request';
 
 export interface HttpInterceptor {
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpResponse<any>>;
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpResponse<any>>;
 }
 
 export class HttpInterceptorHandler implements HttpHandler {
