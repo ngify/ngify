@@ -1,4 +1,4 @@
-import { Property } from 'packages/types/dist/types';
+import { Property } from '@ngify/types';
 import { HttpHeaders } from './headers';
 
 export class HttpResponse<T> {

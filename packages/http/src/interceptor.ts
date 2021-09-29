@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
-import { HttpResponse } from '.';
 import { HttpHandler } from './backend';
 import { HttpRequest } from './request';
+import { HttpResponse } from './response';
 
 export interface HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpResponse<any>>;
