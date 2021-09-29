@@ -25,4 +25,8 @@ export class HttpContext {
   keys(): IterableIterator<HttpContextToken<unknown>> {
     return this.map.keys();
   }
+
+  forEach(fn: (token: HttpContextToken<unknown>, value: unknown) => void): void {
+    this.map.forEach((value, token) => fn(token, value));
+  }
 }
