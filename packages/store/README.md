@@ -26,7 +26,7 @@ export class User {
 
   // 使用 Action 装饰涉及修改状态的方法
   @Action()
-  changeName(name: stirng) {
+  changeName(name: string) {
     this.name = name;
   }
 
