@@ -5,8 +5,8 @@ export class HttpContextToken<T> {
 export class HttpContext {
   private readonly map = new Map<HttpContextToken<unknown>, unknown>();
 
-  set<T>(token: HttpContextToken<T>, value: T): HttpContext {
-    this.map.set(token, value);
+  set<T>(token: HttpContextToken<T>, value?: T): HttpContext {
+    this.map.set(token, value ?? token.defaultValue());
     return this;
   }
 
@@ -20,6 +20,10 @@ export class HttpContext {
   delete(token: HttpContextToken<unknown>): HttpContext {
     this.map.delete(token);
     return this;
+  }
+
+  has<T>(token: HttpContextToken<T>): boolean {
+    return this.map.has(token);
   }
 
   keys(): IterableIterator<HttpContextToken<unknown>> {
