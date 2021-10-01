@@ -19,7 +19,10 @@
   },
   "homepage": "https://github.com/ngify/ngify/tree/main/packages/http",
   "keywords": [
-    "http"
+    "wx",
+    "http",
+    "rxjs",
+    "angular"
   ],
   "publishConfig": {
     "access": "public"

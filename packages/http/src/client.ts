@@ -1,10 +1,11 @@
+import { Property } from '@ngify/types';
 import { map, Observable } from 'rxjs';
 import { HttpBackend, HttpHandler } from './backend';
 import { WxHttpBackend } from './backends';
 import { HttpInterceptor, HttpInterceptorHandler } from './interceptor';
 import { HttpRequest } from './request';
 
-type Options = Partial<Omit<HttpRequest<any>, 'method' | 'url' | 'data'>>;
+type HttpRequestOptions = Partial<Omit<Property<HttpRequest<any>>, 'method' | 'url' | 'data'>>;
 
 export class HttpClient {
   private chain: HttpHandler;
@@ -29,7 +30,7 @@ export class HttpClient {
     );
   }
 
-  delete<R>(url: string, data?: HttpRequest<any>['data'], options: Options = {}) {
+  delete<R>(url: string, data?: HttpRequest<any>['data'], options: HttpRequestOptions = {}): Observable<R> {
     return this.request<R>(new HttpRequest(
       'DELETE',
       url,
@@ -42,7 +43,7 @@ export class HttpClient {
     ));
   }
 
-  get<R>(url: string, data?: HttpRequest<any>['data'], options: Options = {}) {
+  get<R>(url: string, data?: HttpRequest<any>['data'], options: HttpRequestOptions = {}): Observable<R> {
     return this.request<R>(new HttpRequest(
       'GET',
       url,
@@ -55,7 +56,7 @@ export class HttpClient {
     ));
   }
 
-  head<R>(url: string, data?: HttpRequest<any>['data'], options: Options = {}) {
+  head<R>(url: string, data?: HttpRequest<any>['data'], options: HttpRequestOptions = {}): Observable<R> {
     return this.request<R>(new HttpRequest(
       'HEAD',
       url,
@@ -68,7 +69,7 @@ export class HttpClient {
     ));
   }
 
-  options<R>(url: string, data?: HttpRequest<any>['data'], options: Options = {}) {
+  options<R>(url: string, data?: HttpRequest<any>['data'], options: HttpRequestOptions = {}): Observable<R> {
     return this.request<R>(new HttpRequest(
       'OPTIONS',
       url,
@@ -81,7 +82,7 @@ export class HttpClient {
     ));
   }
 
-  post<R>(url: string, data?: HttpRequest<any>['data'], options: Options = {}) {
+  post<R>(url: string, data?: HttpRequest<any>['data'], options: HttpRequestOptions = {}): Observable<R> {
     return this.request<R>(new HttpRequest(
       'POST',
       url,
@@ -94,7 +95,7 @@ export class HttpClient {
     ));
   }
 
-  put<R>(url: string, data?: HttpRequest<any>['data'], options: Options = {}) {
+  put<R>(url: string, data?: HttpRequest<any>['data'], options: HttpRequestOptions = {}): Observable<R> {
     return this.request<R>(new HttpRequest(
       'PUT',
       url,
