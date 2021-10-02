@@ -48,7 +48,7 @@ const http = new HttpClient([
   new class implements HttpInterceptor {
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpResponse<unknown>> {
       // 克隆请求以修改请求参数
-      request.clone({
+      request = request.clone({
         headers: request.headers.set('Authorization', 'token')
       });
       return next.handle(request).pipe(map(res => res));
@@ -56,7 +56,7 @@ const http = new HttpClient([
   },
   {
     intercept(request: HttpRequest<unknown>, next: HttpHandler) {
-      request.clone({
+      request = request.clone({
         url: request.url + '?k=v'
       });
       console.log('拦截后的请求', request);
