@@ -20,7 +20,7 @@
 		"packages/*"
 	],
 	"devDependencies": {
-		"@rollup/plugin-node-resolve": "^13.0.4",
+		"@rollup/plugin-node-resolve": "13.0.5",
 		"@rollup/plugin-typescript": "^8.2.5",
 		"lerna": "^4.0.0",
 		"minimist": "^1.2.5",
