@@ -32,7 +32,7 @@
     "rxjs": "^7.0.0"
   },
   "devDependencies": {
-    "@types/wechat-miniprogram": "^3.4.0"
+    "@types/wechat-miniprogram": "3.4.0"
   },
   "peerDependencies": {
     "@ngify/types": "^1.0.0",
