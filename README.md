@@ -2,6 +2,8 @@
 
 Pretend to be using Angular.
 
+![License](https://img.shields.io/badge/License-MIT-blue.svg)
+
 ## Packages
 
 | Project | Package | Version |
