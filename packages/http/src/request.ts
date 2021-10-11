@@ -4,13 +4,13 @@ import { HttpHeaders } from './headers';
 
 export class HttpRequest<T> {
   constructor(
-    public readonly method: 'DELETE' | 'GET' | 'HEAD' | 'POST' | 'OPTIONS' | 'PUT',
+    public readonly method: 'DELETE' | 'GET' | 'HEAD' | 'POST' | 'OPTIONS' | 'PUT' | 'UPLOAD',
     public readonly url: string,
     public readonly data: T,
     public readonly headers?: HttpHeaders,
     public readonly context?: HttpContext,
     public readonly responseType?: 'text' | 'arraybuffer',
-    public readonly dataType?: 'text' | 'json',
+    public readonly dataType: 'text' | 'json' = 'json',
     public readonly timeout?: number
   ) {
     this.headers ??= new HttpHeaders();

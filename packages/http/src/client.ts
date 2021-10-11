@@ -107,4 +107,23 @@ export class HttpClient {
       options.timeout,
     ));
   }
+
+  /**
+   * 针对小程序 uploadFile 的实现
+   * @param url
+   * @param data 必须包含 { filePath: string, fileName: string }
+   * @param options
+   */
+  upload<R>(url: string, data?: HttpRequest<any>['data'] & { filePath: string, fileName: string }, options: HttpRequestOptions = {}): Observable<R> {
+    return this.request<R>(new HttpRequest(
+      'UPLOAD',
+      url,
+      data,
+      options.headers,
+      options.context,
+      options.responseType,
+      options.dataType,
+      options.timeout,
+    ));
+  }
 }
