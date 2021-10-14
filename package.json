@@ -16,6 +16,7 @@
 	},
 	"author": "HyperLife1119 <hyperlife1119@qq.com>",
 	"license": "MIT",
+	"private": true,
 	"workspaces": [
 		"packages/*"
 	],

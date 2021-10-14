@@ -26,11 +26,7 @@ export class HttpHeaders {
     const key = name.toLowerCase();
     const base = this.headers.get(key) || [];
 
-    if (!Array.isArray(value)) {
-      value = [value];
-    }
-
-    base.push(...value);
+    base.push(...(Array.isArray(value) ? value : [value]));
     this.headers.set(key, base);
     this.normalizedNames.has(key) || this.normalizedNames.set(key, name);
     return this.clone();
@@ -55,7 +51,7 @@ export class HttpHeaders {
    */
   get(name: string): string {
     const values = this.headers.get(name.toLowerCase());
-    return values && values.length > 0 ? values[0] : null;
+    return values?.length > 0 ? values[0] : null;
   }
 
   /**
