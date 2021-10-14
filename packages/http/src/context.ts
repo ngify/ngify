@@ -22,7 +22,7 @@ export class HttpContext {
     return this;
   }
 
-  has<T>(token: HttpContextToken<T>): boolean {
+  has(token: HttpContextToken<unknown>): boolean {
     return this.map.has(token);
   }
 
