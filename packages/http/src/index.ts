@@ -1,4 +1,5 @@
 export * from './backend';
+export { WX_UPLOAD_FILE_TOKEN } from './backends';
 export * from './client';
 export * from './context';
 export * from './headers';
