@@ -5,7 +5,7 @@ export class HttpResponse<T> {
   constructor(
     public readonly url: string,
     public readonly data: T,
-    public readonly statusCode: number,
+    public readonly status: number,
     public readonly headers: HttpHeaders,
     public readonly cookies: string[]
   ) { }
@@ -14,7 +14,7 @@ export class HttpResponse<T> {
     return new HttpResponse<D>(
       update.url || this.url,
       (update.data !== undefined ? update.data : this.data) as D,
-      update.statusCode || this.statusCode,
+      update.status || this.status,
       update.headers || this.headers,
       update.cookies !== undefined ? update.cookies : this.cookies,
     );
