@@ -1,11 +1,21 @@
-import { Property } from '@ngify/types';
 import { map, Observable } from 'rxjs';
 import { HttpBackend, HttpHandler } from './backend';
 import { WxHttpBackend } from './backends';
+import { HttpContext } from './context';
+import { HttpHeaders } from './headers';
 import { HttpInterceptor, HttpInterceptorHandler } from './interceptor';
+import { HttpParams } from './params';
 import { HttpRequest } from './request';
 
-type HttpRequestOptions = Partial<Omit<Property<HttpRequest<Record<string, unknown>>>, 'method' | 'url'>>;
+type RequestOptions = {
+  body?: any,
+  params?: ConstructorParameters<typeof HttpParams>[0] | HttpParams,
+  headers?: ConstructorParameters<typeof HttpHeaders>[0] | HttpHeaders,
+  context?: HttpContext,
+  responseType?: HttpRequest<any>['responseType'],
+  dataType?: HttpRequest<any>['dataType'],
+  timeout?: number,
+};
 
 export class HttpClient {
   private chain: HttpHandler;
@@ -30,7 +40,7 @@ export class HttpClient {
     );
   }
 
-  delete<R>(url: string, params?: HttpRequest<any>['params'], options: HttpRequestOptions = {}): Observable<R> {
+  delete<R>(url: string, params?: RequestOptions['params'], options: Omit<RequestOptions, 'params'> = {}): Observable<R> {
     return this.request<R>(new HttpRequest(
       'DELETE',
       url,
@@ -44,7 +54,7 @@ export class HttpClient {
     ));
   }
 
-  get<R>(url: string, params?: HttpRequest<any>['params'], options: HttpRequestOptions = {}): Observable<R> {
+  get<R>(url: string, params?: RequestOptions['params'], options: Omit<RequestOptions, 'params'> = {}): Observable<R> {
     return this.request<R>(new HttpRequest(
       'GET',
       url,
@@ -58,7 +68,7 @@ export class HttpClient {
     ));
   }
 
-  head<R>(url: string, params?: HttpRequest<any>['params'], options: HttpRequestOptions = {}): Observable<R> {
+  head<R>(url: string, params?: RequestOptions['params'], options: Omit<RequestOptions, 'params'> = {}): Observable<R> {
     return this.request<R>(new HttpRequest(
       'HEAD',
       url,
@@ -72,7 +82,7 @@ export class HttpClient {
     ));
   }
 
-  options<R>(url: string, params?: HttpRequest<any>['params'], options: HttpRequestOptions = {}): Observable<R> {
+  options<R>(url: string, params?: RequestOptions['params'], options: Omit<RequestOptions, 'params'> = {}): Observable<R> {
     return this.request<R>(new HttpRequest(
       'OPTIONS',
       url,
@@ -86,7 +96,7 @@ export class HttpClient {
     ));
   }
 
-  post<R>(url: string, body?: HttpRequest<any>['body'], options: HttpRequestOptions = {}): Observable<R> {
+  post<R>(url: string, body?: RequestOptions['body'], options: Omit<RequestOptions, 'body'> = {}): Observable<R> {
     return this.request<R>(new HttpRequest(
       'POST',
       url,
@@ -100,7 +110,7 @@ export class HttpClient {
     ));
   }
 
-  put<R>(url: string, body?: HttpRequest<any>['body'], options: HttpRequestOptions = {}): Observable<R> {
+  put<R>(url: string, body?: RequestOptions['body'], options: Omit<RequestOptions, 'body'> = {}): Observable<R> {
     return this.request<R>(new HttpRequest(
       'PUT',
       url,
@@ -114,7 +124,7 @@ export class HttpClient {
     ));
   }
 
-  patch<R>(url: string, body?: HttpRequest<any>['body'], options: HttpRequestOptions = {}): Observable<R> {
+  patch<R>(url: string, body?: RequestOptions['body'], options: Omit<RequestOptions, 'body'> = {}): Observable<R> {
     return this.request<R>(new HttpRequest(
       'PATCH',
       url,
