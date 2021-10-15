@@ -19,24 +19,43 @@ http.get<any>('url').subscribe(res => {
   console.log(res);
 });
 
-http.post<any>('url', { k: 'v' }).subscribe(res => {
+http.post('url', { k: 'v' }).subscribe(res => {
   console.log(res);
 });
 
 const HTTP_CACHE_TOKEN = new HttpContextToken(() => 1800000);
 
-http.put<any>('url', null, {
+http.put('url', null, {
   context: new HttpContext().set(HTTP_CACHE_TOKEN)
 }).subscribe(res => {
   console.log(res);
 });
 
-http.delete<any>('url', null, {
+http.delete('url', null, {
   headers: new HttpHeaders({ Authorization: 'token' })
 }).subscribe(res => {
   console.log(res);
 });
 ```
+
+### 微信小程序文件上传
+
+```ts
+import { HttpClient, HttpContext, HttpContextToken, WX_UPLOAD_FILE_TOKEN } from '@ngify/http';
+
+const http = new HttpClient();
+
+http.post('url', null, {
+  context: new HttpContext().set(WX_UPLOAD_FILE_TOKEN, {
+    filePath: 'filePath',
+    fileName: 'fileName'
+  })
+});
+```
+
+微信小程序的文件上传比较特殊，详见[微信开发文档](https://developers.weixin.qq.com/miniprogram/dev/api/network/upload/wx.uploadFile.html)。
+<br>
+为了保持 API 的统一，这里需要使用 `HttpContext` 的 `WX_UPLOAD_FILE_TOKEN` 来标识这是一个文件上传请求，并通过其传递文件参数。
 
 ### 添加请求/响应拦截器
 
