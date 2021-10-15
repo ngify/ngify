@@ -16,9 +16,13 @@ const STANDARD_ENCODING_REPLACEMENTS = {
  * 使用 encodeURIComponent 进行编码后将特殊字符还原
  * @param value
  */
-function standardEncoding(value: string): string {
-  return encodeURIComponent(value).replace(STANDARD_ENCODING_REGEX, (s, t) => STANDARD_ENCODING_REPLACEMENTS[t] ?? s);
-}
+const standardEncoding = (value: string) => (
+  encodeURIComponent(value).replace(STANDARD_ENCODING_REGEX, (s, t) => STANDARD_ENCODING_REPLACEMENTS[t] ?? s)
+);
+
+const toString = (value: string | number | boolean) => (
+  value === null || value === undefined ? '' : `${value}`
+);
 
 export class HttpParams {
   private map: Map<string, string[]> = new Map<string, string[]>();
@@ -32,9 +36,9 @@ export class HttpParams {
         this.map.set(key, values);
       });
     } else if (source) {
-      Object.keys(source).forEach(key => {
-        const value = source[key];
-        this.map.set(key, Array.isArray(value) ? value.map(o => `${o}`) : [`${value}`]);
+      Object.keys(source).forEach(param => {
+        const value = source[param];
+        this.map.set(param, Array.isArray(value) ? value.map(toString) : [toString(value as string | number | boolean)]);
       });
     }
   }
@@ -59,7 +63,7 @@ export class HttpParams {
   append(param: string, value: string | number | boolean): HttpParams {
     const values = this.map.get(param) || [];
 
-    values.push(value.toString());
+    values.push(toString(value));
     this.map.set(param, values);
 
     return this.clone();
@@ -70,7 +74,7 @@ export class HttpParams {
       const value = params[key];
       const values = this.map.get(key) || [];
 
-      values.push(...(Array.isArray(value) ? value : [value]));
+      values.push(...(Array.isArray(value) ? value.map(toString) : [toString(value as string | number | boolean)]));
       this.map.set(key, values);
     });
 
@@ -78,7 +82,7 @@ export class HttpParams {
   }
 
   set(param: string, value: string | number | boolean | ReadonlyArray<string | number | boolean>): HttpParams {
-    this.map.set(param, Array.isArray(value) ? value : [value]);
+    this.map.set(param, Array.isArray(value) ? value.map(toString) : [toString(value as string | number | boolean)]);
     return this.clone();
   }
 
