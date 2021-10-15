@@ -15,7 +15,7 @@ import { HttpClient, HttpContext, HttpContextToken, HttpHeaders } from '@ngify/h
 
 const http = new HttpClient();
 
-http.get<any>('url').subscribe(res => {
+http.get<any>('url', 'k=v').subscribe(res => {
   console.log(res);
 });
 
@@ -27,6 +27,12 @@ const HTTP_CACHE_TOKEN = new HttpContextToken(() => 1800000);
 
 http.put('url', null, {
   context: new HttpContext().set(HTTP_CACHE_TOKEN)
+}).subscribe(res => {
+  console.log(res);
+});
+
+http.patch('url', null, {
+  params: { k: 'v' }
 }).subscribe(res => {
   console.log(res);
 });
@@ -76,7 +82,7 @@ const http = new HttpClient([
   {
     intercept(request: HttpRequest<unknown>, next: HttpHandler) {
       request = request.clone({
-        url: request.url + '?k=v'
+        params: request.params.set('k', 'v')
       });
       console.log('拦截后的请求', request);
       return next.handle(request);
