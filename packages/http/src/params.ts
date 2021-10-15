@@ -1,3 +1,4 @@
+const STANDARD_ENCODING_REGEX = /%(\d[a-f0-9])/gi;
 const STANDARD_ENCODING_REPLACEMENTS = {
   '40': '@',
   '3A': ':',
@@ -10,8 +11,13 @@ const STANDARD_ENCODING_REPLACEMENTS = {
   '2F': '/',
 };
 
+
+/**
+ * 使用 encodeURIComponent 进行编码后将特殊字符还原
+ * @param value
+ */
 function standardEncoding(value: string): string {
-  return encodeURIComponent(value).replace(/%(\d[a-f0-9])/gi, (s, t) => STANDARD_ENCODING_REPLACEMENTS[t] ?? s);
+  return encodeURIComponent(value).replace(STANDARD_ENCODING_REGEX, (s, t) => STANDARD_ENCODING_REPLACEMENTS[t] ?? s);
 }
 
 export class HttpParams {
@@ -28,7 +34,7 @@ export class HttpParams {
     } else if (source) {
       Object.keys(source).forEach(key => {
         const value = source[key];
-        this.map.set(key, Array.isArray(value) ? value : [value]);
+        this.map.set(key, Array.isArray(value) ? value.map(o => `${o}`) : [`${value}`]);
       });
     }
   }
