@@ -11,7 +11,6 @@ const STANDARD_ENCODING_REPLACEMENTS = {
   '2F': '/',
 };
 
-
 /**
  * 使用 encodeURIComponent 进行编码后将特殊字符还原
  * @param value
@@ -30,9 +29,9 @@ export class HttpParams {
   constructor(source?: string | { [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean> }) {
     if (typeof source === 'string') {
       source.replace(/^\?/, '').split('&').forEach((param: string) => {
-        const [key, value] = param.split('=').map(o => o === undefined ? '' : decodeURIComponent(o));
+        const [key, ...value] = param.split('=').map(o => o === undefined ? '' : decodeURIComponent(o));
         const values = this.map.get(key) || [];
-        values.push(value);
+        values.push(value.join('='));
         this.map.set(key, values);
       });
     } else if (source) {
@@ -61,40 +60,46 @@ export class HttpParams {
   }
 
   append(param: string, value: string | number | boolean): HttpParams {
-    const values = this.map.get(param) || [];
+    const clone = this.clone();
+    const values = clone.map.get(param) || [];
 
     values.push(toString(value));
-    this.map.set(param, values);
+    clone.map.set(param, values);
 
-    return this.clone();
+    return clone;
   }
 
   appendAll(params: { [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean> }): HttpParams {
+    const clone = this.clone();
+
     Object.keys(params).forEach(key => {
       const value = params[key];
-      const values = this.map.get(key) || [];
+      const values = clone.map.get(key) || [];
 
       values.push(...(Array.isArray(value) ? value.map(toString) : [toString(value as string | number | boolean)]));
-      this.map.set(key, values);
+      clone.map.set(key, values);
     });
 
-    return this.clone();
+    return clone;
   }
 
   set(param: string, value: string | number | boolean | ReadonlyArray<string | number | boolean>): HttpParams {
-    this.map.set(param, Array.isArray(value) ? value.map(toString) : [toString(value as string | number | boolean)]);
-    return this.clone();
+    const clone = this.clone();
+    clone.map.set(param, Array.isArray(value) ? value.map(toString) : [toString(value as string | number | boolean)]);
+    return clone;
   }
 
   delete(param: string, value?: string | number | boolean): HttpParams {
-    if (value) {
-      const values = (this.map.get(param) || []).filter(o => o !== value);
-      values.length > 0 ? this.map.set(param, values) : this.map.delete(param);
+    const clone = this.clone();
+
+    if (value !== undefined) {
+      const values = (clone.map.get(param) || []).filter(o => o !== toString(value));
+      values.length > 0 ? clone.map.set(param, values) : clone.map.delete(param);
     } else {
-      this.map.delete(param);
+      clone.map.delete(param);
     }
 
-    return this.clone();
+    return clone;
   }
 
   toString(): string {
