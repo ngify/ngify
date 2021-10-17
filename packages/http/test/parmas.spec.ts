@@ -143,6 +143,17 @@ describe('HttpParams', () => {
     expect(mutated.getAll('a')).toEqual(['true']);
   });
 
+  it('should lazily append values', () => {
+    const src = new HttpParams();
+    const a = src.append('foo', 'a');
+    const b = a.append('foo', 'b');
+    const c = b.append('foo', 'c');
+    expect(src.getAll('foo')).toBeNull();
+    expect(a.getAll('foo')).toEqual(['a']);
+    expect(b.getAll('foo')).toEqual(['a', 'b']);
+    expect(c.getAll('foo')).toEqual(['a', 'b', 'c']);
+  });
+
   it('should not repeat mutations that have already been materialized', () => {
     const params = new HttpParams('a=b');
     const mutated = params.append('a', 'c');
