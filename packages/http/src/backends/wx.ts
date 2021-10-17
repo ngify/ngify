@@ -7,11 +7,20 @@ import { HttpResponse } from '../response';
 
 const isOk = (status: number) => status >= 200 && status < 300;
 
-/** 携带此 token 的 post 请求，将使用 wx.uploadFile() 进行文件上传 */
-export const WX_UPLOAD_FILE_TOKEN = new HttpContextToken(() => ({
-  filePath: '',
-  fileName: ''
-}));
+/** 使用此 token 传递额外的 wx.uploadFile() 参数 */
+export const WX_UPLOAD_FILE_TOKEN = new HttpContextToken<{
+  filePath?: string,
+  fileName?: string,
+  timeout?: number,
+}>(() => ({}));
+
+/** 使用此 token 传递额外的 wx.request() 参数 */
+export const WX_REQUSET_TOKEN = new HttpContextToken<{
+  enableCache?: boolean,
+  enableHttp2?: boolean,
+  enableQuic?: boolean,
+  timeout?: number
+}>(() => ({}));
 
 export class WxHttpBackend implements HttpBackend {
   handle(request: HttpRequest<any>): Observable<HttpResponse<any>> {
@@ -35,7 +44,7 @@ export class WxHttpBackend implements HttpBackend {
       });
 
       if (request.method === 'POST' && request.context.has(WX_UPLOAD_FILE_TOKEN)) {
-        const { filePath, fileName } = request.context.get(WX_UPLOAD_FILE_TOKEN);
+        const { filePath, fileName, timeout } = request.context.get(WX_UPLOAD_FILE_TOKEN);
 
         wx.uploadFile({
           url: request.urlWithParams,
@@ -43,11 +52,11 @@ export class WxHttpBackend implements HttpBackend {
           name: fileName,
           header: headers,
           formData: request.body,
-          timeout: request.timeout,
+          timeout: timeout,
           success: ({ data, statusCode }) => {
             const response = new HttpResponse(
               request.url,
-              request.dataType === 'json' ? JSON.parse(data) : data,
+              (request.responseType === 'json' || request.responseType === undefined) ? JSON.parse(data) : data,
               statusCode,
               new HttpHeaders(),
               null
@@ -67,9 +76,9 @@ export class WxHttpBackend implements HttpBackend {
         method: request.method,
         data: request.body,
         header: headers,
-        responseType: request.responseType,
-        dataType: request.dataType as 'json' | '其他',
-        timeout: request.timeout,
+        // 不懂微信为什么要从 responseType 中拆分出 dataType，这里需要处理一下
+        responseType: request.responseType === 'arraybuffer' ? 'arraybuffer' : 'text',
+        dataType: request.responseType === 'json' ? 'json' : '其他',
         success: ({ data, statusCode, header, cookies }) => {
           const response = new HttpResponse(
             request.url,
@@ -82,7 +91,8 @@ export class WxHttpBackend implements HttpBackend {
           isOk(statusCode) ? observer.next(response) : observer.error(response);
         },
         fail: event => error(event),
-        complete: () => complete()
+        complete: () => complete(),
+        ...request.context.get(WX_REQUSET_TOKEN)
       });
     });
   }

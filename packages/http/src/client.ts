@@ -13,8 +13,6 @@ type RequestOptions = {
   headers?: ConstructorParameters<typeof HttpHeaders>[0] | HttpHeaders,
   context?: HttpContext,
   responseType?: HttpRequest<any>['responseType'],
-  dataType?: HttpRequest<any>['dataType'],
-  timeout?: number,
 };
 
 export class HttpClient {
@@ -44,13 +42,13 @@ export class HttpClient {
     return this.request<R>(new HttpRequest(
       'DELETE',
       url,
-      options.body,
-      params,
-      options.headers,
-      options.context,
-      options.responseType,
-      options.dataType,
-      options.timeout,
+      {
+        body: options.body,
+        params: params,
+        headers: options.headers,
+        context: options.context,
+        responseType: options.responseType,
+      }
     ));
   }
 
@@ -58,13 +56,13 @@ export class HttpClient {
     return this.request<R>(new HttpRequest(
       'GET',
       url,
-      options.body,
-      params,
-      options.headers,
-      options.context,
-      options.responseType,
-      options.dataType,
-      options.timeout,
+      {
+        body: options.body,
+        params: params,
+        headers: options.headers,
+        context: options.context,
+        responseType: options.responseType,
+      }
     ));
   }
 
@@ -72,13 +70,13 @@ export class HttpClient {
     return this.request<R>(new HttpRequest(
       'HEAD',
       url,
-      options.body,
-      params,
-      options.headers,
-      options.context,
-      options.responseType,
-      options.dataType,
-      options.timeout,
+      {
+        body: options.body,
+        params: params,
+        headers: options.headers,
+        context: options.context,
+        responseType: options.responseType,
+      }
     ));
   }
 
@@ -86,13 +84,13 @@ export class HttpClient {
     return this.request<R>(new HttpRequest(
       'OPTIONS',
       url,
-      options.body,
-      params,
-      options.headers,
-      options.context,
-      options.responseType,
-      options.dataType,
-      options.timeout,
+      {
+        body: options.body,
+        params: params,
+        headers: options.headers,
+        context: options.context,
+        responseType: options.responseType,
+      }
     ));
   }
 
@@ -100,13 +98,13 @@ export class HttpClient {
     return this.request<R>(new HttpRequest(
       'POST',
       url,
-      body,
-      options.params,
-      options.headers,
-      options.context,
-      options.responseType,
-      options.dataType,
-      options.timeout,
+      {
+        body: body,
+        params: options.params,
+        headers: options.headers,
+        context: options.context,
+        responseType: options.responseType,
+      }
     ));
   }
 
@@ -114,13 +112,13 @@ export class HttpClient {
     return this.request<R>(new HttpRequest(
       'PUT',
       url,
-      body,
-      options.params,
-      options.headers,
-      options.context,
-      options.responseType,
-      options.dataType,
-      options.timeout,
+      {
+        body: body,
+        params: options.params,
+        headers: options.headers,
+        context: options.context,
+        responseType: options.responseType,
+      }
     ));
   }
 
@@ -128,13 +126,13 @@ export class HttpClient {
     return this.request<R>(new HttpRequest(
       'PATCH',
       url,
-      body,
-      options.params,
-      options.headers,
-      options.context,
-      options.responseType,
-      options.dataType,
-      options.timeout,
+      {
+        body: body,
+        params: options.params,
+        headers: options.headers,
+        context: options.context,
+        responseType: options.responseType,
+      }
     ));
   }
 }
