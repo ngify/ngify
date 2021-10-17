@@ -1,0 +1,10 @@
+{
+  "name": "http",
+  "displayName": "http",
+  "preset": "ts-jest",
+  "rootDir": "./",
+  "testMatch": [
+    "<rootDir>/test/*.spec.ts"
+  ],
+  "coverageDirectory": "./coverage"
+}
