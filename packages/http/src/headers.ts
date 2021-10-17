@@ -23,13 +23,15 @@ export class HttpHeaders {
    * @returns
    */
   append(name: string, value: string | string[]): HttpHeaders {
+    const clone = this.clone();
     const key = name.toLowerCase();
-    const base = this.headers.get(key) || [];
+    const base = clone.headers.get(key) || [];
 
     base.push(...(Array.isArray(value) ? value : [value]));
-    this.headers.set(key, base);
-    this.normalizedNames.has(key) || this.normalizedNames.set(key, name);
-    return this.clone();
+    clone.headers.set(key, base);
+    clone.normalizedNames.has(key) || this.normalizedNames.set(key, name);
+
+    return clone;
   }
 
   /**
@@ -38,10 +40,13 @@ export class HttpHeaders {
    * @returns
    */
   delete(name: string): HttpHeaders {
+    const clone = this.clone();
     const key = name.toLowerCase();
-    this.headers.delete(key);
-    this.normalizedNames.delete(key);
-    return this.clone();
+
+    clone.headers.delete(key);
+    clone.normalizedNames.delete(key);
+
+    return clone;
   }
 
   /**
@@ -79,15 +84,13 @@ export class HttpHeaders {
    * @returns
    */
   set(name: string, value: string | string[]): HttpHeaders {
+    const clone = this.clone();
     const key = name.toLowerCase();
 
-    if (!Array.isArray(value)) {
-      value = [value];
-    }
+    clone.headers.set(key, Array.isArray(value) ? value : [value]);
+    clone.normalizedNames.has(key) || clone.normalizedNames.set(key, name);
 
-    this.headers.set(key, value);
-    this.normalizedNames.has(key) || this.normalizedNames.set(key, name);
-    return this.clone();
+    return clone;
   }
 
   forEach(fn: (name: string, value: string[]) => void): void {
