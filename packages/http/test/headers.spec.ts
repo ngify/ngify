@@ -1,5 +1,9 @@
 import { HttpHeaders } from '../src/headers';
 
+/**
+ * Copy from https://github.com/angular/angular/blob/master/packages/common/http/test/headers_spec.ts
+ */
+
 describe('HttpHeaders', () => {
   describe('initialization', () => {
     it('should conform to spec', () => {
