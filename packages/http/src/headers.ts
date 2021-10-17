@@ -4,16 +4,31 @@ export class HttpHeaders {
   /** 以 lowercase name => normalized name 的形式维护一份 header name */
   private normalizedNames: Map<string, string> = new Map();
 
-  constructor(headers?: { [name: string]: string | string[] }) {
-    headers && Object.keys(headers).forEach(name => {
-      let value = headers[name];
+  constructor(headers?: string | { [name: string]: string | string[] }) {
+    if (typeof headers === 'string') {
+      headers.split('\n').forEach(line => {
+        const index = line.indexOf(':');
+        if (index > 0) {
+          const name = line.slice(0, index);
+          const key = name.toLowerCase();
+          const value = line.slice(index + 1).trim();
+          const base = this.headers.get(key) || [];
 
-      if (Array.isArray(value)) {
-        this.set(name, value);
-      } else {
-        this.set(name, value.split(/,[\s]?/));
-      }
-    });
+          base.push(value);
+
+          this.headers.set(key, base);
+          this.setNormalizedName(key, name);
+        }
+      });
+    } else if (headers) {
+      Object.keys(headers).forEach(name => {
+        const key = name.toLowerCase();
+        const value = headers[name];
+
+        this.headers.set(key, Array.isArray(value) ? value : [value]);
+        this.setNormalizedName(key, name);
+      });
+    }
   }
 
   /**
@@ -29,7 +44,23 @@ export class HttpHeaders {
 
     base.push(...(Array.isArray(value) ? value : [value]));
     clone.headers.set(key, base);
-    clone.normalizedNames.has(key) || this.normalizedNames.set(key, name);
+    clone.setNormalizedName(name, key);
+
+    return clone;
+  }
+
+  /**
+   * 设置一个值并覆盖已有值
+   * @param name
+   * @param value
+   * @returns
+   */
+  set(name: string, value: string | string[]): HttpHeaders {
+    const clone = this.clone();
+    const key = name.toLowerCase();
+
+    clone.headers.set(key, Array.isArray(value) ? value : [value]);
+    clone.setNormalizedName(name, key);
 
     return clone;
   }
@@ -77,38 +108,27 @@ export class HttpHeaders {
     return this.headers.has(name.toLowerCase());
   }
 
-  /**
-   * 设置一个值并覆盖已有值
-   * @param name
-   * @param value
-   * @returns
-   */
-  set(name: string, value: string | string[]): HttpHeaders {
-    const clone = this.clone();
-    const key = name.toLowerCase();
-
-    clone.headers.set(key, Array.isArray(value) ? value : [value]);
-    clone.normalizedNames.has(key) || clone.normalizedNames.set(key, name);
-
-    return clone;
-  }
-
   forEach(fn: (name: string, value: string[]) => void): void {
     this.headers.forEach((value, name) => fn(this.normalizedNames.get(name), value));
   }
 
-  keys(): IterableIterator<string> {
-    return this.normalizedNames.values();
+  keys(): string[] {
+    return Array.from(this.normalizedNames.values());
   }
 
   private clone(): HttpHeaders {
     const clone = new HttpHeaders();
 
     this.headers.forEach((value, name) => {
-      clone.headers.set(name, value);
+      clone.headers.set(name, [...value]);
       clone.normalizedNames.set(name, this.normalizedNames.get(name));
     });
 
     return clone;
   }
+
+  private setNormalizedName(name: string, key: string) {
+    this.normalizedNames.has(key) || this.normalizedNames.set(key, name);
+  }
+
 }
