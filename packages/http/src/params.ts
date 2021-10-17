@@ -112,7 +112,7 @@ export class HttpParams {
     const clone = new HttpParams();
 
     this.map.forEach((value, name) => {
-      clone.map.set(name, value);
+      clone.map.set(name, [...value]);
     });
 
     return clone;
