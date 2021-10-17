@@ -29,9 +29,9 @@ export class HttpParams {
   constructor(source?: string | { [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean> }) {
     if (typeof source === 'string') {
       source.replace(/^\?/, '').split('&').forEach((param: string) => {
-        const [key, ...value] = param.split('=').map(o => o === undefined ? '' : decodeURIComponent(o));
+        const [key, value] = param.split(/=(.*)/, 2).map(o => o === undefined ? '' : decodeURIComponent(o));
         const values = this.map.get(key) || [];
-        values.push(value.join('='));
+        values.push(value);
         this.map.set(key, values);
       });
     } else if (source) {
