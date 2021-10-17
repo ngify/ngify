@@ -4,7 +4,7 @@ import { HttpParams } from '../src/params';
  * Copy from https://github.com/angular/angular/blob/master/packages/common/http/test/params_spec.ts
  */
 
-describe('http-params', () => {
+describe('HttpParams', () => {
   it('init', () => {
     const params = new HttpParams();
     expect(params.toString()).toEqual('');
@@ -162,7 +162,7 @@ describe('http-params', () => {
 
     it('should give an accurate list of keys', () => {
       const params = new HttpParams('a=1&b=2&c=3&d=4');
-      expect(Array.from(params.keys())).toEqual(['a', 'b', 'c', 'd']);
+      expect(params.keys()).toEqual(['a', 'b', 'c', 'd']);
     });
   });
 

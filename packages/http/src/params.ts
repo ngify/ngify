@@ -55,8 +55,8 @@ export class HttpParams {
     return this.map.get(param) || null;
   }
 
-  keys(): IterableIterator<string> {
-    return this.map.keys();
+  keys(): string[] {
+    return Array.from(this.map.keys());
   }
 
   append(param: string, value: string | number | boolean): HttpParams {
@@ -103,7 +103,7 @@ export class HttpParams {
   }
 
   toString(): string {
-    return Array.from(this.keys()).map(key => (
+    return this.keys().map(key => (
       this.map.get(key).map(value => standardEncoding(key) + '=' + standardEncoding(value)).join('&')
     )).filter(param => param !== '').join('&');
   }
