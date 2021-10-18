@@ -5,8 +5,6 @@ import { HttpHeaders } from '../headers';
 import { HttpRequest } from '../request';
 import { HttpErrorResponse, HttpResponse } from '../response';
 
-const isOk = (status: number) => status >= 200 && status < 300;
-
 /** 使用此 token 传递额外的 wx.uploadFile() 参数 */
 export const WX_UPLOAD_FILE_TOKEN = new HttpContextToken<{
   filePath?: string,
