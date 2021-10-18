@@ -40,7 +40,7 @@
   "devDependencies": {
     "@types/jest": "27.0.2",
     "@types/wechat-miniprogram": "3.4.0",
-    "jest": "27.2.5",
+    "jest": "27.3.0",
     "ts-jest": "27.0.7"
   },
   "peerDependencies": {
