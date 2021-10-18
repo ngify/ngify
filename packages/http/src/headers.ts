@@ -7,11 +7,9 @@ export class HttpHeaders {
   constructor(headers?: string | { [name: string]: string | string[] }) {
     if (typeof headers === 'string') {
       headers.split('\n').forEach(line => {
-        const index = line.indexOf(':');
-        if (index > 0) {
-          const name = line.slice(0, index);
+        if (line.includes(':')) {
+          const [name, value] = line.split(/:\s/, 2);
           const key = name.toLowerCase();
-          const value = line.slice(index + 1).trim();
           const base = this.headers.get(key) || [];
 
           base.push(value);

@@ -8,7 +8,7 @@ export class HttpRequest<T> {
   readonly params: HttpParams;
   readonly headers: HttpHeaders;
   readonly context: HttpContext;
-  readonly responseType: 'arraybuffer' | 'blob' | 'json' | 'text' = 'json';
+  readonly responseType: 'arraybuffer' | 'blob' | 'json' | 'text';
   readonly urlWithParams: string;
 
   constructor(
@@ -28,10 +28,7 @@ export class HttpRequest<T> {
     this.params = params instanceof HttpParams ? params : new HttpParams(params);
     this.headers = headers instanceof HttpHeaders ? headers : new HttpHeaders(headers);
     this.context = context || new HttpContext();
-
-    if (responseType) {
-      this.responseType = responseType;
-    }
+    this.responseType = responseType || 'json';
 
     const query = this.params.toString();
     if (query.length === 0) {
