@@ -2,6 +2,11 @@
   "name": "http",
   "displayName": "http",
   "preset": "ts-jest",
+  "globals": {
+    "ts-jest": {
+      "tsconfig": "tsconfig.spec.json"
+    }
+  },
   "rootDir": "./",
   "testMatch": [
     "<rootDir>/test/*.spec.ts"
