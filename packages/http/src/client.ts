@@ -39,100 +39,72 @@ export class HttpClient {
   }
 
   delete<R>(url: string, params?: RequestOptions['params'], options: Omit<RequestOptions, 'params'> = {}): Observable<R> {
-    return this.request<R>(new HttpRequest(
-      'DELETE',
-      url,
-      {
-        body: options.body,
-        params: params,
-        headers: options.headers,
-        context: options.context,
-        responseType: options.responseType,
-      }
-    ));
+    return this.request<R>(new HttpRequest('DELETE', url, {
+      body: options.body,
+      params: params,
+      headers: options.headers,
+      context: options.context,
+      responseType: options.responseType,
+    }));
   }
 
   get<R>(url: string, params?: RequestOptions['params'], options: Omit<RequestOptions, 'params'> = {}): Observable<R> {
-    return this.request<R>(new HttpRequest(
-      'GET',
-      url,
-      {
-        body: options.body,
-        params: params,
-        headers: options.headers,
-        context: options.context,
-        responseType: options.responseType,
-      }
-    ));
+    return this.request<R>(new HttpRequest('GET', url, {
+      body: options.body,
+      params: params,
+      headers: options.headers,
+      context: options.context,
+      responseType: options.responseType,
+    }));
   }
 
   head<R>(url: string, params?: RequestOptions['params'], options: Omit<RequestOptions, 'params'> = {}): Observable<R> {
-    return this.request<R>(new HttpRequest(
-      'HEAD',
-      url,
-      {
-        body: options.body,
-        params: params,
-        headers: options.headers,
-        context: options.context,
-        responseType: options.responseType,
-      }
-    ));
+    return this.request<R>(new HttpRequest('HEAD', url, {
+      body: options.body,
+      params: params,
+      headers: options.headers,
+      context: options.context,
+      responseType: options.responseType,
+    }));
   }
 
   options<R>(url: string, params?: RequestOptions['params'], options: Omit<RequestOptions, 'params'> = {}): Observable<R> {
-    return this.request<R>(new HttpRequest(
-      'OPTIONS',
-      url,
-      {
-        body: options.body,
-        params: params,
-        headers: options.headers,
-        context: options.context,
-        responseType: options.responseType,
-      }
-    ));
+    return this.request<R>(new HttpRequest('OPTIONS', url, {
+      body: options.body,
+      params: params,
+      headers: options.headers,
+      context: options.context,
+      responseType: options.responseType,
+    }));
   }
 
   post<R>(url: string, body?: RequestOptions['body'], options: Omit<RequestOptions, 'body'> = {}): Observable<R> {
-    return this.request<R>(new HttpRequest(
-      'POST',
-      url,
-      {
-        body: body,
-        params: options.params,
-        headers: options.headers,
-        context: options.context,
-        responseType: options.responseType,
-      }
-    ));
+    return this.request<R>(new HttpRequest('POST', url, {
+      body: body,
+      params: options.params,
+      headers: options.headers,
+      context: options.context,
+      responseType: options.responseType,
+    }));
   }
 
   put<R>(url: string, body?: RequestOptions['body'], options: Omit<RequestOptions, 'body'> = {}): Observable<R> {
-    return this.request<R>(new HttpRequest(
-      'PUT',
-      url,
-      {
-        body: body,
-        params: options.params,
-        headers: options.headers,
-        context: options.context,
-        responseType: options.responseType,
-      }
-    ));
+    return this.request<R>(new HttpRequest('PUT', url, {
+      body: body,
+      params: options.params,
+      headers: options.headers,
+      context: options.context,
+      responseType: options.responseType,
+    }));
   }
 
   patch<R>(url: string, body?: RequestOptions['body'], options: Omit<RequestOptions, 'body'> = {}): Observable<R> {
-    return this.request<R>(new HttpRequest(
-      'PATCH',
-      url,
-      {
-        body: body,
-        params: options.params,
-        headers: options.headers,
-        context: options.context,
-        responseType: options.responseType,
-      }
-    ));
+    return this.request<R>(new HttpRequest('PATCH', url, {
+      body: body,
+      params: options.params,
+      headers: options.headers,
+      context: options.context,
+      responseType: options.responseType,
+    }));
   }
 }

@@ -44,7 +44,7 @@ export class HttpHeaders {
 
     base.push(...(Array.isArray(value) ? value : [value]));
     clone.headers.set(key, base);
-    clone.setNormalizedName(name, key);
+    clone.setNormalizedName(key, name);
 
     return clone;
   }
@@ -60,7 +60,7 @@ export class HttpHeaders {
     const key = name.toLowerCase();
 
     clone.headers.set(key, Array.isArray(value) ? value : [value]);
-    clone.setNormalizedName(name, key);
+    clone.setNormalizedName(key, name);
 
     return clone;
   }
@@ -127,8 +127,12 @@ export class HttpHeaders {
     return clone;
   }
 
-  private setNormalizedName(name: string, key: string) {
-    this.normalizedNames.has(key) || this.normalizedNames.set(key, name);
+  /**
+   * @param lowercase lowercase name
+   * @param normalized normalized name
+   */
+  private setNormalizedName(lowercase: string, normalized: string) {
+    this.normalizedNames.has(lowercase) || this.normalizedNames.set(lowercase, normalized);
   }
 
 }
