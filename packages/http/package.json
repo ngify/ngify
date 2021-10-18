@@ -1,6 +1,6 @@
 {
   "name": "@ngify/http",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -34,7 +34,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@ngify/types": "1.0.7",
+    "@ngify/types": "1.0.8",
     "rxjs": "^7.0.0"
   },
   "devDependencies": {
