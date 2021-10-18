@@ -5,6 +5,10 @@
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
+  "files": [
+    "src",
+    "dist"
+  ],
   "scripts": {
     "test": "jest --config ./jest.config.json"
   },
@@ -21,6 +25,8 @@
   "keywords": [
     "wx",
     "http",
+    "observable",
+    "reactive",
     "rxjs",
     "angular"
   ],
