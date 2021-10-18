@@ -3,7 +3,7 @@ import { HttpBackend } from '../backend';
 import { HttpContextToken } from '../context';
 import { HttpHeaders } from '../headers';
 import { HttpRequest } from '../request';
-import { HttpResponse } from '../response';
+import { HttpErrorResponse, HttpResponse } from '../response';
 
 const isOk = (status: number) => status >= 200 && status < 300;
 
@@ -30,13 +30,10 @@ export class WxHttpBackend implements HttpBackend {
       }
 
       const complete = () => observer.complete();
-      const error = (error: any) => observer.error(new HttpResponse(
-        request.url,
-        error,
-        0,
-        null,
-        null
-      ));
+      const error = (error: WechatMiniprogram.GeneralCallbackResult) => observer.error(new HttpErrorResponse({
+        url: request.url,
+        error: error
+      }));
 
       const headers = {};
       request.headers.forEach((name, value) => {
@@ -53,16 +50,15 @@ export class WxHttpBackend implements HttpBackend {
           header: headers,
           formData: request.body,
           timeout: timeout,
-          success: ({ data, statusCode }) => {
-            const response = new HttpResponse(
-              request.url,
-              (request.responseType === 'json' || request.responseType === undefined) ? JSON.parse(data) : data,
-              statusCode,
-              new HttpHeaders(),
-              null
-            );
+          success: ({ data, statusCode, errMsg }) => {
+            const response = new HttpResponse({
+              url: request.url,
+              body: (request.responseType === 'json' || request.responseType === undefined) ? JSON.parse(data) : data,
+              status: statusCode,
+              statusText: errMsg
+            });
 
-            isOk(statusCode) ? observer.next(response) : observer.error(response);
+            response.ok ? observer.next(response) : observer.error(response);
           },
           fail: event => error(event),
           complete: () => complete()
@@ -79,16 +75,16 @@ export class WxHttpBackend implements HttpBackend {
         // 不懂微信为什么要从 responseType 中拆分出 dataType，这里需要处理一下
         responseType: request.responseType === 'arraybuffer' ? 'arraybuffer' : 'text',
         dataType: request.responseType === 'json' ? 'json' : '其他',
-        success: ({ data, statusCode, header, cookies }) => {
-          const response = new HttpResponse(
-            request.url,
-            data,
-            statusCode,
-            new HttpHeaders(header),
-            cookies
-          );
+        success: ({ data, statusCode, header, errMsg }) => {
+          const response = new HttpResponse({
+            url: request.url,
+            body: data,
+            status: statusCode,
+            statusText: errMsg,
+            headers: new HttpHeaders(header)
+          });
 
-          isOk(statusCode) ? observer.next(response) : observer.error(response);
+          response.ok ? observer.next(response) : observer.error(response);
         },
         fail: event => error(event),
         complete: () => complete(),
