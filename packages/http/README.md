@@ -44,13 +44,23 @@ http.delete('url', null, {
 });
 ```
 
-### 微信小程序文件上传
+### 微信小程序额外参数
+
+为保持 API 的统一，需要使用 `HttpContext` 来传递微信小程序额外的参数。
 
 ```ts
-import { HttpClient, HttpContext, HttpContextToken, WX_UPLOAD_FILE_TOKEN } from '@ngify/http';
+import { HttpClient, HttpContext, HttpContextToken, WX_UPLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http';
 
 const http = new HttpClient();
 
+// 微信小程序开启 HTTP2
+http.get('url', null, {
+  context: new HttpContext().set(WX_REQUSET_TOKEN, {
+    enableHttp2: true,
+  })
+});
+
+// 微信小程序文件上传
 http.post('url', null, {
   context: new HttpContext().set(WX_UPLOAD_FILE_TOKEN, {
     filePath: 'filePath',
@@ -58,10 +68,6 @@ http.post('url', null, {
   })
 });
 ```
-
-微信小程序的文件上传比较特殊，详见[微信开发文档](https://developers.weixin.qq.com/miniprogram/dev/api/network/upload/wx.uploadFile.html)。
-<br>
-为了保持 API 的统一，这里需要使用 `HttpContext` 的 `WX_UPLOAD_FILE_TOKEN` 来标识这是一个文件上传请求，并通过其传递文件参数。
 
 ### 添加请求/响应拦截器
 
@@ -99,7 +105,7 @@ const http = new HttpClient([
 
 ### 替换 HTTP 请求类
 
-默认使用 `WxHttpBackend` 来进行 HTTP 请求，可自行替换：
+默认使用 `WxHttpBackend (微信小程序)` 来进行 HTTP 请求，可自行替换自定义的 `HttpBackend` 实现类：
 
 ```ts
 import { HttpBackend, HttpClient, HttpRequest, HttpResponse } from '@ngify/http';
