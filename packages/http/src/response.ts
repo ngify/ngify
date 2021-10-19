@@ -22,11 +22,7 @@ export abstract class HttpResponseBase {
 }
 
 export class HttpResponse<T> extends HttpResponseBase {
-  readonly ok: boolean;
-  readonly url: string;
   readonly body: T;
-  readonly status: number;
-  readonly headers: HttpHeaders;
 
   constructor(options: {
     url?: string,
