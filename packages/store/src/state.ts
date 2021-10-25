@@ -21,13 +21,14 @@ export function Action(action?: string): MethodDecorator {
       const returnValue = fn.apply(this, arguments);
 
       if (returnValue instanceof Promise) {
-        returnValue.then(() => store.dispatch(action || propertyKey, this));
-      } else if (returnValue instanceof Observable) {
-        returnValue.pipe(tap(() => store.dispatch(action || propertyKey, this)));
-      } else {
-        store.dispatch(action || propertyKey, this);
+        return returnValue.then(value => (store.dispatch(action || propertyKey, this), value));
       }
 
+      if (returnValue instanceof Observable) {
+        return returnValue.pipe(tap(() => store.dispatch(action || propertyKey, this)));
+      }
+
+      store.dispatch(action || propertyKey, this);
       return returnValue;
     }
   };
