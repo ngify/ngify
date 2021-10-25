@@ -10,7 +10,8 @@
     "dist"
   ],
   "scripts": {
-    "test": "jest --config ./jest.config.json"
+    "test": "jest --config ./jest.config.json",
+    "coverage": "jest --config ./jest.config.json --coverage"
   },
   "repository": {
     "type": "git",
