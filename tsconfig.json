@@ -18,6 +18,11 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "paths": {
+      "@ngify/*": [
+        "packages/*"
+      ]
+    },
     "removeComments": true,
     "importHelpers": true,
     "esModuleInterop": true,

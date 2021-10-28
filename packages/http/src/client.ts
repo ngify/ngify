@@ -1,5 +1,4 @@
 import { concatMap, filter, map, Observable, of } from 'rxjs';
-import { HttpEvent, HttpResponse } from '.';
 import { HttpBackend, HttpHandler } from './backend';
 import { WxHttpBackend } from './backends';
 import { HttpContext } from './context';
@@ -7,6 +6,7 @@ import { HttpHeaders } from './headers';
 import { HttpInterceptor, HttpInterceptorHandler } from './interceptor';
 import { HttpParams } from './params';
 import { HttpRequest } from './request';
+import { HttpEvent, HttpResponse } from './response';
 
 type Body = any;
 type Params = ConstructorParameters<typeof HttpParams>[0] | HttpParams;
