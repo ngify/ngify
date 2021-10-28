@@ -3,5 +3,9 @@
   "include": [
     "./src",
     "./test",
-  ]
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "./src",
+  }
 }
