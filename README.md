@@ -2,6 +2,8 @@
 
 Pretend to be using Angular.
 
+
+![Node.js CI](https://github.com/ngify/ngify/workflows/Node.js%20CI/badge.svg)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
 ## Packages
