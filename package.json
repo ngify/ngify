@@ -13,7 +13,8 @@
 		"build": "node scripts/build.js --prod",
 		"test": "lerna run --scope @ngify/http --scope @ngify/store test:ci",
 		"publish": "npm run build & lerna publish --force-publish=* --exact",
-		"bootstrap": "lerna bootstrap --hoist"
+		"bootstrap": "lerna bootstrap --hoist",
+		"bootstrap:ci": "lerna bootstrap"
 	},
 	"author": "HyperLife1119 <hyperlife1119@qq.com>",
 	"license": "MIT",
