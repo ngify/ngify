@@ -29,7 +29,7 @@ jobs:
     - name: install
       run: npm ci
     - name: bootstrap
-      run: npm run bootstrap:ci
+      run: npm run bootstrap
     - name: test
       run: npm test
     - name: build
