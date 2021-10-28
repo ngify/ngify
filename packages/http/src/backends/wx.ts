@@ -3,7 +3,7 @@ import { HttpBackend } from '../backend';
 import { HttpContextToken } from '../context';
 import { HttpHeaders } from '../headers';
 import { HttpRequest } from '../request';
-import { HttpErrorResponse, HttpResponse } from '../response';
+import { HttpErrorResponse, HttpEvent, HttpResponse } from '../response';
 
 /** 使用此 token 传递额外的 wx.uploadFile() 参数 */
 export const WX_UPLOAD_FILE_TOKEN = new HttpContextToken<{
@@ -21,7 +21,7 @@ export const WX_REQUSET_TOKEN = new HttpContextToken<{
 }>(() => ({}));
 
 export class WxHttpBackend implements HttpBackend {
-  handle(request: HttpRequest<any>): Observable<HttpResponse<any>> {
+  handle(request: HttpRequest<any>): Observable<HttpEvent<any>> {
     return new Observable((observer: Observer<any>) => {
       if (request.method === 'PATCH') {
         throw Error('WeChat MiniProgram does not support http method as ' + request.method);

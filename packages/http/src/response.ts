@@ -1,5 +1,7 @@
 import { HttpHeaders } from './headers';
 
+export type HttpEvent<T> = HttpResponse<T>;
+
 export abstract class HttpResponseBase {
   readonly ok: boolean;
   readonly url: string;

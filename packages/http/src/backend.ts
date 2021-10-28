@@ -1,11 +1,11 @@
 import { Observable } from 'rxjs';
 import { HttpRequest } from './request';
-import { HttpResponse } from './response';
+import { HttpEvent } from './response';
 
 export interface HttpHandler {
-  handle(request: HttpRequest<any>): Observable<HttpResponse<any>>;
+  handle(request: HttpRequest<any>): Observable<HttpEvent<any>>;
 }
 
 export interface HttpBackend extends HttpHandler {
-  handle(request: HttpRequest<any>): Observable<HttpResponse<any>>;
+  handle(request: HttpRequest<any>): Observable<HttpEvent<any>>;
 }
