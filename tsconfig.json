@@ -1,12 +1,12 @@
 {
   "include": [
-    "packages/**/src/*.ts"
+    "packages/*/src"
   ],
   "exclude": [
     "node_modules",
     "dist",
     "test",
-    "*.d.ts"
+    "**/*.spec.ts"
   ],
   "compilerOptions": {
     "target": "es2015",
@@ -14,7 +14,8 @@
     "emitDecoratorMetadata": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "baseUrl": "./",
+    "baseUrl": ".",
+    "rootDir": ".",
     "typeRoots": [
       "node_modules/@types"
     ],
