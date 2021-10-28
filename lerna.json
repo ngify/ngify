@@ -6,11 +6,6 @@
   "command": {
     "publish": {
       "message": "chore(release): publish %s"
-    },
-    "bootstrap": {
-      "npmClientArgs": [
-        "--no-package-lock"
-      ]
     }
   }
 }
