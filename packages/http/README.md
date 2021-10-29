@@ -46,10 +46,10 @@ http.delete('url', null, {
 
 ### 微信小程序额外参数
 
-为保持 API 的统一，需要使用 `HttpContext` 来传递微信小程序额外的参数。
+为保持 API 的统一，需要借助 `HttpContext` 来传递微信小程序额外的参数。
 
 ```ts
-import { HttpClient, HttpContext, HttpContextToken, WX_UPLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http';
+import { HttpClient, HttpContext, HttpContextToken, WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http';
 
 const http = new HttpClient();
 
@@ -65,6 +65,13 @@ http.post('url', null, {
   context: new HttpContext().set(WX_UPLOAD_FILE_TOKEN, {
     filePath: 'filePath',
     fileName: 'fileName'
+  })
+});
+
+// 微信小程序文件下载
+http.get('url', null, {
+  context: new HttpContext().set(WX_DOWNLOAD_FILE_TOKEN, {
+    filePath: 'filePath'
   })
 });
 ```
@@ -97,8 +104,8 @@ const http = new HttpClient([
 ]);
 ```
 
-多个拦截器构成了请求/响应处理器的双向链表，`@ngify/http` 会按你提供拦截器的顺序应用它们。
-<br>
+> 多个拦截器构成了请求/响应处理器的双向链表，`@ngify/http` 会按你提供拦截器的顺序应用它们。
+
 虽然拦截器有能力改变请求和响应，但 `HttpRequest` 和 `HttpResponse` 实例的属性是只读的，因此让它们基本上是不可变的。
 <br>
 如果你需要修改一个请求，请先将它克隆一份，修改这个克隆体后再把它传递给 `next.handle()`。
@@ -108,12 +115,12 @@ const http = new HttpClient([
 默认使用 `WxHttpBackend (微信小程序)` 来进行 HTTP 请求，可自行替换自定义的 `HttpBackend` 实现类：
 
 ```ts
-import { HttpBackend, HttpClient, HttpRequest, HttpResponse } from '@ngify/http';
+import { HttpBackend, HttpClient, HttpRequest, HttpEvent } from '@ngify/http';
 import { Observable } from 'rxjs';
 
 // 需要实现 HttpBackend 接口
 class CustomHttpBackend implements HttpBackend {
-  handle(request: HttpRequest<any>): Observable<HttpResponse<any>> {
+  handle(request: HttpRequest<any>): Observable<HttpEvent<any>> {
     // ...
   }
 }
