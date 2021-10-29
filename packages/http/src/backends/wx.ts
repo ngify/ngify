@@ -5,14 +5,20 @@ import { HttpHeaders } from '../headers';
 import { HttpRequest } from '../request';
 import { HttpErrorResponse, HttpEvent, HttpResponse } from '../response';
 
-/** 使用此 token 传递额外的 wx.uploadFile() 参数 */
+/** use this token to pass additional `wx.uploadFile()` parameter */
 export const WX_UPLOAD_FILE_TOKEN = new HttpContextToken<{
   filePath?: string,
   fileName?: string,
   timeout?: number,
 }>(() => ({}));
 
-/** 使用此 token 传递额外的 wx.request() 参数 */
+/** use this token to pass additional `wx.downloadFile()` parameter */
+export const WX_DOWNLOAD_FILE_TOKEN = new HttpContextToken<{
+  filePath?: string,
+  timeout?: number,
+}>(() => ({}));
+
+/** use this token to pass additional `wx.request()` parameter */
 export const WX_REQUSET_TOKEN = new HttpContextToken<{
   enableCache?: boolean,
   enableHttp2?: boolean,
@@ -52,6 +58,31 @@ export class WxHttpBackend implements HttpBackend {
             const response = new HttpResponse({
               url: request.url,
               body: (request.responseType === 'json' || request.responseType === undefined) ? JSON.parse(data) : data,
+              status: statusCode,
+              statusText: errMsg
+            });
+
+            response.ok ? observer.next(response) : observer.error(response);
+          },
+          fail: event => error(event),
+          complete: () => complete()
+        });
+
+        return;
+      }
+
+      if (request.method === 'GET' && request.context.has(WX_DOWNLOAD_FILE_TOKEN)) {
+        const { filePath, timeout } = request.context.get(WX_UPLOAD_FILE_TOKEN);
+
+        wx.downloadFile({
+          url: request.urlWithParams,
+          filePath: filePath,
+          header: headers,
+          timeout: timeout,
+          success: ({ statusCode, errMsg, ...body }) => {
+            const response = new HttpResponse({
+              url: request.url,
+              body: body,
               status: statusCode,
               statusText: errMsg
             });
