@@ -34,10 +34,12 @@ export class WxHttpBackend implements HttpBackend {
       }
 
       const complete = () => observer.complete();
-      const error = (error: WechatMiniprogram.GeneralCallbackResult) => observer.error(new HttpErrorResponse({
-        url: request.url,
-        error: error
-      }));
+      const error = (error: WechatMiniprogram.GeneralCallbackResult) => observer.error(
+        new HttpErrorResponse({
+          url: request.url,
+          error: error
+        })
+      );
 
       const headers = {};
       request.headers.forEach((name, value) => {
@@ -47,7 +49,7 @@ export class WxHttpBackend implements HttpBackend {
       if (request.method === 'POST' && request.context.has(WX_UPLOAD_FILE_TOKEN)) {
         const { filePath, fileName, timeout } = request.context.get(WX_UPLOAD_FILE_TOKEN);
 
-        wx.uploadFile({
+        const task = wx.uploadFile({
           url: request.urlWithParams,
           filePath: filePath,
           name: fileName,
@@ -68,13 +70,13 @@ export class WxHttpBackend implements HttpBackend {
           complete: () => complete()
         });
 
-        return;
+        return () => task.abort();
       }
 
       if (request.method === 'GET' && request.context.has(WX_DOWNLOAD_FILE_TOKEN)) {
         const { filePath, timeout } = request.context.get(WX_DOWNLOAD_FILE_TOKEN);
 
-        wx.downloadFile({
+        const task = wx.downloadFile({
           url: request.urlWithParams,
           filePath: filePath,
           header: headers,
@@ -93,15 +95,15 @@ export class WxHttpBackend implements HttpBackend {
           complete: () => complete()
         });
 
-        return;
+        return () => task.abort();
       }
 
-      wx.request({
+      const task = wx.request({
         url: request.urlWithParams,
         method: request.method,
         data: request.body,
         header: headers,
-        // 不懂微信为什么要从 responseType 中拆分出 dataType，这里需要处理一下
+        // 不清楚微信为什么要从 responseType 中拆分出 dataType，这里需要处理一下
         responseType: request.responseType === 'arraybuffer' ? 'arraybuffer' : 'text',
         dataType: request.responseType === 'json' ? 'json' : '其他',
         success: ({ data, statusCode, header, errMsg }) => {
@@ -119,6 +121,8 @@ export class WxHttpBackend implements HttpBackend {
         complete: () => complete(),
         ...request.context.get(WX_REQUSET_TOKEN)
       });
+
+      return () => task.abort();
     });
   }
 }
