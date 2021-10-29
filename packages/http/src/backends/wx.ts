@@ -72,7 +72,7 @@ export class WxHttpBackend implements HttpBackend {
       }
 
       if (request.method === 'GET' && request.context.has(WX_DOWNLOAD_FILE_TOKEN)) {
-        const { filePath, timeout } = request.context.get(WX_UPLOAD_FILE_TOKEN);
+        const { filePath, timeout } = request.context.get(WX_DOWNLOAD_FILE_TOKEN);
 
         wx.downloadFile({
           url: request.urlWithParams,
