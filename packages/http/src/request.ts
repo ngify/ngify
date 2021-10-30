@@ -5,11 +5,13 @@ import { HttpParams } from './params';
 
 export class HttpRequest<T> {
   readonly body: T;
-  readonly params: HttpParams;
-  readonly headers: HttpHeaders;
-  readonly context: HttpContext;
+  readonly params!: HttpParams;
+  readonly headers!: HttpHeaders;
+  readonly context!: HttpContext;
   readonly responseType: 'arraybuffer' | 'blob' | 'json' | 'text';
   readonly urlWithParams: string;
+  readonly reportProgress: boolean;
+  readonly withCredentials: boolean;
 
   constructor(
     public readonly method: 'DELETE' | 'GET' | 'HEAD' | 'POST' | 'OPTIONS' | 'PUT' | 'PATCH',
@@ -20,15 +22,19 @@ export class HttpRequest<T> {
       headers?: HttpHeaders | ConstructorParameters<typeof HttpHeaders>[0],
       context?: HttpContext,
       responseType?: HttpRequest<unknown>['responseType'],
+      reportProgress?: boolean,
+      withCredentials?: boolean,
     }
   ) {
-    const { body, params, headers, context, responseType } = options || {};
+    const { body, params, headers, context, responseType, reportProgress, withCredentials } = options || {};
 
     this.body = body !== undefined ? body : null;
     this.params = params instanceof HttpParams ? params : new HttpParams(params);
     this.headers = headers instanceof HttpHeaders ? headers : new HttpHeaders(headers);
     this.context = context || new HttpContext();
     this.responseType = responseType || 'json';
+    this.reportProgress = !!reportProgress;
+    this.withCredentials = !!withCredentials;
 
     const query = this.params.toString();
     if (query.length === 0) {

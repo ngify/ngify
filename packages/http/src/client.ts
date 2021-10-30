@@ -44,14 +44,15 @@ export class HttpClient {
   request<R>(request: HttpRequest<any>, options?: { observe?: 'body' | 'events' | 'response' }): Observable<R | HttpEvent<R> | HttpResponse<R>>
   request<R>(request: HttpRequest<any>, options: { observe?: 'body' | 'events' | 'response' } = {}): Observable<R | HttpEvent<R> | HttpResponse<R>> {
     const events$ = of(request).pipe(concatMap((req: HttpRequest<any>) => this.handler.handle(req)));
+    const res$ = <Observable<HttpResponse<any>>>events$.pipe(filter((event: HttpEvent<any>) => event instanceof HttpResponse));
 
     switch (options.observe || 'body') {
       case 'body':
-        return events$.pipe(map(response => response.body));
+        return res$.pipe(map(response => response.body));
       case 'events':
         return events$;
       case 'response':
-        return events$.pipe(filter((event: HttpEvent<R>) => event instanceof HttpResponse));
+        return res$;
     }
   }
 

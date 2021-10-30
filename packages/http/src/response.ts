@@ -1,13 +1,63 @@
 import { HttpHeaders } from './headers';
 
-export type HttpEvent<T> = HttpResponse<T>;
+export type HttpEvent<T> = HttpSentEvent | HttpHeaderResponse | HttpResponse<T> | HttpProgressEvent | HttpUserEvent<T>;
 
+/** Type enumeration for the different kinds of `HttpEvent`. */
+export enum HttpEventType {
+  /** The request was sent out over the wire. */
+  Sent,
+  /** An upload progress event was received. */
+  UploadProgress,
+  /** The response status code and headers were received. */
+  ResponseHeader,
+  /** A download progress event was received. */
+  DownloadProgress,
+  /** The full response including the body was received. */
+  Response,
+  /** A custom event from an interceptor or a backend. */
+  User,
+}
+
+/** Base interface for progress events. */
+export interface HttpProgressEvent {
+  /** Progress event type is either upload or download. */
+  type: HttpEventType.DownloadProgress | HttpEventType.UploadProgress;
+  /** Number of bytes uploaded or downloaded. */
+  loaded: number;
+  /** Total number of bytes to upload or download. Depending on the request or response */
+  total?: number;
+}
+
+/** A download progress event. */
+export interface HttpDownloadProgressEvent extends HttpProgressEvent {
+  type: HttpEventType.DownloadProgress;
+  /** The partial response body as downloaded so far. Only present if the responseType was `text`. */
+  partialText?: string;
+}
+
+/** An upload progress event. */
+export interface HttpUploadProgressEvent extends HttpProgressEvent {
+  type: HttpEventType.UploadProgress;
+}
+
+/** An event indicating that the request was sent to the server */
+export interface HttpSentEvent {
+  type: HttpEventType.Sent;
+}
+
+/** A user-defined event. */
+export interface HttpUserEvent<T> {
+  type: HttpEventType.User;
+}
+
+/** Base class for both `HttpResponse` and `HttpHeaderResponse`. */
 export abstract class HttpResponseBase {
   readonly ok: boolean;
   readonly url: string;
   readonly status: number;
   readonly statusText: string;
   readonly headers: HttpHeaders;
+  readonly type: HttpEventType.Response | HttpEventType.ResponseHeader;
 
   constructor(options: {
     url?: string,
@@ -23,8 +73,31 @@ export abstract class HttpResponseBase {
   }
 }
 
+export class HttpHeaderResponse extends HttpResponseBase {
+  override readonly type: HttpEventType.ResponseHeader = HttpEventType.ResponseHeader;
+
+  constructor(options: {
+    url?: string,
+    status?: number,
+    statusText?: string,
+    headers?: HttpHeaders,
+  } = {}) {
+    super(options);
+  }
+
+  clone(update: ConstructorParameters<typeof HttpHeaderResponse>[0] = {}): HttpHeaderResponse {
+    return new HttpHeaderResponse({
+      url: update.url || this.url || undefined,
+      status: update.status !== undefined ? update.status : this.status,
+      statusText: update.statusText || this.statusText,
+      headers: update.headers || this.headers,
+    });
+  }
+}
+
 export class HttpResponse<T> extends HttpResponseBase {
   readonly body: T;
+  override readonly type: HttpEventType.Response = HttpEventType.Response;
 
   constructor(options: {
     url?: string,
@@ -32,14 +105,14 @@ export class HttpResponse<T> extends HttpResponseBase {
     status?: number,
     statusText?: string;
     headers?: HttpHeaders,
-  }) {
+  } = {}) {
     super(options);
     this.body = options.body !== undefined ? options.body : null;
   }
 
   clone<D = T>(update: ConstructorParameters<typeof HttpResponse>[0] = {}): HttpResponse<D> {
     return new HttpResponse<D>({
-      url: update.url || this.url,
+      url: update.url || this.url || undefined,
       body: (update.body !== undefined ? update.body : this.body) as D,
       status: update.status || this.status,
       statusText: update.statusText || this.statusText,
@@ -64,7 +137,7 @@ export class HttpErrorResponse extends HttpResponseBase implements Error {
     super(options, 0, 'Unknown Error');
 
     // 如果响应成功，那么这是一个解析错误。
-    // 否则，这是某种协议级别的故障。请求在传输过程中失败或服务器返回了不成功的状态代码。
+    // 否则，这是某种协议级别的故障：请求在传输过程中失败或服务器返回了不成功的状态代码。
     if (this.status >= 200 && this.status < 300) {
       this.message = `Http failure during parsing for ${options.url || '(unknown url)'}`;
     } else {
