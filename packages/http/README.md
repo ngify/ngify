@@ -79,12 +79,12 @@ http.get('url', null, {
 ### 添加请求/响应拦截器
 
 ```ts
-import { HttpClient, HttpHandler, HttpRequest, HttpResponse, HttpInterceptor } from '@ngify/http';
+import { HttpClient, HttpHandler, HttpRequest, HttpEvent, HttpInterceptor } from '@ngify/http';
 import { Observable, map } from 'rxjs';
 
 const http = new HttpClient([
   new class implements HttpInterceptor {
-    intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpResponse<unknown>> {
+    intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
       // 克隆请求以修改请求参数
       request = request.clone({
         headers: request.headers.set('Authorization', 'token')
