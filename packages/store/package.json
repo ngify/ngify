@@ -1,6 +1,6 @@
 {
   "name": "@ngify/store",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -47,7 +47,7 @@
     "rxjs": "^7.0.0"
   },
   "devDependencies": {
-    "@ngify/types": "1.0.8",
+    "@ngify/types": "1.0.9",
     "@types/jest": "27.0.2",
     "jest": "27.3.1",
     "ts-jest": "27.0.7"
