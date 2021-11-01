@@ -60,6 +60,8 @@ export class HttpRequest<T> {
         headers: update.headers || this.headers,
         context: update.context || this.context,
         responseType: update.responseType || this.responseType,
+        reportProgress: update.reportProgress !== undefined ? update.reportProgress : this.reportProgress,
+        withCredentials: update.withCredentials !== undefined ? update.withCredentials : this.withCredentials,
       }
     );
   }

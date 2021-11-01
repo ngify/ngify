@@ -8,17 +8,19 @@ import { HttpParams } from './params';
 import { HttpRequest } from './request';
 import { HttpEvent, HttpResponse } from './response';
 
-type Body = any;
+type Body = HttpRequest<any>['body'];
 type Params = ConstructorParameters<typeof HttpParams>[0] | HttpParams;
 type Headers = ConstructorParameters<typeof HttpHeaders>[0] | HttpHeaders;
 type ResponseType = HttpRequest<any>['responseType'];
 
 interface RequestOptions {
-  body?: Body,
-  params?: Params,
-  headers?: Headers,
-  context?: HttpContext,
-  responseType?: ResponseType
+  body?: Body;
+  params?: Params;
+  headers?: Headers;
+  context?: HttpContext;
+  responseType?: ResponseType;
+  reportProgress?: boolean;
+  withCredentials?: boolean;
 };
 
 export class HttpClient {
@@ -61,15 +63,16 @@ export class HttpClient {
   delete<R>(url: string, params?: Params, options?: Omit<RequestOptions, 'params'> & { observe?: 'response' }): Observable<HttpResponse<R>>
   delete<R>(url: string, params?: Params, options?: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' }): Observable<R | HttpEvent<R> | HttpResponse<R>>
   delete<R>(url: string, params?: Params, options: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<R | HttpEvent<R> | HttpResponse<R>> {
+    const { body, headers, context, responseType, reportProgress, withCredentials, observe } = options;
     return this.request<R>(new HttpRequest('DELETE', url, {
-      body: options.body,
-      params: params,
-      headers: options.headers,
-      context: options.context,
-      responseType: options.responseType,
-    }), {
-      observe: options.observe
-    });
+      body,
+      params,
+      headers,
+      context,
+      responseType,
+      reportProgress,
+      withCredentials
+    }), { observe });
   }
 
   get<R>(url: string, params?: Params, options?: Omit<RequestOptions, 'params'> & { observe?: 'body' }): Observable<R>
@@ -77,15 +80,16 @@ export class HttpClient {
   get<R>(url: string, params?: Params, options?: Omit<RequestOptions, 'params'> & { observe?: 'response' }): Observable<HttpResponse<R>>
   get<R>(url: string, params?: Params, options?: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' }): Observable<R | HttpEvent<R> | HttpResponse<R>>
   get<R>(url: string, params?: Params, options: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<R | HttpEvent<R> | HttpResponse<R>> {
+    const { body, headers, context, responseType, reportProgress, withCredentials, observe } = options;
     return this.request<R>(new HttpRequest('GET', url, {
-      body: options.body,
-      params: params,
-      headers: options.headers,
-      context: options.context,
-      responseType: options.responseType,
-    }), {
-      observe: options.observe
-    });
+      body,
+      params,
+      headers,
+      context,
+      responseType,
+      reportProgress,
+      withCredentials
+    }), { observe });
   }
 
   head<R>(url: string, params?: Params, options?: Omit<RequestOptions, 'params'> & { observe?: 'body' }): Observable<R>
@@ -93,15 +97,16 @@ export class HttpClient {
   head<R>(url: string, params?: Params, options?: Omit<RequestOptions, 'params'> & { observe?: 'response' }): Observable<HttpResponse<R>>
   head<R>(url: string, params?: Params, options?: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' }): Observable<R | HttpEvent<R> | HttpResponse<R>>
   head<R>(url: string, params?: Params, options: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<R | HttpEvent<R> | HttpResponse<R>> {
+    const { body, headers, context, responseType, reportProgress, withCredentials, observe } = options;
     return this.request<R>(new HttpRequest('HEAD', url, {
-      body: options.body,
-      params: params,
-      headers: options.headers,
-      context: options.context,
-      responseType: options.responseType,
-    }), {
-      observe: options.observe
-    });
+      body,
+      params,
+      headers,
+      context,
+      responseType,
+      reportProgress,
+      withCredentials
+    }), { observe });
   }
 
   options<R>(url: string, params?: Params, options?: Omit<RequestOptions, 'params'> & { observe?: 'body' }): Observable<R>
@@ -109,15 +114,16 @@ export class HttpClient {
   options<R>(url: string, params?: Params, options?: Omit<RequestOptions, 'params'> & { observe?: 'response' }): Observable<HttpResponse<R>>
   options<R>(url: string, params?: Params, options?: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' }): Observable<R | HttpEvent<R> | HttpResponse<R>>
   options<R>(url: string, params?: Params, options: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<R | HttpEvent<R> | HttpResponse<R>> {
+    const { body, headers, context, responseType, reportProgress, withCredentials, observe } = options;
     return this.request<R>(new HttpRequest('OPTIONS', url, {
-      body: options.body,
-      params: params,
-      headers: options.headers,
-      context: options.context,
-      responseType: options.responseType,
-    }), {
-      observe: options.observe
-    });
+      body,
+      params,
+      headers,
+      context,
+      responseType,
+      reportProgress,
+      withCredentials
+    }), { observe });
   }
 
   post<R>(url: string, body?: Body, options?: Omit<RequestOptions, 'body'> & { observe?: 'body' }): Observable<R>
@@ -125,15 +131,16 @@ export class HttpClient {
   post<R>(url: string, body?: Body, options?: Omit<RequestOptions, 'body'> & { observe?: 'response' }): Observable<HttpResponse<R>>
   post<R>(url: string, body?: Body, options?: Omit<RequestOptions, 'body'> & { observe?: 'body' | 'events' | 'response' }): Observable<R | HttpEvent<R> | HttpResponse<R>>
   post<R>(url: string, body?: Body, options: Omit<RequestOptions, 'body'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<R | HttpEvent<R> | HttpResponse<R>> {
+    const { params, headers, context, responseType, reportProgress, withCredentials, observe } = options;
     return this.request<R>(new HttpRequest('POST', url, {
-      body: body,
-      params: options.params,
-      headers: options.headers,
-      context: options.context,
-      responseType: options.responseType,
-    }), {
-      observe: options.observe
-    });
+      body,
+      params,
+      headers,
+      context,
+      responseType,
+      reportProgress,
+      withCredentials
+    }), { observe });
   }
 
   put<R>(url: string, body?: Body, options?: Omit<RequestOptions, 'body'> & { observe?: 'body' }): Observable<R>
@@ -141,15 +148,16 @@ export class HttpClient {
   put<R>(url: string, body?: Body, options?: Omit<RequestOptions, 'body'> & { observe?: 'response' }): Observable<HttpResponse<R>>
   put<R>(url: string, body?: Body, options?: Omit<RequestOptions, 'body'> & { observe?: 'body' | 'events' | 'response' }): Observable<R | HttpEvent<R> | HttpResponse<R>>
   put<R>(url: string, body?: Body, options: Omit<RequestOptions, 'body'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<R | HttpEvent<R> | HttpResponse<R>> {
+    const { params, headers, context, responseType, reportProgress, withCredentials, observe } = options;
     return this.request<R>(new HttpRequest('PUT', url, {
-      body: body,
-      params: options.params,
-      headers: options.headers,
-      context: options.context,
-      responseType: options.responseType,
-    }), {
-      observe: options.observe
-    });
+      body,
+      params,
+      headers,
+      context,
+      responseType,
+      reportProgress,
+      withCredentials
+    }), { observe });
   }
 
   patch<R>(url: string, body?: Body, options?: Omit<RequestOptions, 'body'> & { observe?: 'body' }): Observable<R>
@@ -157,14 +165,15 @@ export class HttpClient {
   patch<R>(url: string, body?: Body, options?: Omit<RequestOptions, 'body'> & { observe?: 'response' }): Observable<HttpResponse<R>>
   patch<R>(url: string, body?: Body, options?: Omit<RequestOptions, 'body'> & { observe?: 'body' | 'events' | 'response' }): Observable<R | HttpEvent<R> | HttpResponse<R>>
   patch<R>(url: string, body?: Body, options: Omit<RequestOptions, 'body'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<R | HttpEvent<R> | HttpResponse<R>> {
+    const { params, headers, context, responseType, reportProgress, withCredentials, observe } = options;
     return this.request<R>(new HttpRequest('PATCH', url, {
-      body: body,
-      params: options.params,
-      headers: options.headers,
-      context: options.context,
-      responseType: options.responseType,
-    }), {
-      observe: options.observe
-    });
+      body,
+      params,
+      headers,
+      context,
+      responseType,
+      reportProgress,
+      withCredentials
+    }), { observe });
   }
 }

@@ -1,16 +1,16 @@
 import { Observable } from 'rxjs';
 import { HttpHandler } from './backend';
 import { HttpRequest } from './request';
-import { HttpResponse } from './response';
+import { HttpEvent } from './response';
 
 export interface HttpInterceptor {
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpResponse<any>>;
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>;
 }
 
 export class HttpInterceptorHandler implements HttpHandler {
   constructor(private interceptor: HttpInterceptor, private next: HttpHandler) { }
 
-  handle(request: HttpRequest<any>): Observable<HttpResponse<any>> {
+  handle(request: HttpRequest<any>): Observable<HttpEvent<any>> {
     return this.interceptor.intercept(request, this.next);
   }
 }
