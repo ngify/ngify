@@ -1,8 +1,9 @@
-import { Observable, of } from 'rxjs';
-import { HttpBackend } from '../src/backend';
+import { Observable } from 'rxjs';
+import { HttpBackend, HttpHandler } from '../src/backend';
 import { HttpClient } from '../src/client';
+import { HttpInterceptor } from '../src/interceptor';
 import { HttpRequest } from '../src/request';
-import { HttpResponse } from '../src/response';
+import { HttpEvent, HttpEventType, HttpResponse } from '../src/response';
 
 describe('HttpClient', () => {
   let client: HttpClient = null!;
@@ -10,18 +11,27 @@ describe('HttpClient', () => {
 
   beforeEach(() => {
     backend = new class implements HttpBackend {
-      handle(request: HttpRequest<any>): Observable<HttpResponse<any>> {
-        const response = new HttpResponse({
-          url: request.url,
-          body: { code: 0, msg: 'success', data: {} },
-          status: 200,
-        });
+      handle(request: HttpRequest<any>): Observable<HttpEvent<any>> {
+        return new Observable(observer => {
+          const response = new HttpResponse({
+            url: request.url,
+            body: { code: 0, msg: 'success', data: {} },
+            status: 200,
+          });
 
-        return of(response);
+          observer.next({ type: HttpEventType.Sent });
+          observer.next(response);
+        });
       }
     };
 
-    client = new HttpClient(null, backend);
+    client = new HttpClient([
+      new class implements HttpInterceptor {
+        intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+          return next.handle(request);
+        }
+      }
+    ], backend);
   });
 
   describe('makes a basic request', () => {
