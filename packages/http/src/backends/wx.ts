@@ -3,7 +3,7 @@ import { HttpBackend } from '../backend';
 import { HttpContextToken } from '../context';
 import { HttpHeaders } from '../headers';
 import { HttpRequest } from '../request';
-import { HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpResponse, HttpSentEvent, HttpUploadProgressEvent } from '../response';
+import { HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpJsonParseError, HttpResponse, HttpSentEvent, HttpUploadProgressEvent } from '../response';
 
 /** Use this token to pass additional `wx.uploadFile()` parameter */
 export const WX_UPLOAD_FILE_TOKEN = new HttpContextToken<{
@@ -32,11 +32,6 @@ export class WxHttpBackend implements HttpBackend {
       if (request.method === 'PATCH') {
         throw Error('WeChat MiniProgram does not support http method as ' + request.method);
       }
-
-      const send = () => observer.next({ type: HttpEventType.Sent } as HttpSentEvent);
-
-      // The complete event handler
-      const onComplete = () => observer.complete();
 
       // The error event handler
       const onError = (error: WechatMiniprogram.GeneralCallbackResult) => {
@@ -72,6 +67,9 @@ export class WxHttpBackend implements HttpBackend {
         } as HttpDownloadProgressEvent);
       };
 
+      // A http sent event
+      const sent = { type: HttpEventType.Sent } as HttpSentEvent;
+
       const headers = {};
       request.headers.forEach((name, value) => {
         headers[name] = value.join(',');
@@ -88,21 +86,42 @@ export class WxHttpBackend implements HttpBackend {
           header: headers,
           formData: request.body,
           timeout: timeout,
-          success: ({ data, statusCode, errMsg }) => {
-            const response = new HttpResponse({
-              url: request.url,
-              body: request.responseType === 'json' ? JSON.parse(data) : data,
-              status: statusCode,
-              statusText: errMsg
-            });
+          success: ({ data, statusCode: status, errMsg: statusText }) => {
+            let ok = status >= 200 && status < 300;
+            let body = null;
 
-            response.ok ? observer.next(response) : observer.error(response);
+            if (request.responseType === 'json' && typeof data === 'string' && data !== '') {
+              try {
+                body = JSON.parse(data);
+              } catch (error) {
+                if (ok) {
+                  ok = false;
+                  body = { error, text: body } as HttpJsonParseError;
+                }
+              }
+            }
+
+            if (ok) {
+              observer.next(new HttpResponse({
+                url: request.url,
+                body,
+                status,
+                statusText
+              }));
+              observer.complete();
+            } else {
+              observer.error(new HttpErrorResponse({
+                url: request.url,
+                error: body,
+                status,
+                statusText
+              }));
+            }
           },
           fail: onError,
-          complete: onComplete
         });
 
-        send();
+        observer.next(sent);
 
         if (request.reportProgress) {
           task.onHeadersReceived(onHeadersReceived);
@@ -128,21 +147,30 @@ export class WxHttpBackend implements HttpBackend {
           filePath: filePath,
           header: headers,
           timeout: timeout,
-          success: ({ statusCode, errMsg, ...body }) => {
-            const response = new HttpResponse({
-              url: request.url,
-              body: body,
-              status: statusCode,
-              statusText: errMsg
-            });
+          success: ({ statusCode: status, errMsg: statusText, ...body }) => {
+            const ok = status >= 200 && status < 300;
 
-            response.ok ? observer.next(response) : observer.error(response);
+            if (ok) {
+              observer.next(new HttpResponse({
+                url: request.url,
+                body,
+                status,
+                statusText
+              }));
+              observer.complete();
+            } else {
+              observer.error(new HttpErrorResponse({
+                url: request.url,
+                error: body,
+                status,
+                statusText
+              }));
+            }
           },
-          fail: onError,
-          complete: onComplete
+          fail: onError
         });
 
-        send();
+        observer.next(sent);
 
         if (request.reportProgress) {
           task.onHeadersReceived(onHeadersReceived);
@@ -159,6 +187,7 @@ export class WxHttpBackend implements HttpBackend {
         };
       }
 
+      // wx http request
       const task = wx.request({
         url: request.urlWithParams,
         method: request.method,
@@ -167,23 +196,34 @@ export class WxHttpBackend implements HttpBackend {
         // wx 从 responseType 中拆分出 dataType，这里需要处理一下
         responseType: request.responseType === 'arraybuffer' ? request.responseType : 'text',
         dataType: request.responseType === 'json' ? request.responseType : '其他',
-        success: ({ data, statusCode, header, errMsg }) => {
-          const response = new HttpResponse({
-            url: request.url,
-            body: data,
-            status: statusCode,
-            statusText: errMsg,
-            headers: new HttpHeaders(header)
-          });
+        success: ({ data, header, statusCode: status, errMsg: statusText }) => {
+          const ok = status >= 200 && status < 300;
+          const headers = new HttpHeaders(header);
 
-          response.ok ? observer.next(response) : observer.error(response);
+          if (ok) {
+            observer.next(new HttpResponse({
+              url: request.url,
+              body: data,
+              status,
+              statusText,
+              headers
+            }));
+            observer.complete();
+          } else {
+            observer.error(new HttpErrorResponse({
+              url: request.url,
+              error: data,
+              status,
+              statusText,
+              headers
+            }));
+          }
         },
         fail: onError,
-        complete: onComplete,
         ...request.context.get(WX_REQUSET_TOKEN)
       });
 
-      send();
+      observer.next(sent);
 
       return () => task.abort();
     });

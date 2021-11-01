@@ -50,6 +50,12 @@ export interface HttpUserEvent<T> {
   type: HttpEventType.User;
 }
 
+/** An error that represents a failed attempt to JSON.parse text coming back from the server. */
+export interface HttpJsonParseError {
+  error: Error;
+  text: string;
+}
+
 /** Base class for both `HttpResponse` and `HttpHeaderResponse`. */
 export abstract class HttpResponseBase {
   readonly ok: boolean;
@@ -128,11 +134,11 @@ export class HttpErrorResponse extends HttpResponseBase implements Error {
   override readonly ok = false;
 
   constructor(options: {
-    error?: any;
-    headers?: HttpHeaders;
-    status?: number;
-    statusText?: string;
-    url?: string;
+    url?: string,
+    error?: any,
+    headers?: HttpHeaders,
+    status?: number,
+    statusText?: string,
   }) {
     super(options, 0, 'Unknown Error');
 
