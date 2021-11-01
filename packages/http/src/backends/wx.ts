@@ -3,22 +3,22 @@ import { HttpBackend } from '../backend';
 import { HttpContextToken } from '../context';
 import { HttpHeaders } from '../headers';
 import { HttpRequest } from '../request';
-import { HttpErrorResponse, HttpEvent, HttpResponse } from '../response';
+import { HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpResponse, HttpSentEvent, HttpUploadProgressEvent } from '../response';
 
-/** use this token to pass additional `wx.uploadFile()` parameter */
+/** Use this token to pass additional `wx.uploadFile()` parameter */
 export const WX_UPLOAD_FILE_TOKEN = new HttpContextToken<{
   filePath?: string,
   fileName?: string,
   timeout?: number,
 }>(() => ({}));
 
-/** use this token to pass additional `wx.downloadFile()` parameter */
+/** Use this token to pass additional `wx.downloadFile()` parameter */
 export const WX_DOWNLOAD_FILE_TOKEN = new HttpContextToken<{
   filePath?: string,
   timeout?: number,
 }>(() => ({}));
 
-/** use this token to pass additional `wx.request()` parameter */
+/** Use this token to pass additional `wx.request()` parameter */
 export const WX_REQUSET_TOKEN = new HttpContextToken<{
   enableCache?: boolean,
   enableHttp2?: boolean,
@@ -28,24 +28,56 @@ export const WX_REQUSET_TOKEN = new HttpContextToken<{
 
 export class WxHttpBackend implements HttpBackend {
   handle(request: HttpRequest<any>): Observable<HttpEvent<any>> {
-    return new Observable((observer: Observer<any>) => {
+    return new Observable((observer: Observer<HttpEvent<any>>) => {
       if (request.method === 'PATCH') {
         throw Error('WeChat MiniProgram does not support http method as ' + request.method);
       }
 
-      const complete = () => observer.complete();
-      const error = (error: WechatMiniprogram.GeneralCallbackResult) => observer.error(
-        new HttpErrorResponse({
+      const send = () => observer.next({ type: HttpEventType.Sent } as HttpSentEvent);
+
+      // The complete event handler
+      const onComplete = () => observer.complete();
+
+      // The error event handler
+      const onError = (error: WechatMiniprogram.GeneralCallbackResult) => {
+        observer.error(new HttpErrorResponse({
           url: request.url,
           error: error
-        })
-      );
+        }));
+      };
+
+      // The response header event handler
+      const onHeadersReceived = ({ header }) => {
+        observer.next(new HttpHeaderResponse({
+          url: request.url,
+          headers: new HttpHeaders(header)
+        }));
+      };
+
+      // The upload progress event handler
+      const onUpProgressUpdate: WechatMiniprogram.UploadTaskOnProgressUpdateCallback = ({ totalBytesSent, totalBytesExpectedToSend }) => {
+        observer.next({
+          type: HttpEventType.UploadProgress,
+          loaded: totalBytesSent,
+          total: totalBytesExpectedToSend
+        } as HttpUploadProgressEvent);
+      };
+
+      // The download progress event handler
+      const onDownProgressUpdate: WechatMiniprogram.DownloadTaskOnProgressUpdateCallback = ({ totalBytesWritten, totalBytesExpectedToWrite }) => {
+        observer.next({
+          type: HttpEventType.DownloadProgress,
+          loaded: totalBytesWritten,
+          total: totalBytesExpectedToWrite
+        } as HttpDownloadProgressEvent);
+      };
 
       const headers = {};
       request.headers.forEach((name, value) => {
         headers[name] = value.join(',');
       });
 
+      // wx upload file
       if (request.method === 'POST' && request.context.has(WX_UPLOAD_FILE_TOKEN)) {
         const { filePath, fileName, timeout } = request.context.get(WX_UPLOAD_FILE_TOKEN);
 
@@ -59,20 +91,35 @@ export class WxHttpBackend implements HttpBackend {
           success: ({ data, statusCode, errMsg }) => {
             const response = new HttpResponse({
               url: request.url,
-              body: (request.responseType === 'json' || request.responseType === undefined) ? JSON.parse(data) : data,
+              body: request.responseType === 'json' ? JSON.parse(data) : data,
               status: statusCode,
               statusText: errMsg
             });
 
             response.ok ? observer.next(response) : observer.error(response);
           },
-          fail: event => error(event),
-          complete: () => complete()
+          fail: onError,
+          complete: onComplete
         });
 
-        return () => task.abort();
+        send();
+
+        if (request.reportProgress) {
+          task.onHeadersReceived(onHeadersReceived);
+          task.onProgressUpdate(onUpProgressUpdate);
+        }
+
+        return () => {
+          if (request.reportProgress) {
+            task.offHeadersReceived(onHeadersReceived);
+            task.offProgressUpdate(onUpProgressUpdate);
+          }
+
+          task.abort();
+        };
       }
 
+      // wx download file
       if (request.method === 'GET' && request.context.has(WX_DOWNLOAD_FILE_TOKEN)) {
         const { filePath, timeout } = request.context.get(WX_DOWNLOAD_FILE_TOKEN);
 
@@ -91,11 +138,25 @@ export class WxHttpBackend implements HttpBackend {
 
             response.ok ? observer.next(response) : observer.error(response);
           },
-          fail: event => error(event),
-          complete: () => complete()
+          fail: onError,
+          complete: onComplete
         });
 
-        return () => task.abort();
+        send();
+
+        if (request.reportProgress) {
+          task.onHeadersReceived(onHeadersReceived);
+          task.onProgressUpdate(onDownProgressUpdate);
+        }
+
+        return () => {
+          if (request.reportProgress) {
+            task.offHeadersReceived(onHeadersReceived);
+            task.offProgressUpdate(onDownProgressUpdate);
+          }
+
+          task.abort();
+        };
       }
 
       const task = wx.request({
@@ -103,9 +164,9 @@ export class WxHttpBackend implements HttpBackend {
         method: request.method,
         data: request.body,
         header: headers,
-        // 不清楚微信为什么要从 responseType 中拆分出 dataType，这里需要处理一下
-        responseType: request.responseType === 'arraybuffer' ? 'arraybuffer' : 'text',
-        dataType: request.responseType === 'json' ? 'json' : '其他',
+        // wx 从 responseType 中拆分出 dataType，这里需要处理一下
+        responseType: request.responseType === 'arraybuffer' ? request.responseType : 'text',
+        dataType: request.responseType === 'json' ? request.responseType : '其他',
         success: ({ data, statusCode, header, errMsg }) => {
           const response = new HttpResponse({
             url: request.url,
@@ -117,10 +178,12 @@ export class WxHttpBackend implements HttpBackend {
 
           response.ok ? observer.next(response) : observer.error(response);
         },
-        fail: event => error(event),
-        complete: () => complete(),
+        fail: onError,
+        complete: onComplete,
         ...request.context.get(WX_REQUSET_TOKEN)
       });
+
+      send();
 
       return () => task.abort();
     });
