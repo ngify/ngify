@@ -28,7 +28,10 @@
   "homepage": "https://github.com/ngify/ngify/tree/main/packages/http",
   "keywords": [
     "wx",
+    "xhr",
     "http",
+    "ajax",
+    "interceptor",
     "observable",
     "reactive",
     "rxjs",
@@ -38,10 +41,10 @@
     "access": "public"
   },
   "dependencies": {
-    "rxjs": "^7.0.0"
+    "rxjs": "^7.0.0",
+    "@ngify/types": "1.0.9"
   },
   "devDependencies": {
-    "@ngify/types": "1.0.9",
     "@types/jest": "27.0.2",
     "@types/wechat-miniprogram": "3.4.0",
     "jest": "27.3.1",
