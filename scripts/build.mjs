@@ -1,11 +1,13 @@
-const fs = require('fs');
-const minimist = require('minimist');
-const rollup = require('rollup');
-const typescript = require('@rollup/plugin-typescript');
-const { bold: chalk } = require('chalk');
-const { terser } = require('rollup-plugin-terser');
-const { exec } = require('child_process');
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import typescript from '@rollup/plugin-typescript';
+import _chalk from 'chalk';
+import { exec } from 'child_process';
+import fs from 'fs';
+import minimist from 'minimist';
+import { rollup, watch } from 'rollup';
+// import { terser } from 'rollup-plugin-terser';
 
+const chalk = _chalk.bold;
 const { pkg, prod } = minimist(process.argv.slice(2));
 const pkgs = pkg ? [pkg] : ['types', 'store', 'http'];
 const formats = ['cjs', 'esm'];
@@ -16,12 +18,13 @@ const createInputOptions = (pkg, prod) => {
     input: `packages/${pkg}/src/index.ts`,
     external: ['rxjs', 'reflect-metadata'],
     plugins: [
-      typescript({})
+      typescript({}),
+      nodeResolve()
     ]
   };
 
   if (prod) {
-    options.plugins.push(terser());
+    // options.plugins.push(terser());
   }
 
   return options;
@@ -30,7 +33,9 @@ const createInputOptions = (pkg, prod) => {
 const createOutputOptions = (pkg, fmt) => ({
   dir: `packages/${pkg}/dist/${fmt}`,
   format: fmt,
-  sourcemap: true
+  name: `ngify.${pkg}`,
+  sourcemap: true,
+  preserveModules: true
 });
 
 if (prod) {
@@ -45,7 +50,7 @@ if (prod) {
 
         const outputOptions = createOutputOptions(pkg, fmt);
         // create a bundle
-        const bundle = await rollup.rollup(createInputOptions(pkg, prod));
+        const bundle = await rollup(createInputOptions(pkg, prod));
         // generate code and a sourcemap
         await bundle.generate(outputOptions);
         // or write the bundle to disk
@@ -73,7 +78,7 @@ if (prod) {
       output: formats.map(fmt => createOutputOptions(pkg, fmt))
     };
 
-    const watcher = rollup.watch(watchOptions);
+    const watcher = watch(watchOptions);
 
     watcher.on('event', event => {
       switch (event.code) {
