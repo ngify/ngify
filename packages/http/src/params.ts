@@ -19,7 +19,7 @@ const standardEncoding = (value: string) => (
   encodeURIComponent(value).replace(STANDARD_ENCODING_REGEX, (s, t) => STANDARD_ENCODING_REPLACEMENTS[t] ?? s)
 );
 
-const toString = (value: string | number | boolean) => (
+const stringify = (value: string | number | boolean) => (
   value === null || value === undefined ? '' : `${value}`
 );
 
@@ -37,7 +37,7 @@ export class HttpParams {
     } else if (source) {
       Object.keys(source).forEach(param => {
         const value = source[param];
-        this.map.set(param, Array.isArray(value) ? value.map(toString) : [toString(value as string | number | boolean)]);
+        this.map.set(param, Array.isArray(value) ? value.map(stringify) : [stringify(value as string | number | boolean)]);
       });
     }
   }
@@ -63,7 +63,7 @@ export class HttpParams {
     const clone = this.clone();
     const values = clone.map.get(param) || [];
 
-    values.push(toString(value));
+    values.push(stringify(value));
     clone.map.set(param, values);
 
     return clone;
@@ -76,7 +76,7 @@ export class HttpParams {
       const value = params[key];
       const values = clone.map.get(key) || [];
 
-      values.push(...(Array.isArray(value) ? value.map(toString) : [toString(value as string | number | boolean)]));
+      values.push(...(Array.isArray(value) ? value.map(stringify) : [stringify(value as string | number | boolean)]));
       clone.map.set(key, values);
     });
 
@@ -85,7 +85,7 @@ export class HttpParams {
 
   set(param: string, value: string | number | boolean | ReadonlyArray<string | number | boolean>): HttpParams {
     const clone = this.clone();
-    clone.map.set(param, Array.isArray(value) ? value.map(toString) : [toString(value as string | number | boolean)]);
+    clone.map.set(param, Array.isArray(value) ? value.map(stringify) : [stringify(value as string | number | boolean)]);
     return clone;
   }
 
@@ -93,7 +93,7 @@ export class HttpParams {
     const clone = this.clone();
 
     if (value !== undefined) {
-      const values = (clone.map.get(param) || []).filter(o => o !== toString(value));
+      const values = (clone.map.get(param) || []).filter(o => o !== stringify(value));
       values.length > 0 ? clone.map.set(param, values) : clone.map.delete(param);
     } else {
       clone.map.delete(param);
