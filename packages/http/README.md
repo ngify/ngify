@@ -15,33 +15,23 @@ import { HttpClient, HttpContext, HttpContextToken, HttpHeaders } from '@ngify/h
 
 const http = new HttpClient();
 
-http.get<any>('url', 'k=v').subscribe(res => {
-  console.log(res);
-});
+http.get<any>('url', 'k=v').subscribe(res => console.log(res));
 
-http.post('url', { k: 'v' }).subscribe(res => {
-  console.log(res);
-});
+http.post('url', { k: 'v' }).subscribe(res => console.log(res));
 
 const HTTP_CACHE_TOKEN = new HttpContextToken(() => 1800000);
 
 http.put('url', null, {
   context: new HttpContext().set(HTTP_CACHE_TOKEN)
-}).subscribe(res => {
-  console.log(res);
-});
+}).subscribe(res => console.log(res));
 
 http.patch('url', null, {
   params: { k: 'v' }
-}).subscribe(res => {
-  console.log(res);
-});
+}).subscribe(res => console.log(res));
 
 http.delete('url', null, {
   headers: new HttpHeaders({ Authorization: 'token' })
-}).subscribe(res => {
-  console.log(res);
-});
+}).subscribe(res => console.log(res));
 ```
 
 ### 微信小程序额外参数
@@ -89,7 +79,8 @@ const http = new HttpClient([
       request = request.clone({
         headers: request.headers.set('Authorization', 'token')
       });
-      return next.handle(request).pipe(map(res => res));
+
+      return next.handle(request);
     }
   },
   {
@@ -97,8 +88,12 @@ const http = new HttpClient([
       request = request.clone({
         params: request.params.set('k', 'v')
       });
+
       console.log('拦截后的请求', request);
-      return next.handle(request);
+
+      return next.handle(request).pipe(
+        tap(response => console.log('拦截后的响应', response))
+      );
     }
   }
 ]);
@@ -115,7 +110,7 @@ const http = new HttpClient([
 默认使用 `WxHttpBackend (微信小程序)` 来进行 HTTP 请求，可自行替换自定义的 `HttpBackend` 实现类：
 
 ```ts
-import { HttpBackend, HttpClient, HttpRequest, HttpEvent } from '@ngify/http';
+import { HttpBackend, HttpClient, HttpRequest, HttpEvent, setupConfig } from '@ngify/http';
 import { Observable } from 'rxjs';
 
 // 需要实现 HttpBackend 接口
@@ -125,6 +120,15 @@ class CustomHttpBackend implements HttpBackend {
   }
 }
 
+// 覆盖全局配置
+setupConfig({
+  backend: new CustomHttpBackend()
+});
+```
+
+如果需要为某个 `HttpClient` 单独配置 `HttpBackend`，可以在 `HttpClient` 构造方法的第二个参数传入：
+
+```ts
 const http = new HttpClient(null, new CustomHttpBackend())
 ```
 
