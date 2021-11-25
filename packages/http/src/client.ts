@@ -1,6 +1,7 @@
 import { concatMap, filter, map, Observable, of } from 'rxjs';
 import { HttpBackend, HttpHandler } from './backend';
 import { WxHttpBackend } from './backends';
+import { config } from './config';
 import { HttpContext } from './context';
 import { HttpHeaders } from './headers';
 import { HttpInterceptor, HttpInterceptorHandler } from './interceptor';
@@ -28,7 +29,7 @@ export class HttpClient {
 
   constructor(interceptors?: ReadonlyArray<HttpInterceptor>, backend?: HttpBackend) {
     if (!backend) {
-      backend = new WxHttpBackend();
+      backend = config.backend ?? new WxHttpBackend();
     }
 
     if (interceptors?.length > 0) {
