@@ -5,7 +5,7 @@ import { setupConfig } from '../src/config';
 import { HttpRequest } from '../src/request';
 import { HttpEvent, HttpEventType, HttpResponse } from '../src/response';
 
-describe('HttpClient', () => {
+describe('HttpConfig', () => {
   let client: HttpClient = null!;
   let backend: HttpBackend = null!;
 
