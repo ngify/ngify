@@ -14,21 +14,21 @@ export function State(): ClassDecorator {
 }
 
 export function Action(action?: string): MethodDecorator {
-  return (target: Object, propertyKey: string, descriptor: PropertyDescriptor) => {
+  return (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) => {
     const fn = descriptor.value;
 
     descriptor.value = function () {
       const returnValue = fn.apply(this, arguments);
 
       if (returnValue instanceof Promise) {
-        return returnValue.then(value => (store.dispatch(action || propertyKey, this), value));
+        return returnValue.then(value => (store.dispatch(action || propertyKey as string, this), value));
       }
 
       if (returnValue instanceof Observable) {
-        return returnValue.pipe(tap(() => store.dispatch(action || propertyKey, this)));
+        return returnValue.pipe(tap(() => store.dispatch(action || propertyKey as string, this)));
       }
 
-      store.dispatch(action || propertyKey, this);
+      store.dispatch(action || propertyKey as string, this);
       return returnValue;
     }
   };
