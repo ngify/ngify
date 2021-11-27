@@ -42,7 +42,7 @@ export class WxHttpBackend implements HttpBackend {
       };
 
       // The response header event handler
-      const onHeadersReceived = ({ header }) => {
+      const onHeadersReceived: WechatMiniprogram.OnHeadersReceivedCallback = ({ header }) => {
         observer.next(new HttpHeaderResponse({
           url: request.url,
           headers: new HttpHeaders(header)
@@ -70,7 +70,7 @@ export class WxHttpBackend implements HttpBackend {
       // A http sent event
       const sent = { type: HttpEventType.Sent } as HttpSentEvent;
 
-      const headers = {};
+      const headers: { [key: string]: string } = {};
       request.headers.forEach((name, value) => {
         headers[name] = value.join(',');
       });
@@ -81,8 +81,8 @@ export class WxHttpBackend implements HttpBackend {
 
         const task = wx.uploadFile({
           url: request.urlWithParams,
-          filePath: filePath,
-          name: fileName,
+          filePath: filePath!,
+          name: fileName!,
           header: headers,
           formData: request.body,
           timeout: timeout,

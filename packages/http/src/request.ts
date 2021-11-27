@@ -4,7 +4,7 @@ import { HttpHeaders } from './headers';
 import { HttpParams } from './params';
 
 export class HttpRequest<T> {
-  readonly body: T;
+  readonly body: T | null;
   readonly params!: HttpParams;
   readonly headers!: HttpHeaders;
   readonly context!: HttpContext;

@@ -9,6 +9,7 @@
     "**/*.spec.ts"
   ],
   "compilerOptions": {
+    "strict": true,
     "target": "esnext",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,

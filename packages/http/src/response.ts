@@ -59,11 +59,11 @@ export interface HttpJsonParseError {
 /** Base class for both `HttpResponse` and `HttpHeaderResponse`. */
 export abstract class HttpResponseBase {
   readonly ok: boolean;
-  readonly url: string;
+  readonly url: string | null;
   readonly status: number;
   readonly statusText: string;
   readonly headers: HttpHeaders;
-  readonly type: HttpEventType.Response | HttpEventType.ResponseHeader;
+  readonly type!: HttpEventType.Response | HttpEventType.ResponseHeader;
 
   constructor(options: {
     url?: string,
@@ -102,7 +102,7 @@ export class HttpHeaderResponse extends HttpResponseBase {
 }
 
 export class HttpResponse<T> extends HttpResponseBase {
-  readonly body: T;
+  readonly body: T | null;
   override readonly type: HttpEventType.Response = HttpEventType.Response;
 
   constructor(options: {

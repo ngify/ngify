@@ -1,5 +1,5 @@
 const STANDARD_ENCODING_REGEX = /%(\d[a-f0-9])/gi;
-const STANDARD_ENCODING_REPLACEMENTS = {
+const STANDARD_ENCODING_REPLACEMENTS: { [x: string]: string } = {
   '40': '@',
   '3A': ':',
   '24': '$',
@@ -48,7 +48,7 @@ export class HttpParams {
 
   get(param: string): string | null {
     const values = this.map.get(param);
-    return values?.length > 0 ? values[0] : null;
+    return values ? values[0] : null;
   }
 
   getAll(param: string): string[] | null {
@@ -104,7 +104,7 @@ export class HttpParams {
 
   toString(): string {
     return this.keys().map(key => (
-      this.map.get(key).map(value => standardEncoding(key) + '=' + standardEncoding(value)).join('&')
+      this.map.get(key)?.map(value => standardEncoding(key) + '=' + standardEncoding(value)).join('&')
     )).filter(param => param !== '').join('&');
   }
 

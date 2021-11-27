@@ -83,9 +83,9 @@ export class HttpHeaders {
    * @param name
    * @returns
    */
-  get(name: string): string {
+  get(name: string): string | null {
     const values = this.headers.get(name.toLowerCase());
-    return values?.length > 0 ? values[0] : null;
+    return values ? values[0] : null;
   }
 
   /**
@@ -93,7 +93,7 @@ export class HttpHeaders {
    * @param name
    * @returns
    */
-  getAll(name: string): string[] {
+  getAll(name: string): string[] | null {
     return this.headers.get(name.toLowerCase()) || null;
   }
 
@@ -107,7 +107,7 @@ export class HttpHeaders {
   }
 
   forEach(fn: (name: string, value: string[]) => void): void {
-    this.headers.forEach((value, name) => fn(this.normalizedNames.get(name), value));
+    this.headers.forEach((value, name) => fn(this.normalizedNames.get(name)!, value));
   }
 
   keys(): string[] {
@@ -119,7 +119,7 @@ export class HttpHeaders {
 
     this.headers.forEach((value, name) => {
       clone.headers.set(name, [...value]);
-      clone.normalizedNames.set(name, this.normalizedNames.get(name));
+      clone.normalizedNames.set(name, this.normalizedNames.get(name)!);
     });
 
     return clone;

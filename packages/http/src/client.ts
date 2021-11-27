@@ -32,7 +32,7 @@ export class HttpClient {
       backend = config.backend ?? new WxHttpBackend();
     }
 
-    if (interceptors?.length > 0) {
+    if (interceptors) {
       this.handler = interceptors.reduceRight((next, interceptor) => (
         new HttpInterceptorHandler(interceptor, next)
       ), backend);
