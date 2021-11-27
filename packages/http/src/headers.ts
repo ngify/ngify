@@ -85,7 +85,7 @@ export class HttpHeaders {
    */
   get(name: string): string | null {
     const values = this.headers.get(name.toLowerCase());
-    return values ? values[0] : null;
+    return values?.[0] || null;
   }
 
   /**

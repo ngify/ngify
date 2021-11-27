@@ -10,7 +10,7 @@ const TEST_STRING = `I'm a body!`;
   describe('HttpRequest', () => {
     describe('constructor', () => {
       it('initializes url', () => {
-        const req = new HttpRequest('GET', TEST_URL, null);
+        const req = new HttpRequest('GET', TEST_URL);
         expect(req.url).toBe(TEST_URL);
       });
       it('doesn\'t require a body for body-less methods', () => {
@@ -28,7 +28,7 @@ const TEST_STRING = `I'm a body!`;
         expect(req.body).toBeNull();
       });
       it('accepts a string request method', () => {
-        // const req = new HttpRequest('TEST', TEST_URL, null);
+        // const req = new HttpRequest('TEST', TEST_URL);
         // expect(req.method).toBe('TEST');
       });
       it('accepts a string body', () => {
@@ -97,7 +97,7 @@ const TEST_STRING = `I'm a body!`;
       });
     });
     // describe('content type detection', () => {
-    //   const baseReq = new HttpRequest('POST', '/test', null);
+    //   const baseReq = new HttpRequest('POST', '/test');
     //   it('handles a null body', () => {
     //     expect(baseReq.detectContentTypeHeader()).toBeNull();
     //   });
@@ -127,7 +127,7 @@ const TEST_STRING = `I'm a body!`;
     //   });
     // });
     // describe('body serialization', () => {
-    //   const baseReq = new HttpRequest('POST', '/test', null);
+    //   const baseReq = new HttpRequest('POST', '/test');
     //   it('handles a null body', () => {
     //     expect(baseReq.serializeBody()).toBeNull();
     //   });
@@ -162,7 +162,7 @@ const TEST_STRING = `I'm a body!`;
     //   });
     // });
     describe('parameter handling', () => {
-      const baseReq = new HttpRequest('GET', '/test', null);
+      const baseReq = new HttpRequest('GET', '/test');
       const params = new HttpParams('test=true');
       it('appends parameters to a base URL', () => {
         const req = baseReq.clone({ params });

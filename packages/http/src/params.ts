@@ -48,7 +48,7 @@ export class HttpParams {
 
   get(param: string): string | null {
     const values = this.map.get(param);
-    return values ? values[0] : null;
+    return values?.[0] || null;
   }
 
   getAll(param: string): string[] | null {
