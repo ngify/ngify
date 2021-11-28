@@ -3,6 +3,38 @@ import { HttpContext } from './context';
 import { HttpHeaders } from './headers';
 import { HttpParams } from './params';
 
+/**
+ * Safely assert whether the given value is an ArrayBuffer.
+ * In some execution environments ArrayBuffer is not defined.
+ */
+function isArrayBuffer(value: any): value is ArrayBuffer {
+  return typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer;
+}
+
+/**
+ * Safely assert whether the given value is a Blob.
+ * In some execution environments Blob is not defined.
+ */
+function isBlob(value: any): value is Blob {
+  return typeof Blob !== 'undefined' && value instanceof Blob;
+}
+
+/**
+ * Safely assert whether the given value is a FormData instance.
+ * In some execution environments FormData is not defined.
+ */
+function isFormData(value: any): value is FormData {
+  return typeof FormData !== 'undefined' && value instanceof FormData;
+}
+
+/**
+ * Safely assert whether the given value is a URLSearchParams instance.
+ * In some execution environments URLSearchParams is not defined.
+ */
+function isUrlSearchParams(value: any): value is URLSearchParams {
+  return typeof URLSearchParams !== 'undefined' && value instanceof URLSearchParams;
+}
+
 export class HttpRequest<T> {
   readonly body: T | null;
   readonly params!: HttpParams;
@@ -48,6 +80,67 @@ export class HttpRequest<T> {
       const sep = index === -1 ? '?' : (index < url.length - 1 ? '&' : '');
       this.urlWithParams = url + sep + query;
     }
+  }
+
+  /**
+   * Examine the body and attempt to infer an appropriate MIME type for it.
+   * If no such type can be inferred, this method will return `null`.
+   */
+  detectContentTypeHeader(): string | null {
+    if (this.body === null) {
+      return null;
+    }
+    // FormData 主体依赖于浏览器的内容类型分配。
+    if (isFormData(this.body)) {
+      return null;
+    }
+    // Blob 通常有自己的内容类型。如果不是，则无法推断任何类型。
+    if (isBlob(this.body)) {
+      return this.body.type || null;
+    }
+    // 数组缓冲区的内容未知，因此无法推断类型。
+    if (isArrayBuffer(this.body)) {
+      return null;
+    }
+    // 从技术上讲，字符串可以是 JSON 数据的一种形式，但假设它们是纯字符串就足够安全了。
+    if (typeof this.body === 'string') {
+      return 'text/plain';
+    }
+    // `HttpUrlEncodedParams` 有自己的内容类型。
+    if (this.body instanceof HttpParams) {
+      return 'application/x-www-form-urlencoded;charset=UTF-8';
+    }
+    // 数组、对象、布尔值和数字将被编码为 JSON。
+    if (typeof this.body === 'object' || typeof this.body === 'number' ||
+      typeof this.body === 'boolean') {
+      return 'application/json';
+    }
+
+    return null;
+  }
+
+  /**
+   * Transform the free-form body into a serialized format suitable for transmission to the server.
+   */
+  serializeBody(): ArrayBuffer | Blob | FormData | string | null {
+    if (this.body === null) {
+      return null;
+    }
+    // 检查正文是否已经是序列化的形式。如果是，则直接返回。
+    if (isArrayBuffer(this.body) || isBlob(this.body) || isFormData(this.body) || isUrlSearchParams(this.body) || typeof this.body === 'string') {
+      return this.body;
+    }
+    // 检查 body 是否为 HttpUrlEncodedParams 的实例。
+    if (this.body instanceof HttpParams) {
+      return this.body.toString();
+    }
+    // 检查 body 是对象还是数组，如果是，则使用 JSON 进行序列化。
+    if (typeof this.body === 'object' || typeof this.body === 'boolean' ||
+      Array.isArray(this.body)) {
+      return JSON.stringify(this.body);
+    }
+    // 其他一切都可以使用 toString()。
+    return (this.body as any).toString();
   }
 
   clone<D = T>(update: Partial<Property<HttpRequest<unknown>>> = {}): HttpRequest<D> {
