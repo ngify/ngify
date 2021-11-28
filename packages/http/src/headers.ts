@@ -1,7 +1,7 @@
 export class HttpHeaders {
   /** lowercase name => values */
   private headers: Map<string, string[]> = new Map<string, string[]>();
-  /** 以 lowercase name => normalized name 的形式维护一份 header name */
+  /** Maintain a copy of header name in the form of `lowercase name => normalized name` */
   private normalizedNames: Map<string, string> = new Map();
 
   constructor(headers?: string | { [name: string]: string | string[] }) {
@@ -30,7 +30,7 @@ export class HttpHeaders {
   }
 
   /**
-   * 向现有的值中添加新的值
+   * Add a new value to an existing values
    * @param name
    * @param value
    * @returns
@@ -48,7 +48,7 @@ export class HttpHeaders {
   }
 
   /**
-   * 设置一个值并覆盖已有值
+   * Set a value and overwrite an existing value
    * @param name
    * @param value
    * @returns
@@ -64,7 +64,7 @@ export class HttpHeaders {
   }
 
   /**
-   * 通过给定标头从现有值中删除一个值
+   * Deletes a value from an existing value by a given header
    * @param name
    * @returns
    */
@@ -79,7 +79,7 @@ export class HttpHeaders {
   }
 
   /**
-   * 通过给定标头获取第一个值
+   * Get the first value from the given header
    * @param name
    * @returns
    */
@@ -89,7 +89,7 @@ export class HttpHeaders {
   }
 
   /**
-   * 通过给定标头获取所有值
+   * Get all values by given header
    * @param name
    * @returns
    */
@@ -98,7 +98,7 @@ export class HttpHeaders {
   }
 
   /**
-   * 检查给定标头是否存在
+   * Check if the given header is present
    * @param name
    * @returns
    */
