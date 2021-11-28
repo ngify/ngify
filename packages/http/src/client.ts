@@ -27,7 +27,7 @@ interface RequestOptions {
 export class HttpClient {
   private handler: HttpHandler;
 
-  constructor(interceptors?: ReadonlyArray<HttpInterceptor>, backend?: HttpBackend) {
+  constructor(interceptors?: ReadonlyArray<HttpInterceptor> | null, backend?: HttpBackend) {
     if (!backend) {
       backend = config.backend ?? new WxHttpBackend();
     }
