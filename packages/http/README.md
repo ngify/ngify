@@ -6,16 +6,21 @@
 - 简化的错误处理。
 - 请求和响应的拦截机制。
 
+> 默认支持但不限于 `微信小程序` 与 `XMLHttpRequest`
+
 ## 用法
 
 ### 基本用法
 
 ```ts
 import { HttpClient, HttpContext, HttpContextToken, HttpHeaders } from '@ngify/http';
+import { filter } from 'rxjs';
 
 const http = new HttpClient();
 
-http.get<any>('url', 'k=v').subscribe(res => console.log(res));
+http.get<{ code: number, data: any[], msg: string }>('url', 'k=v').pipe(
+  filter(({ code }) => code === 0)
+).subscribe(res => console.log(res));
 
 http.post('url', { k: 'v' }).subscribe(res => console.log(res));
 
@@ -32,38 +37,6 @@ http.patch('url', null, {
 http.delete('url', null, {
   headers: new HttpHeaders({ Authorization: 'token' })
 }).subscribe(res => console.log(res));
-```
-
-### 微信小程序额外参数
-
-为保持 API 的统一，需要借助 `HttpContext` 来传递微信小程序额外的参数。
-
-```ts
-import { HttpClient, HttpContext, HttpContextToken, WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http';
-
-const http = new HttpClient();
-
-// 微信小程序开启 HTTP2
-http.get('url', null, {
-  context: new HttpContext().set(WX_REQUSET_TOKEN, {
-    enableHttp2: true,
-  })
-});
-
-// 微信小程序文件上传
-http.post('url', null, {
-  context: new HttpContext().set(WX_UPLOAD_FILE_TOKEN, {
-    filePath: 'filePath',
-    fileName: 'fileName'
-  })
-});
-
-// 微信小程序文件下载
-http.get('url', null, {
-  context: new HttpContext().set(WX_DOWNLOAD_FILE_TOKEN, {
-    filePath: 'filePath'
-  })
-});
 ```
 
 ### 添加请求/响应拦截器
@@ -105,9 +78,62 @@ const http = new HttpClient([
 <br>
 如果你需要修改一个请求，请先将它克隆一份，修改这个克隆体后再把它传递给 `next.handle()`。
 
+### 微信小程序额外参数
+
+为保持 API 的统一，需要借助 `HttpContext` 来传递微信小程序额外的参数。
+
+```ts
+import { HttpClient, HttpContext, HttpContextToken, WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http';
+
+const http = new HttpClient();
+
+// 微信小程序开启 HTTP2
+http.get('url', null, {
+  context: new HttpContext().set(WX_REQUSET_TOKEN, {
+    enableHttp2: true,
+  })
+});
+
+// 微信小程序文件上传
+http.post('url', null, {
+  context: new HttpContext().set(WX_UPLOAD_FILE_TOKEN, {
+    filePath: 'filePath',
+    fileName: 'fileName'
+  })
+});
+
+// 微信小程序文件下载
+http.get('url', null, {
+  context: new HttpContext().set(WX_DOWNLOAD_FILE_TOKEN, {
+    filePath: 'filePath'
+  })
+});
+```
+
 ### 替换 HTTP 请求类
 
-默认使用 `WxHttpBackend (微信小程序)` 来进行 HTTP 请求，可自行替换自定义的 `HttpBackend` 实现类：
+默认使用 `WxHttpBackend (微信小程序)` 来进行 HTTP 请求，可以通过修改配置切换为 `HttpXhrBackend (XMLHttpRequest)`：
+
+```ts
+import { HttpXhrBackend, setupConfig } from '@ngify/http';
+
+setupConfig({
+  backend: new HttpXhrBackend()
+});
+```
+
+如果需要在 Node.js 环境下使用 `XMLHttpRequest`，可以使用 [xhr2](https://www.npmjs.com/package/xhr2)，它在 Node.js API 上实现了 [W3C XMLHttpRequest](https://www.w3.org/TR/XMLHttpRequest/) 规范：
+
+```ts
+import { HttpXhrBackend, setupConfig } from '@ngify/http';
+import * as xhr2 from 'xhr2';
+
+setupConfig({
+  backend: new HttpXhrBackend(() => new xhr2.XMLHttpRequest())
+});
+```
+
+你还可使用自定义的 `HttpBackend` 实现类：
 
 ```ts
 import { HttpBackend, HttpClient, HttpRequest, HttpEvent, setupConfig } from '@ngify/http';
