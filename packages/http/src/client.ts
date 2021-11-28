@@ -10,7 +10,7 @@ import { HttpRequest } from './request';
 import { HttpEvent, HttpResponse } from './response';
 
 type Body = HttpRequest<any>['body'];
-type Params = ConstructorParameters<typeof HttpParams>[0] | HttpParams;
+type Params = ConstructorParameters<typeof HttpParams>[0] | HttpParams | null;
 type Headers = ConstructorParameters<typeof HttpHeaders>[0] | HttpHeaders;
 type ResponseType = HttpRequest<any>['responseType'];
 

@@ -50,7 +50,7 @@ export class HttpRequest<T> {
     public readonly url: string,
     options?: {
       body?: T,
-      params?: HttpParams | ConstructorParameters<typeof HttpParams>[0],
+      params?: HttpParams | ConstructorParameters<typeof HttpParams>[0] | null,
       headers?: HttpHeaders | ConstructorParameters<typeof HttpHeaders>[0],
       context?: HttpContext,
       responseType?: HttpRequest<unknown>['responseType'],
@@ -61,7 +61,7 @@ export class HttpRequest<T> {
     const { body, params, headers, context, responseType, reportProgress, withCredentials } = options || {};
 
     this.body = body !== undefined ? body : null;
-    this.params = params instanceof HttpParams ? params : new HttpParams(params);
+    this.params = params instanceof HttpParams ? params : new HttpParams(params || undefined);
     this.headers = headers instanceof HttpHeaders ? headers : new HttpHeaders(headers);
     this.context = context || new HttpContext();
     this.responseType = responseType || 'json';

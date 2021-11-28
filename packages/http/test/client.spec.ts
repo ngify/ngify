@@ -43,7 +43,7 @@ describe('HttpClient', () => {
     });
 
     it('get request: observe response', done => {
-      client.get('/test', undefined, { observe: 'response' }).subscribe(res => {
+      client.get('/test', null, { observe: 'response' }).subscribe(res => {
         expect(res).toBeInstanceOf(HttpResponse);
         done();
       });
@@ -57,7 +57,7 @@ describe('HttpClient', () => {
     });
 
     it('delete request: observe response', done => {
-      client.delete('/test', undefined, { observe: 'response' }).subscribe(res => {
+      client.delete('/test', null, { observe: 'response' }).subscribe(res => {
         expect(res).toBeInstanceOf(HttpResponse);
         done();
       });
@@ -71,7 +71,7 @@ describe('HttpClient', () => {
     });
 
     it('head request: observe response', done => {
-      client.head('/test', undefined, { observe: 'response' }).subscribe(res => {
+      client.head('/test', null, { observe: 'response' }).subscribe(res => {
         expect(res).toBeInstanceOf(HttpResponse);
         done();
       });
@@ -85,7 +85,7 @@ describe('HttpClient', () => {
     });
 
     it('options request: observe response', done => {
-      client.options('/test', undefined, { observe: 'response' }).subscribe(res => {
+      client.options('/test', null, { observe: 'response' }).subscribe(res => {
         expect(res).toBeInstanceOf(HttpResponse);
         done();
       });
@@ -99,7 +99,7 @@ describe('HttpClient', () => {
     });
 
     it('patch request: observe response', done => {
-      client.patch('/test', undefined, { observe: 'response' }).subscribe(res => {
+      client.patch('/test', null, { observe: 'response' }).subscribe(res => {
         expect(res).toBeInstanceOf(HttpResponse);
         done();
       });
@@ -113,7 +113,7 @@ describe('HttpClient', () => {
     });
 
     it('post request: observe response', done => {
-      client.post('/test', undefined, { observe: 'response' }).subscribe(res => {
+      client.post('/test', null, { observe: 'response' }).subscribe(res => {
         expect(res).toBeInstanceOf(HttpResponse);
         done();
       });
@@ -127,7 +127,7 @@ describe('HttpClient', () => {
     });
 
     it('put request: observe response', done => {
-      client.put('/test', undefined, { observe: 'response' }).subscribe(res => {
+      client.put('/test', null, { observe: 'response' }).subscribe(res => {
         expect(res).toBeInstanceOf(HttpResponse);
         done();
       });
