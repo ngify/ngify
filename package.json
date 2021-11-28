@@ -7,10 +7,12 @@
 		"dev:store": "node scripts/build.mjs --pkg=store",
 		"dev:http": "node scripts/build.mjs --pkg=http",
 		"dev:types": "node scripts/build.mjs --pkg=types",
+		"dev:docs": "typedoc --watch",
 		"build:store": "node scripts/build.mjs --pkg=store --prod",
 		"build:http": "node scripts/build.mjs --pkg=http --prod",
 		"build:types": "node scripts/build.mjs --pkg=types --prod",
 		"build": "node scripts/build.mjs --prod",
+		"build:docs": "typedoc",
 		"test": "lerna run --scope @ngify/http --scope @ngify/store test:ci",
 		"publish": "npm run build & lerna publish --force-publish=* --exact",
 		"bootstrap": "lerna bootstrap --hoist"
@@ -28,6 +30,7 @@
 		"minimist": "1.2.5",
 		"rollup": "2.60.1",
 		"rollup-plugin-terser": "7.0.2",
+		"typedoc": "0.22.10",
 		"typescript": "4.5.2"
 	},
 	"dependencies": {
