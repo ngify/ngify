@@ -1,19 +1,24 @@
 # @ngify/http
 
-一个类似 `@angular/common/http` 的 HTTP 客户端，提供了以下主要功能：
+一个形如 `@angular/common/http` 的 HTTP 客户端，提供了以下主要功能：
 
 - 请求类型化响应对象的能力。
 - 简化的错误处理。
 - 请求和响应的拦截机制。
+- 默认支持但不限于 `微信小程序` 与 `XMLHttpRequest`
 
-> 默认支持但不限于 `微信小程序` 与 `XMLHttpRequest`
+先决条件：
 
-## 用法
+- JavaScript / TypeScript
+- HTTP 协议的用法。
+- [RxJS](https://rxjs.dev/guide/overview) Observable 相关技术和操作符。
+
+## Get Started
 
 ### 基本用法
 
 ```ts
-import { HttpClient, HttpContext, HttpContextToken, HttpHeaders } from '@ngify/http';
+import { HttpClient, HttpContext, HttpContextToken, HttpHeaders, HttpParams } from '@ngify/http';
 import { filter } from 'rxjs';
 
 const http = new HttpClient();
@@ -34,7 +39,7 @@ http.patch('url', null, {
   params: { k: 'v' }
 }).subscribe(res => console.log(res));
 
-http.delete('url', null, {
+http.delete('url', new HttpParams('k=v'), {
   headers: new HttpHeaders({ Authorization: 'token' })
 }).subscribe(res => console.log(res));
 ```
@@ -158,4 +163,4 @@ setupConfig({
 const http = new HttpClient(null, new CustomHttpBackend())
 ```
 
-> 更多细节可参考：[Angular Docs](https://angular.cn/guide/http#communicating-with-backend-services-using-http)
+> 更多细节可参考：[Angular Docs](https://angular.io/guide/http)
