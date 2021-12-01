@@ -10,7 +10,7 @@
   ],
   "compilerOptions": {
     "strict": true,
-    "target": "esnext",
+    "target": "es2015",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "module": "esnext",

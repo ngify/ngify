@@ -147,8 +147,9 @@ export class WxHttpBackend implements HttpBackend {
           filePath: filePath,
           header: headers,
           timeout: timeout,
-          success: ({ statusCode: status, errMsg: statusText, ...body }) => {
+          success: ({ statusCode: status, errMsg: statusText, filePath, tempFilePath }) => {
             const ok = status >= 200 && status < 300;
+            const body = { filePath, tempFilePath };
 
             if (ok) {
               observer.next(new HttpResponse({
