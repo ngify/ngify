@@ -104,7 +104,7 @@ export class HttpParams {
 
   toString(): string {
     return this.keys().map(key => (
-      this.map.get(key)?.map(value => standardEncoding(key) + '=' + standardEncoding(value)).join('&')
+      this.map.get(key)!.map(value => standardEncoding(key) + '=' + standardEncoding(value)).join('&')
     )).filter(param => param !== '').join('&');
   }
 

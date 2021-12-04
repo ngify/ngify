@@ -28,24 +28,28 @@ export const WX_REQUSET_TOKEN = new HttpContextToken<{
 
 export class WxHttpBackend implements HttpBackend {
   handle(request: HttpRequest<any>): Observable<HttpEvent<any>> {
+    if (request.method === 'POST' && request.context.has(WX_UPLOAD_FILE_TOKEN)) {
+      return this.upload(request);
+    }
+
+    if (request.method === 'GET' && request.context.has(WX_DOWNLOAD_FILE_TOKEN)) {
+      return this.download(request);
+    }
+
+    return this.request(request);
+  }
+
+  /**
+   * wx upload file
+   * @param request
+   */
+  private upload(request: HttpRequest<any>): Observable<HttpEvent<any>> {
     return new Observable((observer: Observer<HttpEvent<any>>) => {
-      if (request.method === 'PATCH') {
-        throw Error('WeChat MiniProgram does not support http method as ' + request.method);
-      }
-
-      // The error event handler
-      const onError = (error: WechatMiniprogram.GeneralCallbackResult) => {
-        observer.error(new HttpErrorResponse({
-          url: request.url,
-          error: error
-        }));
-      };
-
       // The response header event handler
       const onHeadersReceived: WechatMiniprogram.OnHeadersReceivedCallback = ({ header }) => {
         observer.next(new HttpHeaderResponse({
           url: request.url,
-          headers: new HttpHeaders(header)
+          headers: new HttpHeaders(header),
         }));
       };
 
@@ -54,8 +58,89 @@ export class WxHttpBackend implements HttpBackend {
         observer.next({
           type: HttpEventType.UploadProgress,
           loaded: totalBytesSent,
-          total: totalBytesExpectedToSend
+          total: totalBytesExpectedToSend,
         } as HttpUploadProgressEvent);
+      };
+
+      const { filePath, fileName, timeout } = request.context.get(WX_UPLOAD_FILE_TOKEN);
+
+      const task = wx.uploadFile({
+        url: request.urlWithParams,
+        filePath: filePath!,
+        name: fileName!,
+        header: this.buildHeaders(request),
+        formData: request.body,
+        timeout: timeout,
+        success: ({ data, statusCode: status, errMsg: statusText }) => {
+          let ok = status >= 200 && status < 300;
+          let body = null;
+
+          if (request.responseType === 'json' && typeof data === 'string' && data !== '') {
+            try {
+              body = JSON.parse(data);
+            } catch (error) {
+              if (ok) {
+                ok = false;
+                body = { error, text: body } as HttpJsonParseError;
+              }
+            }
+          }
+
+          if (ok) {
+            observer.next(new HttpResponse({
+              url: request.url,
+              body,
+              status,
+              statusText,
+            }));
+            observer.complete();
+          } else {
+            observer.error(new HttpErrorResponse({
+              url: request.url,
+              error: body,
+              status,
+              statusText,
+            }));
+          }
+        },
+        fail: ({ errMsg }: WechatMiniprogram.GeneralCallbackResult) => {
+          observer.error(new HttpErrorResponse({
+            url: request.url,
+            statusText: errMsg
+          }));
+        },
+      });
+
+      observer.next({ type: HttpEventType.Sent } as HttpSentEvent);
+
+      if (request.reportProgress) {
+        task.onHeadersReceived(onHeadersReceived);
+        task.onProgressUpdate(onUpProgressUpdate);
+      }
+
+      return () => {
+        if (request.reportProgress) {
+          task.offHeadersReceived(onHeadersReceived);
+          task.offProgressUpdate(onUpProgressUpdate);
+        }
+
+        task.abort();
+      };
+    });
+  }
+
+  /**
+   * wx download file
+   * @param request
+   */
+  private download(request: HttpRequest<any>): Observable<HttpEvent<any>> {
+    return new Observable((observer: Observer<HttpEvent<any>>) => {
+      // The response header event handler
+      const onHeadersReceived: WechatMiniprogram.OnHeadersReceivedCallback = ({ header }) => {
+        observer.next(new HttpHeaderResponse({
+          url: request.url,
+          headers: new HttpHeaders(header),
+        }));
       };
 
       // The download progress event handler
@@ -63,137 +148,84 @@ export class WxHttpBackend implements HttpBackend {
         observer.next({
           type: HttpEventType.DownloadProgress,
           loaded: totalBytesWritten,
-          total: totalBytesExpectedToWrite
+          total: totalBytesExpectedToWrite,
         } as HttpDownloadProgressEvent);
       };
 
-      // A http sent event
-      const sent = { type: HttpEventType.Sent } as HttpSentEvent;
+      const { filePath, timeout } = request.context.get(WX_DOWNLOAD_FILE_TOKEN);
 
-      const headers: { [key: string]: string } = {};
-      request.headers.forEach((name, value) => {
-        headers[name] = value.join(',');
+      const task = wx.downloadFile({
+        url: request.urlWithParams,
+        filePath: filePath,
+        header: this.buildHeaders(request),
+        timeout: timeout,
+        success: ({ statusCode: status, errMsg: statusText }) => {
+          const ok = status >= 200 && status < 300;
+
+          if (ok) {
+            observer.next(new HttpResponse({
+              url: request.url,
+              status,
+              statusText
+            }));
+            observer.complete();
+          } else {
+            observer.error(new HttpErrorResponse({
+              url: request.url,
+              status,
+              statusText,
+            }));
+          }
+        },
+        fail: ({ errMsg }: WechatMiniprogram.GeneralCallbackResult) => {
+          observer.error(new HttpErrorResponse({
+            url: request.url,
+            statusText: errMsg
+          }));
+        },
       });
 
-      // wx upload file
-      if (request.method === 'POST' && request.context.has(WX_UPLOAD_FILE_TOKEN)) {
-        const { filePath, fileName, timeout } = request.context.get(WX_UPLOAD_FILE_TOKEN);
+      observer.next({ type: HttpEventType.Sent } as HttpSentEvent);
 
-        const task = wx.uploadFile({
-          url: request.urlWithParams,
-          filePath: filePath!,
-          name: fileName!,
-          header: headers,
-          formData: request.body,
-          timeout: timeout,
-          success: ({ data, statusCode: status, errMsg: statusText }) => {
-            let ok = status >= 200 && status < 300;
-            let body = null;
-
-            if (request.responseType === 'json' && typeof data === 'string' && data !== '') {
-              try {
-                body = JSON.parse(data);
-              } catch (error) {
-                if (ok) {
-                  ok = false;
-                  body = { error, text: body } as HttpJsonParseError;
-                }
-              }
-            }
-
-            if (ok) {
-              observer.next(new HttpResponse({
-                url: request.url,
-                body,
-                status,
-                statusText
-              }));
-              observer.complete();
-            } else {
-              observer.error(new HttpErrorResponse({
-                url: request.url,
-                error: body,
-                status,
-                statusText
-              }));
-            }
-          },
-          fail: onError,
-        });
-
-        observer.next(sent);
-
-        if (request.reportProgress) {
-          task.onHeadersReceived(onHeadersReceived);
-          task.onProgressUpdate(onUpProgressUpdate);
-        }
-
-        return () => {
-          if (request.reportProgress) {
-            task.offHeadersReceived(onHeadersReceived);
-            task.offProgressUpdate(onUpProgressUpdate);
-          }
-
-          task.abort();
-        };
+      if (request.reportProgress) {
+        task.onHeadersReceived(onHeadersReceived);
+        task.onProgressUpdate(onDownProgressUpdate);
       }
 
-      // wx download file
-      if (request.method === 'GET' && request.context.has(WX_DOWNLOAD_FILE_TOKEN)) {
-        const { filePath, timeout } = request.context.get(WX_DOWNLOAD_FILE_TOKEN);
-
-        const task = wx.downloadFile({
-          url: request.urlWithParams,
-          filePath: filePath,
-          header: headers,
-          timeout: timeout,
-          success: ({ statusCode: status, errMsg: statusText, filePath, tempFilePath }) => {
-            const ok = status >= 200 && status < 300;
-            const body = { filePath, tempFilePath };
-
-            if (ok) {
-              observer.next(new HttpResponse({
-                url: request.url,
-                body,
-                status,
-                statusText
-              }));
-              observer.complete();
-            } else {
-              observer.error(new HttpErrorResponse({
-                url: request.url,
-                error: body,
-                status,
-                statusText
-              }));
-            }
-          },
-          fail: onError
-        });
-
-        observer.next(sent);
-
+      return () => {
         if (request.reportProgress) {
-          task.onHeadersReceived(onHeadersReceived);
-          task.onProgressUpdate(onDownProgressUpdate);
+          task.offHeadersReceived(onHeadersReceived);
+          task.offProgressUpdate(onDownProgressUpdate);
         }
 
-        return () => {
-          if (request.reportProgress) {
-            task.offHeadersReceived(onHeadersReceived);
-            task.offProgressUpdate(onDownProgressUpdate);
-          }
+        task.abort();
+      };
+    });
+  }
 
-          task.abort();
-        };
+  /**
+   * wx http request
+   * @param request
+   */
+  private request(request: HttpRequest<any>): Observable<HttpEvent<any>> {
+    return new Observable((observer: Observer<HttpEvent<any>>) => {
+      if (request.method === 'PATCH') {
+        throw Error('WeChat MiniProgram does not support http method as ' + request.method);
       }
 
-      // wx http request
+      // The response header event handler
+      const onHeadersReceived: WechatMiniprogram.OnHeadersReceivedCallback = ({ header }) => {
+        observer.next(new HttpHeaderResponse({
+          url: request.url,
+          headers: new HttpHeaders(header),
+        }));
+      };
+
       const task = wx.request({
         url: request.urlWithParams,
-        method: request.method,
+        method: request.method as WechatMiniprogram.RequestOption['method'],
         data: request.body,
-        header: headers,
+        header: this.buildHeaders(request),
         // wx 从 responseType 中拆分出 dataType，这里需要处理一下
         responseType: request.responseType === 'arraybuffer' ? request.responseType : 'text',
         dataType: request.responseType === 'json' ? request.responseType : '其他',
@@ -216,17 +248,39 @@ export class WxHttpBackend implements HttpBackend {
               error: data,
               status,
               statusText,
-              headers
+              headers,
             }));
           }
         },
-        fail: onError,
-        ...request.context.get(WX_REQUSET_TOKEN)
+        fail: ({ errMsg }: WechatMiniprogram.GeneralCallbackResult) => {
+          observer.error(new HttpErrorResponse({
+            url: request.url,
+            statusText: errMsg,
+          }));
+        },
+        ...request.context.get(WX_REQUSET_TOKEN),
       });
 
-      observer.next(sent);
+      observer.next({ type: HttpEventType.Sent } as HttpSentEvent);
 
-      return () => task.abort();
+      if (request.reportProgress) {
+        task.onHeadersReceived(onHeadersReceived);
+      }
+
+      return () => {
+        if (request.reportProgress) {
+          task.offHeadersReceived(onHeadersReceived);
+        }
+
+        task.abort();
+      };
     });
+  }
+
+  private buildHeaders(request: HttpRequest<any>): { [key: string]: string } {
+    return request.headers.keys().reduce((headers, name) => (
+      headers[name] = request.headers.getAll(name)!.join(','),
+      headers
+    ), {} as { [key: string]: string });
   }
 }
