@@ -1,9 +1,22 @@
+/** Represents a class `T` */
 export interface Type<T> extends Function {
   new(...args: any[]): T;
 }
 
-/** 过滤方法 */
-export type Property<O extends object> = Omit<O, { [K in keyof O]: O[K] extends Function ? K : never }[keyof O]>;
+/**
+ * Exclude methods from `T`
+ *
+ * ```ts
+ * Property<{ x: string, y: () => void }> -> { x: string }
+ * ```
+ */
+export type Property<T> = Omit<T, { [K in keyof T]: T[K] extends Function ? K : never }[keyof T]>;
 
-/** 过滤属性 */
-export type Method<O extends object> = Omit<O, keyof Property<O>>;
+/**
+ * Exclude properties from `T`
+ *
+ * ```ts
+ * Method<{ x: string, y: () => void }> -> { y: () => void }
+ * ```
+ */
+export type Method<T> = Omit<T, keyof Property<T>>;
