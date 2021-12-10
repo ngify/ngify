@@ -8,10 +8,10 @@ Pretend to be using Angular.
 
 ## Packages
 
-| Project | Package | Version | Link |
-| ------- | ------- | ------- | ---- |
-| **HTTP** | [`@ngify/http`](https://www.npmjs.com/package/@ngify/http) | [![version](https://img.shields.io/npm/v/@ngify/http/latest.svg)](https://www.npmjs.com/package/@ngify/http) | [Enter](./packages/http)
-| **STORE** | [`@ngify/store`](https://www.npmjs.com/package/@ngify/store) | [![version](https://img.shields.io/npm/v/@ngify/store/latest.svg)](https://www.npmjs.com/package/@ngify/store) | [Enter](./packages/store)
+| Project | Package | Version | API | Link |
+| ------- | ------- | ------- | --- | ---- |
+| **HTTP** | [`@ngify/http`](https://www.npmjs.com/package/@ngify/http) | [![version](https://img.shields.io/npm/v/@ngify/http/latest.svg)](https://www.npmjs.com/package/@ngify/http) | [Enter](https://ngify.github.io/ngify/modules/_ngify_http.html) | [Enter](https://github.com/ngify/ngify/tree/main/packages/http)
+| **STORE** | [`@ngify/store`](https://www.npmjs.com/package/@ngify/store) | [![version](https://img.shields.io/npm/v/@ngify/store/latest.svg)](https://www.npmjs.com/package/@ngify/store) | [Enter](https://ngify.github.io/ngify/modules/_ngify_store.html) | [Enter](https://github.com/ngify/ngify/tree/main/packages/store)
 
 ## Stats
 
