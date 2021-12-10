@@ -96,71 +96,71 @@ const TEST_STRING = `I'm a body!`;
         expect(req.clone({ context: newContext }).context).toBe(newContext);
       });
     });
-    // describe('content type detection', () => {
-    //   const baseReq = new HttpRequest('POST', '/test');
-    //   it('handles a null body', () => {
-    //     expect(baseReq.detectContentTypeHeader()).toBeNull();
-    //   });
-    //   it('doesn\'t associate a content type with ArrayBuffers', () => {
-    //     const req = baseReq.clone({body: new ArrayBuffer(4)});
-    //     expect(req.detectContentTypeHeader()).toBeNull();
-    //   });
-    //   it('handles strings as text', () => {
-    //     const req = baseReq.clone({body: 'hello world'});
-    //     expect(req.detectContentTypeHeader()).toBe('text/plain');
-    //   });
-    //   it('handles arrays as json', () => {
-    //     const req = baseReq.clone({body: ['a', 'b']});
-    //     expect(req.detectContentTypeHeader()).toBe('application/json');
-    //   });
-    //   it('handles numbers as json', () => {
-    //     const req = baseReq.clone({body: 314159});
-    //     expect(req.detectContentTypeHeader()).toBe('application/json');
-    //   });
-    //   it('handles objects as json', () => {
-    //     const req = baseReq.clone({body: {data: 'test data'}});
-    //     expect(req.detectContentTypeHeader()).toBe('application/json');
-    //   });
-    //   it('handles boolean as json', () => {
-    //     const req = baseReq.clone({body: true});
-    //     expect(req.detectContentTypeHeader()).toBe('application/json');
-    //   });
-    // });
-    // describe('body serialization', () => {
-    //   const baseReq = new HttpRequest('POST', '/test');
-    //   it('handles a null body', () => {
-    //     expect(baseReq.serializeBody()).toBeNull();
-    //   });
-    //   it('passes ArrayBuffers through', () => {
-    //     const body = new ArrayBuffer(4);
-    //     expect(baseReq.clone({body}).serializeBody()).toBe(body);
-    //   });
-    //   it('passes URLSearchParams through', () => {
-    //     const body = new URLSearchParams('foo=1&bar=2');
-    //     expect(baseReq.clone({body}).serializeBody()).toBe(body);
-    //   });
-    //   it('passes strings through', () => {
-    //     const body = 'hello world';
-    //     expect(baseReq.clone({body}).serializeBody()).toBe(body);
-    //   });
-    //   it('serializes arrays as json', () => {
-    //     expect(baseReq.clone({body: ['a', 'b']}).serializeBody()).toBe('["a","b"]');
-    //   });
-    //   it('handles numbers as json', () => {
-    //     expect(baseReq.clone({body: 314159}).serializeBody()).toBe('314159');
-    //   });
-    //   it('handles objects as json', () => {
-    //     const req = baseReq.clone({body: {data: 'test data'}});
-    //     expect(req.serializeBody()).toBe('{"data":"test data"}');
-    //   });
-    //   it('serializes parameters as urlencoded', () => {
-    //     const params = new HttpParams().append('first', 'value').append('second', 'other');
-    //     const withParams = baseReq.clone({body: params});
-    //     expect(withParams.serializeBody()).toEqual('first=value&second=other');
-    //     expect(withParams.detectContentTypeHeader())
-    //         .toEqual('application/x-www-form-urlencoded;charset=UTF-8');
-    //   });
-    // });
+    describe('content type detection', () => {
+      const baseReq = new HttpRequest('POST', '/test');
+      it('handles a null body', () => {
+        expect(baseReq.detectContentTypeHeader()).toBeNull();
+      });
+      it('doesn\'t associate a content type with ArrayBuffers', () => {
+        const req = baseReq.clone({ body: new ArrayBuffer(4) });
+        expect(req.detectContentTypeHeader()).toBeNull();
+      });
+      it('handles strings as text', () => {
+        const req = baseReq.clone({ body: 'hello world' });
+        expect(req.detectContentTypeHeader()).toBe('text/plain');
+      });
+      it('handles arrays as json', () => {
+        const req = baseReq.clone({ body: ['a', 'b'] });
+        expect(req.detectContentTypeHeader()).toBe('application/json');
+      });
+      it('handles numbers as json', () => {
+        const req = baseReq.clone({ body: 314159 });
+        expect(req.detectContentTypeHeader()).toBe('application/json');
+      });
+      it('handles objects as json', () => {
+        const req = baseReq.clone({ body: { data: 'test data' } });
+        expect(req.detectContentTypeHeader()).toBe('application/json');
+      });
+      it('handles boolean as json', () => {
+        const req = baseReq.clone({ body: true });
+        expect(req.detectContentTypeHeader()).toBe('application/json');
+      });
+    });
+    describe('body serialization', () => {
+      const baseReq = new HttpRequest('POST', '/test');
+      it('handles a null body', () => {
+        expect(baseReq.serializeBody()).toBeNull();
+      });
+      it('passes ArrayBuffers through', () => {
+        const body = new ArrayBuffer(4);
+        expect(baseReq.clone({ body }).serializeBody()).toBe(body);
+      });
+      it('passes URLSearchParams through', () => {
+        const body = new URLSearchParams('foo=1&bar=2');
+        expect(baseReq.clone({ body }).serializeBody()).toBe(body);
+      });
+      it('passes strings through', () => {
+        const body = 'hello world';
+        expect(baseReq.clone({ body }).serializeBody()).toBe(body);
+      });
+      it('serializes arrays as json', () => {
+        expect(baseReq.clone({ body: ['a', 'b'] }).serializeBody()).toBe('["a","b"]');
+      });
+      it('handles numbers as json', () => {
+        expect(baseReq.clone({ body: 314159 }).serializeBody()).toBe('314159');
+      });
+      it('handles objects as json', () => {
+        const req = baseReq.clone({ body: { data: 'test data' } });
+        expect(req.serializeBody()).toBe('{"data":"test data"}');
+      });
+      it('serializes parameters as urlencoded', () => {
+        const params = new HttpParams().append('first', 'value').append('second', 'other');
+        const withParams = baseReq.clone({ body: params });
+        expect(withParams.serializeBody()).toEqual('first=value&second=other');
+        expect(withParams.detectContentTypeHeader())
+          .toEqual('application/x-www-form-urlencoded;charset=UTF-8');
+      });
+    });
     describe('parameter handling', () => {
       const baseReq = new HttpRequest('GET', '/test');
       const params = new HttpParams('test=true');
@@ -176,10 +176,10 @@ const TEST_STRING = `I'm a body!`;
         const req = baseReq.clone({ params, url: '/test?other=false' });
         expect(req.urlWithParams).toEqual('/test?other=false&test=true');
       });
-      // it('sets parameters via setParams', () => {
-      //   const req = baseReq.clone({setParams: {'test': 'false'}});
-      //   expect(req.urlWithParams).toEqual('/test?test=false');
-      // });
+      it('sets parameters via setParams', () => {
+        const req = baseReq.clone({ params: baseReq.params.append('test', 'false') });
+        expect(req.urlWithParams).toEqual('/test?test=false');
+      });
     });
   });
 }
