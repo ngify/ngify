@@ -10,6 +10,7 @@
     "baseUrl": ".",
     "rootDir": "./src",
     "declaration": true,
+    "declarationMap": true,
     "declarationDir": "./dist/types"
   }
 }
