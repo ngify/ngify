@@ -1,6 +1,6 @@
 {
-  "name": "http",
-  "displayName": "http",
+  "name": "store",
+  "displayName": "store",
   "preset": "ts-jest",
   "globals": {
     "ts-jest": {

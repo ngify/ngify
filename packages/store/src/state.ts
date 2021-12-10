@@ -1,14 +1,11 @@
-import 'reflect-metadata';
 import { Observable, tap } from 'rxjs';
-import { store } from "./store";
-import { STATE_KEY } from './symbol';
+import { store } from './store';
 
 export function State(): ClassDecorator {
   return (target: any) => class extends target {
     constructor() {
       super(...arguments);
-      Reflect.defineMetadata(STATE_KEY, target, target.prototype);
-      store.put(target, this);
+      store.put(this);
     }
   } as typeof target;
 }
@@ -21,14 +18,15 @@ export function Action(action?: string): MethodDecorator {
       const returnValue = fn.apply(this, arguments);
 
       if (returnValue instanceof Promise) {
-        return returnValue.then(value => (store.dispatch(action || propertyKey as string, this), value));
+        return returnValue.then(o => (store.dispatch(this, action || propertyKey as string), o));
       }
 
       if (returnValue instanceof Observable) {
-        return returnValue.pipe(tap(() => store.dispatch(action || propertyKey as string, this)));
+        return returnValue.pipe(tap(() => store.dispatch(this, action || propertyKey as string)));
       }
 
-      store.dispatch(action || propertyKey as string, this);
+      store.dispatch(this, action || propertyKey as string);
+
       return returnValue;
     }
   };

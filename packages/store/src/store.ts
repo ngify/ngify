@@ -1,35 +1,48 @@
 import { Type } from '@ngify/types';
 import { filter, map, Observable, Subject } from "rxjs";
-import { getStateKey } from './utils';
 
 class Store {
-  private readonly subject = new Subject<{ key: object, action: string, state: any }>();
-  private readonly states = new Map<object, Readonly<object>>();
+  private readonly subject = new Subject<{ key: Type<any>, action: string, state: object }>();
+  private readonly states = new Map<Type<any>, Readonly<object>>();
 
-  get<T extends object>(clazz: Type<T>): Readonly<T> {
-    const key = getStateKey(clazz.prototype);
-    return this.states.get(key) as Readonly<T>;
+  /**
+   * Get the state class instance of a given state class.
+   * @param clazz
+   */
+  get<T>(clazz: Type<T>): Readonly<T> {
+    return this.states.get(clazz) as Readonly<T>;
   }
 
-  put<T extends object>(clazz: Type<T>, state: T) {
-    const key = getStateKey(clazz.prototype);
-    this.states.set(key, state);
+  /**
+   * Put the state instance in the store.
+   * @param state
+   */
+  put<T extends Object>(state: T) {
+    this.states.set(state.constructor as Type<any>, state);
   }
 
-  dispatch<T extends object>(action: string, state: T) {
-    const key = getStateKey(state);
+  /**
+   * Action event of dispatch state.
+   * @param action
+   * @param state
+   */
+  dispatch<T extends object>(state: T, action: string) {
+    const key = state.constructor as Type<any>;
     state = { ...state };
     this.states.set(key, Object.assign(this.states.get(key), state));
     this.subject.next({ key, action, state });
   }
 
-  on<T extends object>(clazz: Type<T>, action?: string): Observable<T> {
-    const key = getStateKey(clazz.prototype);
-
+  /**
+   * Get Observable of the state class.
+   * @param clazz
+   * @param action
+   */
+  on<T>(clazz: Type<T>, action?: string): Observable<InstanceType<Type<T>>> {
     return this.subject.asObservable().pipe(
-      filter(o => o.key === key),
+      filter(o => o.key === clazz),
       filter(o => action ? o.action === action : true),
-      map(o => o.state)
+      map(o => o.state as unknown as InstanceType<Type<T>>)
     );
   }
 }
