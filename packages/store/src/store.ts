@@ -1,7 +1,7 @@
 import { Type } from '@ngify/types';
 import { filter, map, Observable, Subject } from "rxjs";
 
-class Store {
+export class Store {
   private readonly subject = new Subject<{ key: Type<any>, action: string, state: object }>();
   private readonly states = new Map<Type<any>, Readonly<object>>();
 
