@@ -5,7 +5,6 @@ import { exec } from 'child_process';
 import fs from 'fs';
 import minimist from 'minimist';
 import { rollup, watch } from 'rollup';
-// import { terser } from 'rollup-plugin-terser';
 
 const chalk = _chalk.bold;
 const { pkg, prod } = minimist(process.argv.slice(2));
@@ -16,15 +15,17 @@ const log = console.log;
 const createInputOptions = (pkg, prod) => {
   const options = {
     input: `packages/${pkg}/src/index.ts`,
-    external: ['rxjs', 'reflect-metadata'],
+    external: ['rxjs', '@ngify/types'],
     plugins: [
-      typescript({}),
+      typescript({
+        removeComments: true
+      }),
       nodeResolve()
     ]
   };
 
   if (prod) {
-    // options.plugins.push(terser());
+    // do something...
   }
 
   return options;

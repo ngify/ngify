@@ -17,6 +17,10 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "rootDir": ".",
+    "importHelpers": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -24,12 +28,7 @@
       "@ngify/*": [
         "packages/*"
       ]
-    },
-    "removeComments": true,
-    "importHelpers": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
+    }
   },
   "references": []
 }
