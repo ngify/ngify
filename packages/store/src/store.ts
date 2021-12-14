@@ -47,4 +47,4 @@ export class Store {
   }
 }
 
-export const store = new Store();
+export const store = new Store() as Readonly<Store>;
