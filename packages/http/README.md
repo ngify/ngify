@@ -1,5 +1,8 @@
 # @ngify/http
 
+[![version](https://img.shields.io/npm/v/@ngify/http/latest.svg)](https://www.npmjs.com/package/@ngify/http)
+![License](https://img.shields.io/badge/License-MIT-blue.svg)
+
 一个形如 `@angular/common/http` 的 HTTP 客户端，提供了以下主要功能：
 
 - 请求类型化响应对象的能力。
@@ -12,6 +15,10 @@
 - JavaScript / TypeScript
 - HTTP 协议的用法。
 - [RxJS](https://rxjs.dev/guide/overview) Observable 相关技术和操作符。
+
+## API
+
+For the full API definition, please visit [https://ngify.github.io/ngify](https://ngify.github.io/ngify/modules/_ngify_http.html).
 
 ## Get Started
 

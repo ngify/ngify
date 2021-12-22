@@ -1,50 +1,56 @@
 # @ngify/store
 
-一个基于 `装饰器` 和 `rxjs` 的简易状态管理器。
+A simple state manager based on decorator and rxjs.
 
-## 概念
+[![version](https://img.shields.io/npm/v/@ngify/store/latest.svg)](https://www.npmjs.com/package/@ngify/store)
+![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
-应用程序中有一个仓库（Store），存储着一些全局状态（State）。
-每一个状态都是一个对象。对象拥有属性，这些属性便是这个状态的值；对象拥有方法，这些方法可以修改对象的值。
+## Concept
+
+There is a `Store` in the application that stores some global `States`.
+Every state is an object. Objects have properties that are the values of this state, and objects have methods that can modify the value of the object.
 <br>
-按照约定，只有状态类对象的方法才可以修改状态值。
+By convention, only methods of the state class object can modify the state value.
 
-## 用法
+## API
 
-定义状态：
+For the full API definition, please visit [https://ngify.github.io/ngify](https://ngify.github.io/ngify/modules/_ngify_store.html).
+
+## Usage
+
+Definition statu:
 
 ```ts
 import { Action, State } from '@ngify/store';
 
-// 使用 State 将 User 装饰为一个状态类
+// Decorate User as a state class using the State decorator.
 @State()
 export class User {
-  // 声明状态的属性
   constructor(
     public name: string,
     public age: number,
     public weight: number
   ) { }
 
-  // 使用 Action 装饰涉及修改状态的方法
+  // Decorating with the Action decorator involves methods that modify state.
   @Action()
   changeName(name: string) {
     this.name = name;
   }
 
-  // Action 有一个可选属性（Action Name），默认为方法名
+  // Action decorator has an optional property (ActionName), which defaults to the method name.
   @Action()
   growUp() {
     this.age++;
   }
 
-  // 可以自己定义 Action Name
-  @Action('减肥')
+  // You can also customize the action name.
+  @Action('lose-weight')
   loseWeight() {
     this.weight -= 5;
   }
 
-  // 当需要异步修改状态时，需要使用 async/await 或者返回一个 Promise / Observable
+  // When state needs to be modified asynchronously, async/await is required or a Promise/Observable is returned
   @Action()
   async asyncLoseWeight() {
     await new Promise(resolve => {
@@ -59,18 +65,18 @@ export class User {
 }
 ```
 
-在应用程序入口处创建状态：
+Create state at the application entry point：
 
 ```ts
 import { User } from './xxx';
 
 ...
-new User('小明', 15, 100);
+new User('Jack', 15, 100);
 ...
 
 ```
 
-侦听状态变更：
+Listen for state change:
 
 ```ts
 import { store } from '@ngify/store';
@@ -78,26 +84,26 @@ import { map } from 'rxjs';
 import { User } from './xxx';
 
 store.on(User).subscribe(o => {
-  console.log('User change', o);
+  console.log('User: changed', o);
 });
 
 store.on(User, 'changeName').pipe(
   map(o => o.name)
 ).subscribe(name => {
-  console.log('User 改名了', name);
+  console.log('User: change name', name);
 });
 
-store.on(User, '减肥').subscribe(o => {
-  console.log('User 减肥成功', o);
+store.on(User, 'lose-weight').subscribe(o => {
+  console.log('User: weight loss success', o);
 });
 ```
 
-获取状态对象：
+Get statu object:
 
 ```ts
 import { store } from '@ngify/store';
 import { User } from './xxx';
 
 const user = store.get(User);
-user.changeName('小红');
+user.changeName('Jobs');
 ```
