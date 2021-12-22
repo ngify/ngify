@@ -3,6 +3,7 @@
 A simple state manager based on decorator and rxjs.
 
 [![version](https://img.shields.io/npm/v/@ngify/store/latest.svg)](https://www.npmjs.com/package/@ngify/store)
+![Node.js CI](https://github.com/ngify/ngify/workflows/Node.js%20CI/badge.svg)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
 ## Concept
@@ -18,7 +19,7 @@ For the full API definition, please visit [https://ngify.github.io/ngify](https:
 
 ## Usage
 
-Definition statu:
+Definition state:
 
 ```ts
 import { Action, State } from '@ngify/store';
@@ -98,7 +99,7 @@ store.on(User, 'lose-weight').subscribe(o => {
 });
 ```
 
-Get statu object:
+Get state object:
 
 ```ts
 import { store } from '@ngify/store';
