@@ -24,7 +24,7 @@
 		"packages/*"
 	],
 	"devDependencies": {
-		"@rollup/plugin-node-resolve": "13.1.1",
+		"@rollup/plugin-node-resolve": "13.1.2",
 		"@rollup/plugin-typescript": "8.3.0",
 		"lerna": "4.0.0",
 		"minimist": "1.2.5",
