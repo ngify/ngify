@@ -1,0 +1,46 @@
+{
+  "name": "@ngify/at",
+  "version": "1.1.2",
+  "description": "A practical decorator library",
+  "typedocMain": "./src/index.ts",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "typings": "./dist/types/index.d.ts",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "test": "jest --config ./jest.config.json",
+    "test:ci": "jest --config ./jest.config.json -i",
+    "test:coverage": "jest --config ./jest.config.json --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngify/ngify.git"
+  },
+  "author": "HyperLife1119 <hyperlife1119@qq.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ngify/ngify/issues"
+  },
+  "homepage": "https://github.com/ngify/ngify/tree/main/packages/at",
+  "keywords": [
+    "debounce",
+    "throttle",
+    "decorator",
+    "wrapper"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "27.0.3",
+    "jest": "27.4.5",
+    "ts-jest": "27.1.2"
+  },
+  "peerDependencies": {}
+}

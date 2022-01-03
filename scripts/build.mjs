@@ -8,7 +8,7 @@ import { rollup, watch } from 'rollup';
 
 const chalk = _chalk.bold;
 const { pkg, prod } = minimist(process.argv.slice(2));
-const pkgs = pkg ? [pkg] : ['types', 'store', 'http'];
+const pkgs = pkg ? [pkg] : ['types', 'store', 'http', 'at'];
 const formats = ['cjs', 'esm'];
 const log = console.log;
 
@@ -94,10 +94,6 @@ if (prod) {
         case 'ERROR':
           log(chalk.red(`[@ngify/${pkg}] build error!`));
           log(event.error);
-          break;
-
-        case 'FATAL':
-          log(chalk.red(`[@ngify/${pkg}] build failed!`));
           break;
       }
     });

@@ -6,10 +6,12 @@
 	"scripts": {
 		"dev:store": "node scripts/build.mjs --pkg=store",
 		"dev:http": "node scripts/build.mjs --pkg=http",
+		"dev:at": "node scripts/build.mjs --pkg=at",
 		"dev:types": "node scripts/build.mjs --pkg=types",
 		"dev:docs": "typedoc --watch",
 		"build:store": "node scripts/build.mjs --pkg=store --prod",
 		"build:http": "node scripts/build.mjs --pkg=http --prod",
+		"build:at": "node scripts/build.mjs --pkg=at --prod",
 		"build:types": "node scripts/build.mjs --pkg=types --prod",
 		"build": "node scripts/build.mjs --prod",
 		"build:docs": "typedoc",
