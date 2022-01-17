@@ -1,9 +1,9 @@
-import { Type } from '@ngify/types';
+import { SafeAny, Type } from '@ngify/types';
 import { filter, map, Observable, Subject } from "rxjs";
 
 export class Store {
-  private readonly subject = new Subject<{ key: Type<any>, action: string, state: object }>();
-  private readonly states = new Map<Type<any>, Readonly<object>>();
+  private readonly subject = new Subject<{ key: Type<SafeAny>, action: string, state: object }>();
+  private readonly states = new Map<Type<SafeAny>, Readonly<object>>();
 
   /**
    * Get the state class instance of a given state class.
@@ -18,7 +18,7 @@ export class Store {
    * @param state
    */
   put<T extends Object>(state: T) {
-    this.states.set(state.constructor as Type<any>, state);
+    this.states.set(state.constructor as Type<SafeAny>, state);
   }
 
   /**
@@ -27,7 +27,7 @@ export class Store {
    * @param state
    */
   dispatch<T extends object>(state: T, action: string) {
-    const key = state.constructor as Type<any>;
+    const key = state.constructor as Type<SafeAny>;
     state = { ...state };
     this.states.set(key, Object.assign(this.states.get(key), state));
     this.subject.next({ key, action, state });

@@ -1,3 +1,4 @@
+import { SafeAny } from '@ngify/types';
 import { HttpHeaders } from './headers';
 
 export type HttpEvent<T> = HttpSentEvent | HttpHeaderResponse | HttpResponse<T> | HttpProgressEvent | HttpUserEvent<T>;
@@ -130,12 +131,12 @@ export class HttpResponse<T> extends HttpResponseBase {
 export class HttpErrorResponse extends HttpResponseBase implements Error {
   readonly name = 'HttpErrorResponse';
   readonly message: string;
-  readonly error: any | null;
+  readonly error: SafeAny | null;
   override readonly ok = false;
 
   constructor(options: {
     url?: string,
-    error?: any,
+    error?: SafeAny,
     headers?: HttpHeaders,
     status?: number,
     statusText?: string,

@@ -1,4 +1,4 @@
-import { Property } from '@ngify/types';
+import { Property, SafeAny } from '@ngify/types';
 import { HttpContext } from './context';
 import { HttpHeaders } from './headers';
 import { HttpParams } from './params';
@@ -7,7 +7,7 @@ import { HttpParams } from './params';
  * Safely assert whether the given value is an ArrayBuffer.
  * In some execution environments ArrayBuffer is not defined.
  */
-function isArrayBuffer(value: any): value is ArrayBuffer {
+function isArrayBuffer(value: SafeAny): value is ArrayBuffer {
   return typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer;
 }
 
@@ -15,7 +15,7 @@ function isArrayBuffer(value: any): value is ArrayBuffer {
  * Safely assert whether the given value is a Blob.
  * In some execution environments Blob is not defined.
  */
-function isBlob(value: any): value is Blob {
+function isBlob(value: SafeAny): value is Blob {
   return typeof Blob !== 'undefined' && value instanceof Blob;
 }
 
@@ -23,7 +23,7 @@ function isBlob(value: any): value is Blob {
  * Safely assert whether the given value is a FormData instance.
  * In some execution environments FormData is not defined.
  */
-function isFormData(value: any): value is FormData {
+function isFormData(value: SafeAny): value is FormData {
   return typeof FormData !== 'undefined' && value instanceof FormData;
 }
 
@@ -31,7 +31,7 @@ function isFormData(value: any): value is FormData {
  * Safely assert whether the given value is a URLSearchParams instance.
  * In some execution environments URLSearchParams is not defined.
  */
-function isUrlSearchParams(value: any): value is URLSearchParams {
+function isUrlSearchParams(value: SafeAny): value is URLSearchParams {
   return typeof URLSearchParams !== 'undefined' && value instanceof URLSearchParams;
 }
 
@@ -140,7 +140,7 @@ export class HttpRequest<T> {
       return JSON.stringify(this.body);
     }
     // 其他一切都可以使用 toString()。
-    return (this.body as any).toString();
+    return (this.body as SafeAny).toString();
   }
 
   clone<D = T>(update: Partial<Property<HttpRequest<unknown>>> = {}): HttpRequest<D> {

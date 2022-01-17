@@ -1,3 +1,4 @@
+import { SafeAny } from '@ngify/types';
 import { concatMap, filter, map, Observable, of } from 'rxjs';
 import { HttpBackend, HttpHandler } from './backend';
 import { WxHttpBackend } from './backends';
@@ -9,10 +10,10 @@ import { HttpParams } from './params';
 import { HttpRequest } from './request';
 import { HttpEvent, HttpResponse } from './response';
 
-type Body = HttpRequest<any>['body'];
+type Body = HttpRequest<SafeAny>['body'];
 type Params = ConstructorParameters<typeof HttpParams>[0] | HttpParams | null;
 type Headers = ConstructorParameters<typeof HttpHeaders>[0] | HttpHeaders;
-type ResponseType = HttpRequest<any>['responseType'];
+type ResponseType = HttpRequest<SafeAny>['responseType'];
 
 interface RequestOptions {
   body?: Body;
@@ -41,13 +42,13 @@ export class HttpClient {
     }
   }
 
-  request<R>(request: HttpRequest<any>, options?: { observe?: 'body' }): Observable<R>
-  request<R>(request: HttpRequest<any>, options?: { observe?: 'events' }): Observable<HttpEvent<R>>
-  request<R>(request: HttpRequest<any>, options?: { observe?: 'response' }): Observable<HttpResponse<R>>
-  request<R>(request: HttpRequest<any>, options?: { observe?: 'body' | 'events' | 'response' }): Observable<R | HttpEvent<R> | HttpResponse<R>>
-  request<R>(request: HttpRequest<any>, options: { observe?: 'body' | 'events' | 'response' } = {}): Observable<R | HttpEvent<R> | HttpResponse<R>> {
-    const events$ = of(request).pipe(concatMap((req: HttpRequest<any>) => this.handler.handle(req)));
-    const res$ = events$.pipe(filter((event: HttpEvent<any>) => event instanceof HttpResponse)) as Observable<HttpResponse<any>>;
+  request<R>(request: HttpRequest<SafeAny>, options?: { observe?: 'body' }): Observable<R>
+  request<R>(request: HttpRequest<SafeAny>, options?: { observe?: 'events' }): Observable<HttpEvent<R>>
+  request<R>(request: HttpRequest<SafeAny>, options?: { observe?: 'response' }): Observable<HttpResponse<R>>
+  request<R>(request: HttpRequest<SafeAny>, options?: { observe?: 'body' | 'events' | 'response' }): Observable<R | HttpEvent<R> | HttpResponse<R>>
+  request<R>(request: HttpRequest<SafeAny>, options: { observe?: 'body' | 'events' | 'response' } = {}): Observable<R | HttpEvent<R> | HttpResponse<R>> {
+    const events$ = of(request).pipe(concatMap((req: HttpRequest<SafeAny>) => this.handler.handle(req)));
+    const res$ = events$.pipe(filter((event: HttpEvent<SafeAny>) => event instanceof HttpResponse)) as Observable<HttpResponse<SafeAny>>;
 
     switch (options.observe || 'body') {
       case 'body':

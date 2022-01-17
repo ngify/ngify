@@ -8,6 +8,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import { SafeAny } from '@ngify/types';
 import { Observable, Observer } from 'rxjs';
 import { HttpBackend } from '../backend';
 import { HttpHeaders } from '../headers';
@@ -20,7 +21,7 @@ const XSSI_PREFIX = /^\)\]\}',?\n/;
  * Determine an appropriate URL for the response, by checking either
  * XMLHttpRequest.responseURL or the X-Request-URL header.
  */
-function getResponseUrl(xhr: any): string | null {
+function getResponseUrl(xhr: SafeAny): string | null {
   if ('responseURL' in xhr && xhr.responseURL) {
     return xhr.responseURL;
   }
@@ -42,10 +43,10 @@ export class HttpXhrBackend implements HttpBackend {
    * @param req The request object.
    * @returns An observable of the response events.
    */
-  handle(req: HttpRequest<any>): Observable<HttpEvent<any>> {
+  handle(req: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
 
     // Everything happens on Observable subscription.
-    return new Observable((observer: Observer<HttpEvent<any>>) => {
+    return new Observable((observer: Observer<HttpEvent<SafeAny>>) => {
       // Start by setting up the XHR object with request method, URL, and withCredentials flag.
       const xhr = this.factory();
       xhr.open(req.method, req.urlWithParams);
@@ -79,7 +80,7 @@ export class HttpXhrBackend implements HttpBackend {
         // xhr.response will be null, and xhr.responseText cannot be accessed to
         // retrieve the prefixed JSON data in order to strip the prefix. Thus, all JSON
         // is parsed by first requesting text and then applying JSON.parse.
-        xhr.responseType = ((responseType !== 'json') ? responseType : 'text') as any;
+        xhr.responseType = ((responseType !== 'json') ? responseType : 'text') as SafeAny;
       }
 
       // Serialize the request body if one is present. If not, this will be set to null.
@@ -125,7 +126,7 @@ export class HttpXhrBackend implements HttpBackend {
         let { headers, status, statusText, url } = partialFromXhr();
 
         // The body will be read out if present.
-        let body: any | null = null;
+        let body: SafeAny | null = null;
 
         if (status !== HttpStatusCode.NoContent) {
           // Use XMLHttpRequest.response if set, responseText otherwise.

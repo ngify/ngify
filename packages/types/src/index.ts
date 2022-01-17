@@ -1,6 +1,6 @@
 /** Represents a class `T` */
 export interface Type<T> extends Function {
-  new(...args: any[]): T;
+  new(...args: SafeAny[]): T;
 }
 
 /**
@@ -20,3 +20,6 @@ export type Property<T> = Omit<T, { [K in keyof T]: T[K] extends Function ? K : 
  * ```
  */
 export type Method<T> = Omit<T, keyof Property<T>>;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type SafeAny = any;

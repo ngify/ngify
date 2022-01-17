@@ -1,3 +1,4 @@
+import { SafeAny } from '@ngify/types';
 import { Observable, Observer } from 'rxjs';
 import { HttpBackend } from '../backend';
 import { HttpContextToken } from '../context';
@@ -27,7 +28,7 @@ export const WX_REQUSET_TOKEN = new HttpContextToken<{
 }>(() => ({}));
 
 export class WxHttpBackend implements HttpBackend {
-  handle(request: HttpRequest<any>): Observable<HttpEvent<any>> {
+  handle(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
     if (request.method === 'POST' && request.context.has(WX_UPLOAD_FILE_TOKEN)) {
       return this.upload(request);
     }
@@ -43,8 +44,8 @@ export class WxHttpBackend implements HttpBackend {
    * wx upload file
    * @param request
    */
-  private upload(request: HttpRequest<any>): Observable<HttpEvent<any>> {
-    return new Observable((observer: Observer<HttpEvent<any>>) => {
+  private upload(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
+    return new Observable((observer: Observer<HttpEvent<SafeAny>>) => {
       // The response header event handler
       const onHeadersReceived: WechatMiniprogram.OnHeadersReceivedCallback = ({ header }) => {
         observer.next(new HttpHeaderResponse({
@@ -133,8 +134,8 @@ export class WxHttpBackend implements HttpBackend {
    * wx download file
    * @param request
    */
-  private download(request: HttpRequest<any>): Observable<HttpEvent<any>> {
-    return new Observable((observer: Observer<HttpEvent<any>>) => {
+  private download(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
+    return new Observable((observer: Observer<HttpEvent<SafeAny>>) => {
       // The response header event handler
       const onHeadersReceived: WechatMiniprogram.OnHeadersReceivedCallback = ({ header }) => {
         observer.next(new HttpHeaderResponse({
@@ -207,8 +208,8 @@ export class WxHttpBackend implements HttpBackend {
    * wx http request
    * @param request
    */
-  private request(request: HttpRequest<any>): Observable<HttpEvent<any>> {
-    return new Observable((observer: Observer<HttpEvent<any>>) => {
+  private request(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
+    return new Observable((observer: Observer<HttpEvent<SafeAny>>) => {
       if (request.method === 'PATCH') {
         throw Error('WeChat MiniProgram does not support http method as ' + request.method);
       }
@@ -277,7 +278,7 @@ export class WxHttpBackend implements HttpBackend {
     });
   }
 
-  private buildHeaders(request: HttpRequest<any>): { [key: string]: string } {
+  private buildHeaders(request: HttpRequest<SafeAny>): { [key: string]: string } {
     return request.headers.keys().reduce((headers, name) => (
       headers[name] = request.headers.getAll(name)!.join(','),
       headers

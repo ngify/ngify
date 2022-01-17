@@ -1,8 +1,9 @@
+import { SafeAny } from '@ngify/types';
 import { Observable, tap } from 'rxjs';
 import { store } from './store';
 
 export function State(): ClassDecorator {
-  return (target: any) => class extends target {
+  return (target: SafeAny) => class extends target {
     constructor() {
       super(...arguments);
       store.put(this);
@@ -11,7 +12,7 @@ export function State(): ClassDecorator {
 }
 
 export function Action(action?: string): MethodDecorator {
-  return (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) => {
+  return (target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<SafeAny>) => {
     const fn = descriptor.value;
 
     descriptor.value = function () {
