@@ -78,10 +78,10 @@ const http = new HttpClient([
         params: request.params.set('k', 'v')
       });
 
-      console.log('拦截后的请求', request);
+      console.log('Request after interception', request);
 
       return next.handle(request).pipe(
-        tap(response => console.log('拦截后的响应', response))
+        tap(response => console.log('Response after interception', response))
       );
     }
   }
