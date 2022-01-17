@@ -5,12 +5,12 @@
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 [![简体中文](https://img.shields.io/static/v1?label=简体中文&message=zh-CN&color=212121)](https://github.com/ngify/ngify/blob/main/packages/http/README.zh-CN.md)
 
-An HTTP client in the form of [`@ angular/common/http`](https://angular.io/guide/http), offers the following major features:
+An HTTP client in the form of `@angular/common/http`, offers the following major features:
 
 - The ability to request [typed response objects](https://angular.io/guide/http#typed-response).
 - Streamlined [error handling](https://angular.io/guide/http#error-handling).
 - Request and response [interception](https://angular.io/guide/http#intercepting-requests-and-responses).
-- Default support but not limited to [`WeChatMiniProgram`](https://mp.weixin.qq.com/cgi-bin/wx) and [`XMLHttpRequest`](https://www.w3.org/TR/XMLHttpRequest).
+- Default support but not limited to `WeChatMiniProgram` and `XMLHttpRequest`.
 
 ## Prerequisites
 
@@ -93,11 +93,11 @@ With interception, you declare interceptors that inspect and transform HTTP requ
 > `@ngify/http` applies interceptors in the order that you provide them。
 
 Although interceptors are capable of modifying requests and responses, the `HttpRequest` and `HttpResponse` instance properties are `readonly`, rendering them largely immutable.
-<br>
-They are immutable for a good reason: an app might retry a request several times before it succeeds, which means that the interceptor chain can re-process the same request multiple times.
+
+> They are immutable for a good reason: an app might retry a request several times before it succeeds, which means that the interceptor chain can re-process the same request multiple times.
 If an interceptor could modify the original request object, the re-tried operation would start from the modified request rather than the original.
 Immutability ensures that interceptors see the same request for each try.
-<br>
+
 If you must alter a request, clone it first and modify the clone before passing it to `next.handle()`.
 
 ### Replace HTTP Request Class
@@ -112,7 +112,7 @@ setupConfig({
 });
 ```
 
-If you need to use `XMLHttpRequest` in a Node.JS environment, you can use [xhr2](https://www.npmjs.com/package/xhr2)，它在 Node.js API 上实现了 [W3C XMLHttpRequest](https://www.w3.org/TR/XMLHttpRequest/), which implements the [W3C XMLHttpRequest](https://www.w3.org/TR/XMLHttpRequest/) specification on the Node.JS API:
+If you need to use `XMLHttpRequest` in a Node.js environment, you can use [xhr2](https://www.npmjs.com/package/xhr2), which implements the [W3C XMLHttpRequest](https://www.w3.org/TR/XMLHttpRequest/) specification on the Node.js API:
 
 ```ts
 import { HttpXhrBackend, setupConfig } from '@ngify/http';
@@ -156,14 +156,14 @@ import { HttpClient, HttpContext, HttpContextToken, WX_UPLOAD_FILE_TOKEN, WX_DOW
 
 const http = new HttpClient();
 
-// 微信小程序开启 HTTP2
+// WeChatMiniProgram enables HTTP2
 http.get('url', null, {
   context: new HttpContext().set(WX_REQUSET_TOKEN, {
     enableHttp2: true,
   })
 });
 
-// 微信小程序文件上传
+// WeChatMiniProgram file upload
 http.post('url', null, {
   context: new HttpContext().set(WX_UPLOAD_FILE_TOKEN, {
     filePath: 'filePath',
@@ -171,7 +171,7 @@ http.post('url', null, {
   })
 });
 
-// 微信小程序文件下载
+// WeChatMiniProgram file download
 http.get('url', null, {
   context: new HttpContext().set(WX_DOWNLOAD_FILE_TOKEN, {
     filePath: 'filePath'

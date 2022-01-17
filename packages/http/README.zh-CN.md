@@ -5,12 +5,12 @@
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 [![English](https://img.shields.io/static/v1?label=English&message=en-US&color=212121)](https://github.com/ngify/ngify/blob/main/packages/http/README.md)
 
-一个形如 [`@angular/common/http`](https://angular.cn/guide/http) 的 HTTP 客户端，提供了以下主要功能：
+一个形如 `@angular/common/http` 的 HTTP 客户端，提供了以下主要功能：
 
 - 请求[类型化响应对象](https://angular.cn/guide/http#typed-response)的能力。
 - 简化的[错误处理](https://angular.cn/guide/http#error-handling)。
 - 请求和响应的[拦截机制](https://angular.cn/guide/http#intercepting-requests-and-responses)。
-- 默认支持但不限于 [`微信小程序`](https://mp.weixin.qq.com/cgi-bin/wx) 与 [`XMLHttpRequest`](https://www.w3.org/TR/XMLHttpRequest/)。
+- 默认支持但不限于 `微信小程序` 与 `XMLHttpRequest`。
 
 ## 先决条件
 
@@ -93,11 +93,11 @@ const http = new HttpClient([
 > `@ngify/http` 会按照您提供拦截器的顺序应用它们。
 
 虽然拦截器有能力改变请求和响应，但 `HttpRequest` 和 `HttpResponse` 实例的属性是只读的，因此让它们基本上是不可变的。
-<br>
-有充足的理由把它们做成不可变对象：应用可能会重试发送很多次请求之后才能成功，这就意味着这个拦截器链表可能会多次重复处理同一个请求。
+
+> 有充足的理由把它们做成不可变对象：应用可能会重试发送很多次请求之后才能成功，这就意味着这个拦截器链表可能会多次重复处理同一个请求。
 如果拦截器可以修改原始的请求对象，那么重试阶段的操作就会从修改过的请求开始，而不是原始请求。
 而这种不可变性，可以确保这些拦截器在每次重试时看到的都是同样的原始请求。
-<br>
+
 如果你需要修改一个请求，请先将它克隆一份，修改这个克隆体后再把它传递给 `next.handle()`。
 
 ### 替换 HTTP 请求类
