@@ -3,27 +3,30 @@
 [![version](https://img.shields.io/npm/v/@ngify/http/latest.svg)](https://www.npmjs.com/package/@ngify/http)
 ![Node.js CI](https://github.com/ngify/ngify/workflows/Node.js%20CI/badge.svg)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
+[![简体中文](https://img.shields.io/static/v1?label=简体中文&message=zh-CN&color=212121)](https://github.com/ngify/ngify/blob/main/packages/http/README.zh-CN.md)
 
-一个形如 `@angular/common/http` 的 HTTP 客户端，提供了以下主要功能：
+An HTTP client in the form of [`@ angular/common/http`](https://angular.io/guide/http), offers the following major features:
 
-- 请求类型化响应对象的能力。
-- 简化的错误处理。
-- 请求和响应的拦截机制。
-- 默认支持但不限于 `微信小程序` 与 `XMLHttpRequest`
+- The ability to request [typed response objects](https://angular.io/guide/http#typed-response).
+- Streamlined [error handling](https://angular.io/guide/http#error-handling).
+- Request and response [interception](https://angular.io/guide/http#intercepting-requests-and-responses).
+- Default support but not limited to [`WeChatMiniProgram`](https://mp.weixin.qq.com/cgi-bin/wx) and [`XMLHttpRequest`](https://www.w3.org/TR/XMLHttpRequest).
 
-先决条件：
+## Prerequisites
 
-- JavaScript / TypeScript
-- HTTP 协议的用法。
-- [RxJS](https://rxjs.dev/guide/overview) Observable 相关技术和操作符。
+Before working with the `@ngify/http`, you should have a basic understanding of the following:
+
+- JavaScript / TypeScript programming.
+- Usage of the HTTP protocol.
+- [RxJS](https://rxjs.dev/guide/overview) Observable techniques and operators. See the [Observables](https://angular.io/guide/observables) guide.
 
 ## API
 
 For the full API definition, please visit [https://ngify.github.io/ngify](https://ngify.github.io/ngify/modules/_ngify_http.html).
 
-## Get Started
+## Get started
 
-### 基本用法
+### Basic usage
 
 ```ts
 import { HttpClient, HttpContext, HttpContextToken, HttpHeaders, HttpParams } from '@ngify/http';
@@ -52,7 +55,7 @@ http.delete('url', new HttpParams('k=v'), {
 }).subscribe(res => console.log(res));
 ```
 
-### 添加请求/响应拦截器
+### Add request/response interceptor
 
 ```ts
 import { HttpClient, HttpHandler, HttpRequest, HttpEvent, HttpInterceptor } from '@ngify/http';
@@ -61,7 +64,7 @@ import { Observable, map } from 'rxjs';
 const http = new HttpClient([
   new class implements HttpInterceptor {
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-      // 克隆请求以修改请求参数
+      // Clone the request to modify request parameters
       request = request.clone({
         headers: request.headers.set('Authorization', 'token')
       });
@@ -85,15 +88,68 @@ const http = new HttpClient([
 ]);
 ```
 
-> 多个拦截器构成了请求/响应处理器的双向链表，`@ngify/http` 会按你提供拦截器的顺序应用它们。
+With interception, you declare interceptors that inspect and transform HTTP requests from your application to a server. The same interceptors can also inspect and transform a server's responses on their way back to the application. Multiple interceptors form a forward-and-backward chain of request/response handlers.
 
-虽然拦截器有能力改变请求和响应，但 `HttpRequest` 和 `HttpResponse` 实例的属性是只读的，因此让它们基本上是不可变的。
+> `@ngify/http` applies interceptors in the order that you provide them。
+
+Although interceptors are capable of modifying requests and responses, the `HttpRequest` and `HttpResponse` instance properties are `readonly`, rendering them largely immutable.
 <br>
-如果你需要修改一个请求，请先将它克隆一份，修改这个克隆体后再把它传递给 `next.handle()`。
+They are immutable for a good reason: an app might retry a request several times before it succeeds, which means that the interceptor chain can re-process the same request multiple times.
+If an interceptor could modify the original request object, the re-tried operation would start from the modified request rather than the original.
+Immutability ensures that interceptors see the same request for each try.
+<br>
+If you must alter a request, clone it first and modify the clone before passing it to `next.handle()`.
 
-### 微信小程序额外参数
+### Replace HTTP Request Class
 
-为保持 API 的统一，需要借助 `HttpContext` 来传递微信小程序额外的参数。
+`HttpXhrBackend (XMLHttpRequest)` is used by default to make HTTP requests. You can switch to `WxHttpBackend (WeChatMiniProgram)` by modifying the configuration:
+
+```ts
+import { WxHttpBackend, setupConfig } from '@ngify/http';
+
+setupConfig({
+  backend: new WxHttpBackend()
+});
+```
+
+If you need to use `XMLHttpRequest` in a Node.JS environment, you can use [xhr2](https://www.npmjs.com/package/xhr2)，它在 Node.js API 上实现了 [W3C XMLHttpRequest](https://www.w3.org/TR/XMLHttpRequest/), which implements the [W3C XMLHttpRequest](https://www.w3.org/TR/XMLHttpRequest/) specification on the Node.JS API:
+
+```ts
+import { HttpXhrBackend, setupConfig } from '@ngify/http';
+import * as xhr2 from 'xhr2';
+
+setupConfig({
+  backend: new HttpXhrBackend(() => new xhr2.XMLHttpRequest())
+});
+```
+
+You can also use a custom `HttpBackend` implementation class:
+
+```ts
+import { HttpBackend, HttpClient, HttpRequest, HttpEvent, setupConfig } from '@ngify/http';
+import { Observable } from 'rxjs';
+
+// You need to implement the HttpBackend interface
+class CustomHttpBackend implements HttpBackend {
+  handle(request: HttpRequest<any>): Observable<HttpEvent<any>> {
+    // ...
+  }
+}
+
+setupConfig({
+  backend: new CustomHttpBackend()
+});
+```
+
+If you need to configure `HttpClient` separately for a `HttpBackend`, you can pass in the second parameter of the `HttpBackend` constructor:
+
+```ts
+const http = new HttpClient(null, new CustomHttpBackend())
+```
+
+### Additional parameters of WeChatMiniProgram
+
+In order to keep the API unified, we need to use `HttpContext` to pass additional parameters of WeChatMiniProgram.
 
 ```ts
 import { HttpClient, HttpContext, HttpContextToken, WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http';
@@ -123,52 +179,6 @@ http.get('url', null, {
 });
 ```
 
-### 替换 HTTP 请求类
+## More
 
-默认使用 `WxHttpBackend (微信小程序)` 来进行 HTTP 请求，可以通过修改配置切换为 `HttpXhrBackend (XMLHttpRequest)`：
-
-```ts
-import { HttpXhrBackend, setupConfig } from '@ngify/http';
-
-setupConfig({
-  backend: new HttpXhrBackend()
-});
-```
-
-如果需要在 Node.js 环境下使用 `XMLHttpRequest`，可以使用 [xhr2](https://www.npmjs.com/package/xhr2)，它在 Node.js API 上实现了 [W3C XMLHttpRequest](https://www.w3.org/TR/XMLHttpRequest/) 规范：
-
-```ts
-import { HttpXhrBackend, setupConfig } from '@ngify/http';
-import * as xhr2 from 'xhr2';
-
-setupConfig({
-  backend: new HttpXhrBackend(() => new xhr2.XMLHttpRequest())
-});
-```
-
-你还可使用自定义的 `HttpBackend` 实现类：
-
-```ts
-import { HttpBackend, HttpClient, HttpRequest, HttpEvent, setupConfig } from '@ngify/http';
-import { Observable } from 'rxjs';
-
-// 需要实现 HttpBackend 接口
-class CustomHttpBackend implements HttpBackend {
-  handle(request: HttpRequest<any>): Observable<HttpEvent<any>> {
-    // ...
-  }
-}
-
-// 覆盖全局配置
-setupConfig({
-  backend: new CustomHttpBackend()
-});
-```
-
-如果需要为某个 `HttpClient` 单独配置 `HttpBackend`，可以在 `HttpClient` 构造方法的第二个参数传入：
-
-```ts
-const http = new HttpClient(null, new CustomHttpBackend())
-```
-
-> 更多细节可参考：[Angular Docs](https://angular.io/guide/http)
+For more usage, please visit [https://angular.io](https://angular.io/guide/http).
