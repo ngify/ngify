@@ -111,8 +111,7 @@ export class HttpRequest<T> {
       return 'application/x-www-form-urlencoded;charset=UTF-8';
     }
     // 数组、对象、布尔值和数字将被编码为 JSON。
-    if (typeof this.body === 'object' || typeof this.body === 'number' ||
-      typeof this.body === 'boolean') {
+    if (['object', 'number', 'boolean'].includes(typeof this.body)) {
       return 'application/json';
     }
 
