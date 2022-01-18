@@ -24,9 +24,7 @@ Before working with the `@ngify/http`, you should have a basic understanding of 
 
 For the full API definition, please visit [https://ngify.github.io/ngify](https://ngify.github.io/ngify/modules/_ngify_http.html).
 
-## Get started
-
-### Basic usage
+## Basic usage
 
 ```ts
 import { HttpClient, HttpContext, HttpContextToken, HttpHeaders, HttpParams } from '@ngify/http';
@@ -34,7 +32,7 @@ import { filter } from 'rxjs';
 
 const http = new HttpClient();
 
-http.get<{ code: number, data: any[], msg: string }>('url', 'k=v').pipe(
+http.get<{ code: number, data: any, msg: string }>('url', 'k=v').pipe(
   filter(({ code }) => code === 0)
 ).subscribe(res => console.log(res));
 
@@ -55,7 +53,11 @@ http.delete('url', new HttpParams('k=v'), {
 }).subscribe(res => console.log(res));
 ```
 
-### Add request/response interceptor
+## Intercepting requests and responses
+
+With interception, you declare interceptors that inspect and transform HTTP requests from your application to a server. The same interceptors can also inspect and transform a server's responses on their way back to the application. Multiple interceptors form a forward-and-backward chain of request/response handlers.
+
+> `@ngify/http` applies interceptors in the order that you provide them。
 
 ```ts
 import { HttpClient, HttpHandler, HttpRequest, HttpEvent, HttpInterceptor } from '@ngify/http';
@@ -88,10 +90,6 @@ const http = new HttpClient([
 ]);
 ```
 
-With interception, you declare interceptors that inspect and transform HTTP requests from your application to a server. The same interceptors can also inspect and transform a server's responses on their way back to the application. Multiple interceptors form a forward-and-backward chain of request/response handlers.
-
-> `@ngify/http` applies interceptors in the order that you provide them。
-
 Although interceptors are capable of modifying requests and responses, the `HttpRequest` and `HttpResponse` instance properties are `readonly`, rendering them largely immutable.
 
 > They are immutable for a good reason: an app might retry a request several times before it succeeds, which means that the interceptor chain can re-process the same request multiple times.
@@ -100,7 +98,7 @@ Immutability ensures that interceptors see the same request for each try.
 
 If you must alter a request, clone it first and modify the clone before passing it to `next.handle()`.
 
-### Replace HTTP Request Class
+## Replace HTTP Request Class
 
 `HttpXhrBackend (XMLHttpRequest)` is used by default to make HTTP requests. You can switch to `WxHttpBackend (WeChatMiniProgram)` by modifying the configuration:
 
@@ -147,14 +145,14 @@ If you need to configure `HttpClient` separately for a `HttpBackend`, you can pa
 const http = new HttpClient(null, new CustomHttpBackend())
 ```
 
-### Additional parameters of WeChatMiniProgram
+## Additional parameters of WeChatMiniProgram
 
 In order to keep the API unified, we need to use `HttpContext` to pass additional parameters of WeChatMiniProgram.
 
 ```ts
-import { HttpClient, HttpContext, HttpContextToken, WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http';
+import { HttpContext, HttpContextToken, WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http';
 
-const http = new HttpClient();
+// ...
 
 // WeChatMiniProgram enables HTTP2
 http.get('url', null, {

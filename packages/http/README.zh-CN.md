@@ -18,15 +18,13 @@
 
 - JavaScript / TypeScript 编程。
 - HTTP 协议的用法。
-- [RxJS](https://rxjs.dev/guide/overview) Observable 相关技术和操作符。请参阅 [Observables]((https://angular.cn/guide/observables)) 指南。
+- [RxJS](https://rxjs.dev/guide/overview) Observable 相关技术和操作符。请参阅 [Observables](https://angular.cn/guide/observables) 指南。
 
 ## API
 
 有关完整的 API 定义，请访问 [https://ngify.github.io/ngify](https://ngify.github.io/ngify/modules/_ngify_http.html).
 
-## 开始使用
-
-### 基本用法
+## 基本用法
 
 ```ts
 import { HttpClient, HttpContext, HttpContextToken, HttpHeaders, HttpParams } from '@ngify/http';
@@ -34,7 +32,7 @@ import { filter } from 'rxjs';
 
 const http = new HttpClient();
 
-http.get<{ code: number, data: any[], msg: string }>('url', 'k=v').pipe(
+http.get<{ code: number, data: any, msg: string }>('url', 'k=v').pipe(
   filter(({ code }) => code === 0)
 ).subscribe(res => console.log(res));
 
@@ -55,7 +53,11 @@ http.delete('url', new HttpParams('k=v'), {
 }).subscribe(res => console.log(res));
 ```
 
-### 添加请求/响应拦截器
+## 拦截请求和响应
+
+借助拦截机制，你可以声明一些拦截器，它们可以检查并转换从应用中发给服务器的 HTTP 请求。这些拦截器还可以在返回应用的途中检查和转换来自服务器的响应。多个拦截器构成了请求/响应处理器的**双向**链表。
+
+> `@ngify/http` 会按照您提供拦截器的顺序应用它们。
 
 ```ts
 import { HttpClient, HttpHandler, HttpRequest, HttpEvent, HttpInterceptor } from '@ngify/http';
@@ -88,10 +90,6 @@ const http = new HttpClient([
 ]);
 ```
 
-借助拦截机制，你可以声明一些拦截器，它们可以检查并转换从应用中发给服务器的 HTTP 请求。这些拦截器还可以在返回应用的途中检查和转换来自服务器的响应。多个拦截器构成了请求/响应处理器的**双向**链表。
-
-> `@ngify/http` 会按照您提供拦截器的顺序应用它们。
-
 虽然拦截器有能力改变请求和响应，但 `HttpRequest` 和 `HttpResponse` 实例的属性是只读的，因此让它们基本上是不可变的。
 
 > 有充足的理由把它们做成不可变对象：应用可能会重试发送很多次请求之后才能成功，这就意味着这个拦截器链表可能会多次重复处理同一个请求。
@@ -100,7 +98,7 @@ const http = new HttpClient([
 
 如果你需要修改一个请求，请先将它克隆一份，修改这个克隆体后再把它传递给 `next.handle()`。
 
-### 替换 HTTP 请求类
+## 替换 HTTP 请求类
 
 默认使用 `HttpXhrBackend (XMLHttpRequest)` 来进行 HTTP 请求，可以通过修改配置切换为 `WxHttpBackend (微信小程序)`：
 
@@ -147,14 +145,14 @@ setupConfig({
 const http = new HttpClient(null, new CustomHttpBackend())
 ```
 
-### 微信小程序额外参数
+## 微信小程序额外参数
 
 为保持 API 的统一，需要借助 `HttpContext` 来传递微信小程序额外的参数。
 
 ```ts
-import { HttpClient, HttpContext, HttpContextToken, WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http';
+import { HttpContext, HttpContextToken, WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http';
 
-const http = new HttpClient();
+// ...
 
 // 微信小程序开启 HTTP2
 http.get('url', null, {
