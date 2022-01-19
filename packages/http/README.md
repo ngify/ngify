@@ -3,6 +3,7 @@
 [![version](https://img.shields.io/npm/v/@ngify/http/latest.svg)](https://www.npmjs.com/package/@ngify/http)
 ![Node.js CI](https://github.com/ngify/ngify/workflows/Node.js%20CI/badge.svg)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
+[![CodeFactor](https://www.codefactor.io/repository/github/ngify/ngify/badge)](https://www.codefactor.io/repository/github/ngify/ngify)
 [![简体中文](https://img.shields.io/static/v1?label=简体中文&message=zh-CN&color=212121)](https://github.com/ngify/ngify/blob/main/packages/http/README.zh-CN.md)
 
 An HTTP client in the form of `@angular/common/http`, offers the following major features:

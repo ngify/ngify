@@ -3,6 +3,7 @@
 [![version](https://img.shields.io/npm/v/@ngify/http/latest.svg)](https://www.npmjs.com/package/@ngify/http)
 ![Node.js CI](https://github.com/ngify/ngify/workflows/Node.js%20CI/badge.svg)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
+[![CodeFactor](https://www.codefactor.io/repository/github/ngify/ngify/badge)](https://www.codefactor.io/repository/github/ngify/ngify)
 [![English](https://img.shields.io/static/v1?label=English&message=en-US&color=212121)](https://github.com/ngify/ngify/blob/main/packages/http/README.md)
 
 一个形如 `@angular/common/http` 的 HTTP 客户端，提供了以下主要功能：

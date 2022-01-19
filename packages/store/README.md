@@ -5,6 +5,7 @@ A simple state manager based on decorator and rxjs.
 [![version](https://img.shields.io/npm/v/@ngify/store/latest.svg)](https://www.npmjs.com/package/@ngify/store)
 ![Node.js CI](https://github.com/ngify/ngify/workflows/Node.js%20CI/badge.svg)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
+[![CodeFactor](https://www.codefactor.io/repository/github/ngify/ngify/badge)](https://www.codefactor.io/repository/github/ngify/ngify)
 [![简体中文](https://img.shields.io/static/v1?label=简体中文&message=zh-CN&color=212121)](https://github.com/ngify/ngify/blob/main/packages/store/README.zh-CN.md)
 
 ## Concept
