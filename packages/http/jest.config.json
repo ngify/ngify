@@ -9,7 +9,7 @@
   },
   "rootDir": "./",
   "testMatch": [
-    "<rootDir>/test/*.spec.ts"
+    "<rootDir>/**/*.spec.ts"
   ],
   "coverageDirectory": "./coverage"
 }
