@@ -11,7 +11,7 @@
 - 请求[类型化响应对象](https://angular.cn/guide/http#typed-response)的能力。
 - 简化的[错误处理](https://angular.cn/guide/http#error-handling)。
 - 请求和响应的[拦截机制](https://angular.cn/guide/http#intercepting-requests-and-responses)。
-- 默认支持但不限于 `微信小程序` 与 `XMLHttpRequest`。
+- 默认支持但不限于 `XMLHttpRequest` 、`Fetch API` 与 `微信小程序`。
 
 ## 先决条件
 
@@ -101,13 +101,21 @@ const http = new HttpClient([
 
 ## 替换 HTTP 请求类
 
-默认使用 `HttpXhrBackend (XMLHttpRequest)` 来进行 HTTP 请求，可以通过修改配置切换为 `HttpWxBackend (微信小程序)`：
+`@ngify/http` 内置了以下 HTTP 请求类：
+
+| HTTP 请求类        | 描述                                 |
+| ------------------ | ------------------------------------ |
+| `HttpXhrBackend`   | 使用 `XMLHttpRequest` 进行 HTTP 请求 |
+| `HttpFetchBackend` | 使用 `Fetch API` 进行 HTTP 请求      |
+| `HttpWxBackend`    | 在 `微信小程序` 中进行 HTTP 请求     |
+
+默认使用 `HttpXhrBackend`，可以通过修改配置切换到其他的 HTTP 请求类`：
 
 ```ts
-import { HttpWxBackend, setupConfig } from '@ngify/http';
+import { HttpFetchBackend, HttpWxBackend, setupConfig } from '@ngify/http';
 
 setupConfig({
-  backend: new HttpWxBackend()
+  backend: new HttpFetchBackend()
 });
 ```
 

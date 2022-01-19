@@ -11,7 +11,7 @@ An HTTP client in the form of `@angular/common/http`, offers the following major
 - The ability to request [typed response objects](https://angular.io/guide/http#typed-response).
 - Streamlined [error handling](https://angular.io/guide/http#error-handling).
 - Request and response [interception](https://angular.io/guide/http#intercepting-requests-and-responses).
-- Default support but not limited to `WeChatMiniProgram` and `XMLHttpRequest`.
+- Default support but not limited to `XMLHttpRequest`, `Fetch API` and `WeChatMiniProgram`.
 
 ## Prerequisites
 
@@ -99,15 +99,23 @@ Immutability ensures that interceptors see the same request for each try.
 
 If you must alter a request, clone it first and modify the clone before passing it to `next.handle()`.
 
-## Replace HTTP request class
+## Replace HTTP backend class
 
-`HttpXhrBackend (XMLHttpRequest)` is used by default to make HTTP requests. You can switch to `HttpWxBackend (WeChatMiniProgram)` by modifying the configuration:
+`@ngify/http` has the following HTTP backends built in:
+
+| HTTP backend class | Description                          |
+| ------------------ | ------------------------------------ |
+| `HttpXhrBackend`   | HTTP requests using `XMLHttpRequest` |
+| `HttpFetchBackend` | HTTP requests using `Fetch API`      |
+| `HttpWxBackend`    | HTTP request in `WeChatMiniProgram`  |
+
+By default, `HttpXhrBackend` is used, and you can switch to other HTTP backend class by modifying the configuration:
 
 ```ts
-import { HttpWxBackend, setupConfig } from '@ngify/http';
+import { HttpFetchBackend, HttpWxBackend, setupConfig } from '@ngify/http';
 
 setupConfig({
-  backend: new HttpWxBackend()
+  backend: new HttpFetchBackend()
 });
 ```
 
