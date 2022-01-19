@@ -154,12 +154,30 @@ If you need to configure `HttpClient` separately for a `HttpBackend`, you can pa
 const http = new HttpClient(null, new CustomHttpBackend())
 ```
 
-## Additional parameters of WeChatMiniProgram
+## Pass extra parameters
 
-In order to keep the API unified, we need to use `HttpContext` to pass additional parameters of WeChatMiniProgram.
+In order to keep the API uniform, some extra parameters need to be passed through `HttpContext`.
+
+### Extra parameters for Fetch API
 
 ```ts
-import { HttpContext, HttpContextToken, WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http';
+import { HttpContext, FETCH_TOKEN } from '@ngify/http';
+
+// ...
+
+// Fetch API allows cross-origin requests
+http.get('url', null, {
+  context: new HttpContext().set(FETCH_TOKEN, {
+    mode: 'cors',
+    // ...
+  })
+});
+```
+
+### Extra parameters for WeChatMiniProgram
+
+```ts
+import { HttpContext, WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http';
 
 // ...
 

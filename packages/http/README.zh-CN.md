@@ -154,12 +154,30 @@ setupConfig({
 const http = new HttpClient(null, new CustomHttpBackend())
 ```
 
-## 微信小程序额外参数
+## 传递额外参数
 
-为保持 API 的统一，需要借助 `HttpContext` 来传递微信小程序额外的参数。
+为保持 API 的统一，需要借助 `HttpContext` 来传递一些额外参数。
+
+### Fetch API 额外参数
 
 ```ts
-import { HttpContext, HttpContextToken, WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http';
+import { HttpContext, FETCH_TOKEN } from '@ngify/http';
+
+// ...
+
+// Fetch API 允许跨域请求
+http.get('url', null, {
+  context: new HttpContext().set(FETCH_TOKEN, {
+    mode: 'cors',
+    // ...
+  })
+});
+```
+
+### 微信小程序额外参数
+
+```ts
+import { HttpContext, WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http';
 
 // ...
 
