@@ -1,8 +1,12 @@
-import { HttpHeaders } from '../src/headers';
-
 /**
- * Copy from https://github.com/angular/angular/blob/master/packages/common/http/test/headers_spec.ts
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
  */
+
+import { HttpHeaders } from '../src/headers';
 
 describe('HttpHeaders', () => {
   describe('initialization', () => {

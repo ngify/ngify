@@ -1,8 +1,12 @@
-import { HttpContext, HttpContextToken } from '../src/context';
-
 /**
- * Copy from https://github.com/angular/angular/blob/master/packages/common/http/test/context_spec.ts
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
  */
+
+import { HttpContext, HttpContextToken } from '../src/context';
 
 const IS_ENABLED = new HttpContextToken<boolean>(() => false);
 const CACHE_OPTION = new HttpContextToken<{ cache: boolean, expiresIn?: number }>(() => ({ cache: false }));
