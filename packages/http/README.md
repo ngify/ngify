@@ -119,17 +119,6 @@ setupConfig({
 });
 ```
 
-If you need to use `XMLHttpRequest` in a Node.js environment, you can use [xhr2](https://www.npmjs.com/package/xhr2), which implements the [W3C XMLHttpRequest](https://www.w3.org/TR/XMLHttpRequest/) specification on the Node.js API:
-
-```ts
-import { HttpXhrBackend, setupConfig } from '@ngify/http';
-import * as xhr2 from 'xhr2';
-
-setupConfig({
-  backend: new HttpXhrBackend(() => new xhr2.XMLHttpRequest())
-});
-```
-
 You can also use a custom `HttpBackend` implementation class:
 
 ```ts
@@ -152,6 +141,44 @@ If you need to configure `HttpClient` separately for a `HttpBackend`, you can pa
 
 ```ts
 const http = new HttpClient(null, new CustomHttpBackend())
+```
+
+## Use in Node.js
+
+`@ngify/http` uses the browser's `XMLHttpRequest` and `Fetch API` by default. To use in Node.js, you need to do the following steps:
+
+### XMLHttpRequest
+
+If you need to use `XMLHttpRequest` in Node.js environment, you can use [xhr2](https://www.npmjs.com/package/xhr2), which implements [W3C XMLHttpRequest](https: //www.w3.org/TR/XMLHttpRequest/) specification.
+<br>
+To use [xhr2](https://www.npmjs.com/package/xhr2) , you need to create a factory function that returns an `XMLHttpRequest` instance and pass it as a parameter to the `HttpXhrBackend` constructor:
+
+```ts
+import { HttpXhrBackend, setupConfig } from '@ngify/http';
+import * as xhr2 from 'xhr2';
+
+setupConfig({
+  backend: new HttpXhrBackend(() => new xhr2.XMLHttpRequest())
+});
+```
+
+### Fetch API
+
+If you need to use `Fetch API` in Node.js environment, you can use [node-fetch](https://www.npmjs.com/package/node-fetch) and [abort-controller](https://www .npmjs.com/package/abort-controller).
+<br>
+To apply them, you need to add them to `global` of `Node.js` respectively:
+
+```ts
+import fetch from 'node-fetch';
+import AbortController from 'abort-controller';
+import { HttpFetchBackend, HttpWxBackend, setupConfig } from '@ngify/http';
+
+global.fetch = fetch;
+global.AbortController = AbortController;
+
+setupConfig({
+  backend: new HttpFetchBackend()
+});
 ```
 
 ## Pass extra parameters

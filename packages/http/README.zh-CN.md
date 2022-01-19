@@ -109,24 +109,13 @@ const http = new HttpClient([
 | `HttpFetchBackend` | 使用 `Fetch API` 进行 HTTP 请求      |
 | `HttpWxBackend`    | 在 `微信小程序` 中进行 HTTP 请求     |
 
-默认使用 `HttpXhrBackend`，可以通过修改配置切换到其他的 HTTP 请求类`：
+默认使用 `HttpXhrBackend`，可以通过修改配置切换到其他的 HTTP 请求类：
 
 ```ts
 import { HttpFetchBackend, HttpWxBackend, setupConfig } from '@ngify/http';
 
 setupConfig({
   backend: new HttpFetchBackend()
-});
-```
-
-如果需要在 Node.js 环境下使用 `XMLHttpRequest`，可以使用 [xhr2](https://www.npmjs.com/package/xhr2)，它在 Node.js API 上实现了 [W3C XMLHttpRequest](https://www.w3.org/TR/XMLHttpRequest/) 规范：
-
-```ts
-import { HttpXhrBackend, setupConfig } from '@ngify/http';
-import * as xhr2 from 'xhr2';
-
-setupConfig({
-  backend: new HttpXhrBackend(() => new xhr2.XMLHttpRequest())
 });
 ```
 
@@ -152,6 +141,44 @@ setupConfig({
 
 ```ts
 const http = new HttpClient(null, new CustomHttpBackend())
+```
+
+## 在 Node.js 中使用
+
+`@ngify/http` 默认使用浏览器实现的 `XMLHttpRequest` 与 `Fetch API`。要在 Node.js 中使用，您需要进行以下步骤：
+
+### XMLHttpRequest
+
+如果需要在 Node.js 环境下使用 `XMLHttpRequest`，可以使用 [xhr2](https://www.npmjs.com/package/xhr2)，它在 Node.js API 上实现了 [W3C XMLHttpRequest](https://www.w3.org/TR/XMLHttpRequest/) 规范。
+<br>
+要使用 [xhr2](https://www.npmjs.com/package/xhr2) ，您需要创建一个返回 `XMLHttpRequest` 实例的工厂函数，并将其作为参数传递给 `HttpXhrBackend` 构造函数：
+
+```ts
+import { HttpXhrBackend, setupConfig } from '@ngify/http';
+import * as xhr2 from 'xhr2';
+
+setupConfig({
+  backend: new HttpXhrBackend(() => new xhr2.XMLHttpRequest())
+});
+```
+
+### Fetch API
+
+如果需要在 Node.js 环境下使用 `Fetch API`，可以使用 [node-fetch](https://www.npmjs.com/package/node-fetch) 和 [abort-controller](https://www.npmjs.com/package/abort-controller)。
+<br>
+要应用它们，您需要分别将它们添加到 `Node.js` 的 `global`：
+
+```ts
+import fetch from 'node-fetch';
+import AbortController from 'abort-controller';
+import { HttpFetchBackend, HttpWxBackend, setupConfig } from '@ngify/http';
+
+global.fetch = fetch;
+global.AbortController = AbortController;
+
+setupConfig({
+  backend: new HttpFetchBackend()
+});
 ```
 
 ## 传递额外参数
