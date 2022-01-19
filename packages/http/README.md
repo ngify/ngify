@@ -99,7 +99,7 @@ Immutability ensures that interceptors see the same request for each try.
 
 If you must alter a request, clone it first and modify the clone before passing it to `next.handle()`.
 
-## Replace HTTP Request Class
+## Replace HTTP request class
 
 `HttpXhrBackend (XMLHttpRequest)` is used by default to make HTTP requests. You can switch to `WxHttpBackend (WeChatMiniProgram)` by modifying the configuration:
 
