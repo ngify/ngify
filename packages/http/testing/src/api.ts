@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import { SafeAny } from '@ngify/types';
 import { HttpRequest } from '../../src';
 import { TestRequest } from './request';
 
@@ -29,7 +30,7 @@ export abstract class HttpTestingController {
   /**
    * Search for requests that match the given parameter, without any expectations.
    */
-  abstract match(match: string | RequestMatch | ((req: HttpRequest<any>) => boolean)): TestRequest[];
+  abstract match(match: string | RequestMatch | ((req: HttpRequest<SafeAny>) => boolean)): TestRequest[];
 
   /**
    * Expect that a single request has been made which matches the given URL, and return its
@@ -56,7 +57,7 @@ export abstract class HttpTestingController {
    * If no such request has been made, or more than one such request has been made, fail with an
    * error message including the given request description, if any.
    */
-  abstract expectOne(matchFn: ((req: HttpRequest<any>) => boolean), description?: string):
+  abstract expectOne(matchFn: ((req: HttpRequest<SafeAny>) => boolean), description?: string):
     TestRequest;
 
   /**
@@ -67,7 +68,7 @@ export abstract class HttpTestingController {
    * error message including the given request description, if any.
    */
   abstract expectOne(
-    match: string | RequestMatch | ((req: HttpRequest<any>) => boolean),
+    match: string | RequestMatch | ((req: HttpRequest<SafeAny>) => boolean),
     description?: string): TestRequest;
 
   /**
@@ -92,7 +93,7 @@ export abstract class HttpTestingController {
    * If a matching request has been made, fail with an error message including the given request
    * description, if any.
    */
-  abstract expectNone(matchFn: ((req: HttpRequest<any>) => boolean), description?: string): void;
+  abstract expectNone(matchFn: ((req: HttpRequest<SafeAny>) => boolean), description?: string): void;
 
   /**
    * Expect that no requests have been made which match the given condition.
@@ -101,7 +102,7 @@ export abstract class HttpTestingController {
    * description, if any.
    */
   abstract expectNone(
-    match: string | RequestMatch | ((req: HttpRequest<any>) => boolean), description?: string): void;
+    match: string | RequestMatch | ((req: HttpRequest<SafeAny>) => boolean), description?: string): void;
 
   /**
    * Verify that no unmatched requests are outstanding.

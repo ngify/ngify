@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import { SafeAny } from '@ngify/types';
 import { Observer } from 'rxjs';
 import { HttpErrorResponse, HttpEvent, HttpHeaders, HttpRequest, HttpResponse, HttpStatusCode } from '../../src';
 
@@ -40,7 +41,7 @@ export class TestRequest {
    */
   _cancelled = false;
 
-  constructor(public request: HttpRequest<any>, private observer: Observer<HttpEvent<any>>) { }
+  constructor(public request: HttpRequest<SafeAny>, private observer: Observer<HttpEvent<SafeAny>>) { }
 
   /**
    * Resolve the request by returning a body plus additional HTTP information (such as response
@@ -79,7 +80,7 @@ export class TestRequest {
       throw new Error('statusText is required when setting a custom status.');
     }
     if (status >= 200 && status < 300) {
-      this.observer.next(new HttpResponse<any>({ body, headers, status, statusText, url }));
+      this.observer.next(new HttpResponse<SafeAny>({ body, headers, status, statusText, url }));
       this.observer.complete();
     } else {
       this.observer.error(new HttpErrorResponse({ error: body, headers, status, statusText, url }));
@@ -117,7 +118,7 @@ export class TestRequest {
    * Deliver an arbitrary `HttpEvent` (such as a progress event) on the response stream for this
    * request.
    */
-  event(event: HttpEvent<any>): void {
+  event(event: HttpEvent<SafeAny>): void {
     if (this.cancelled) {
       throw new Error(`Cannot send events to a cancelled request.`);
     }

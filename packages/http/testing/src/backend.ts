@@ -6,12 +6,11 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import { SafeAny } from '@ngify/types';
 import { Observable, Observer } from 'rxjs';
 import { HttpBackend, HttpEvent, HttpEventType, HttpRequest } from '../../src';
 import { HttpTestingController, RequestMatch } from './api';
 import { TestRequest } from './request';
-
-
 
 /**
  * A testing backend for `HttpClient` which both acts as an `HttpBackend`
@@ -34,11 +33,11 @@ export class HttpClientTestingBackend implements HttpBackend, HttpTestingControl
   /**
    * Handle an incoming request by queueing it in the list of open requests.
    */
-  handle(req: HttpRequest<any>): Observable<HttpEvent<any>> {
-    return new Observable((observer: Observer<any>) => {
+  handle(req: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
+    return new Observable((observer: Observer<SafeAny>) => {
       const testReq = new TestRequest(req, observer);
       this.open.push(testReq);
-      observer.next({ type: HttpEventType.Sent } as HttpEvent<any>);
+      observer.next({ type: HttpEventType.Sent } as HttpEvent<SafeAny>);
       return () => {
         testReq._cancelled = true;
       };
@@ -48,7 +47,7 @@ export class HttpClientTestingBackend implements HttpBackend, HttpTestingControl
   /**
    * Helper function to search for requests in the list of open requests.
    */
-  private _match(match: string | RequestMatch | ((req: HttpRequest<any>) => boolean)): TestRequest[] {
+  private _match(match: string | RequestMatch | ((req: HttpRequest<SafeAny>) => boolean)): TestRequest[] {
     if (typeof match === 'string') {
       return this.open.filter(testReq => testReq.request.urlWithParams === match);
     } else if (typeof match === 'function') {
@@ -64,7 +63,7 @@ export class HttpClientTestingBackend implements HttpBackend, HttpTestingControl
    * Search for requests in the list of open requests, and return all that match
    * without asserting anything about the number of matches.
    */
-  match(match: string | RequestMatch | ((req: HttpRequest<any>) => boolean)): TestRequest[] {
+  match(match: string | RequestMatch | ((req: HttpRequest<SafeAny>) => boolean)): TestRequest[] {
     const results = this._match(match);
     results.forEach(result => {
       const index = this.open.indexOf(result);
@@ -82,7 +81,7 @@ export class HttpClientTestingBackend implements HttpBackend, HttpTestingControl
    * Requests returned through this API will no longer be in the list of open requests,
    * and thus will not match twice.
    */
-  expectOne(match: string | RequestMatch | ((req: HttpRequest<any>) => boolean), description?: string):
+  expectOne(match: string | RequestMatch | ((req: HttpRequest<SafeAny>) => boolean), description?: string):
     TestRequest {
     description = description || this.descriptionFromMatcher(match);
     const matches = this.match(match);
@@ -111,7 +110,7 @@ export class HttpClientTestingBackend implements HttpBackend, HttpTestingControl
    * Expect that no outstanding requests match the given matcher, and throw an error
    * if any do.
    */
-  expectNone(match: string | RequestMatch | ((req: HttpRequest<any>) => boolean), description?: string):
+  expectNone(match: string | RequestMatch | ((req: HttpRequest<SafeAny>) => boolean), description?: string):
     void {
     description = description || this.descriptionFromMatcher(match);
     const matches = this.match(match);
@@ -143,7 +142,7 @@ export class HttpClientTestingBackend implements HttpBackend, HttpTestingControl
   }
 
   private descriptionFromMatcher(matcher: string | RequestMatch |
-    ((req: HttpRequest<any>) => boolean)): string {
+    ((req: HttpRequest<SafeAny>) => boolean)): string {
     if (typeof matcher === 'string') {
       return `Match URL: ${matcher}`;
     } else if (typeof matcher === 'object') {
