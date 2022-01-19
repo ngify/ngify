@@ -101,13 +101,13 @@ If you must alter a request, clone it first and modify the clone before passing 
 
 ## Replace HTTP request class
 
-`HttpXhrBackend (XMLHttpRequest)` is used by default to make HTTP requests. You can switch to `WxHttpBackend (WeChatMiniProgram)` by modifying the configuration:
+`HttpXhrBackend (XMLHttpRequest)` is used by default to make HTTP requests. You can switch to `HttpWxBackend (WeChatMiniProgram)` by modifying the configuration:
 
 ```ts
-import { WxHttpBackend, setupConfig } from '@ngify/http';
+import { HttpWxBackend, setupConfig } from '@ngify/http';
 
 setupConfig({
-  backend: new WxHttpBackend()
+  backend: new HttpWxBackend()
 });
 ```
 

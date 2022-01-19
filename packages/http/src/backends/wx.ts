@@ -27,7 +27,7 @@ export const WX_REQUSET_TOKEN = new HttpContextToken<{
   timeout?: number
 }>(() => ({}));
 
-export class WxHttpBackend implements HttpBackend {
+export class HttpWxBackend implements HttpBackend {
   handle(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
     if (request.method === 'POST' && request.context.has(WX_UPLOAD_FILE_TOKEN)) {
       return this.upload(request);

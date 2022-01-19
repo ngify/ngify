@@ -101,13 +101,13 @@ const http = new HttpClient([
 
 ## 替换 HTTP 请求类
 
-默认使用 `HttpXhrBackend (XMLHttpRequest)` 来进行 HTTP 请求，可以通过修改配置切换为 `WxHttpBackend (微信小程序)`：
+默认使用 `HttpXhrBackend (XMLHttpRequest)` 来进行 HTTP 请求，可以通过修改配置切换为 `HttpWxBackend (微信小程序)`：
 
 ```ts
-import { WxHttpBackend, setupConfig } from '@ngify/http';
+import { HttpWxBackend, setupConfig } from '@ngify/http';
 
 setupConfig({
-  backend: new WxHttpBackend()
+  backend: new HttpWxBackend()
 });
 ```
 
