@@ -134,8 +134,7 @@ export class HttpRequest<T> {
       return this.body.toString();
     }
     // 检查 body 是对象还是数组，如果是，则使用 JSON 进行序列化。
-    if (typeof this.body === 'object' || typeof this.body === 'boolean' ||
-      Array.isArray(this.body)) {
+    if (typeof this.body === 'object' || typeof this.body === 'boolean' || Array.isArray(this.body)) {
       return JSON.stringify(this.body);
     }
     // 其他一切都可以使用 toString()。

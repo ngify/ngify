@@ -15,7 +15,7 @@ const log = console.log;
 const createInputOptions = (pkg, prod) => {
   const options = {
     input: `packages/${pkg}/src/index.ts`,
-    external: ['rxjs', '@ngify/types'],
+    external: ['rxjs', 'rxjs/fetch', '@ngify/types'],
     plugins: [
       typescript({
         removeComments: true
