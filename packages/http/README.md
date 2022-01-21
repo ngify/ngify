@@ -149,7 +149,7 @@ const http = new HttpClient(null, new CustomHttpBackend())
 
 ### XMLHttpRequest
 
-If you need to use `XMLHttpRequest` in Node.js environment, you can use [xhr2](https://www.npmjs.com/package/xhr2), which implements [W3C XMLHttpRequest](https: //www.w3.org/TR/XMLHttpRequest/) specification.
+If you need to use `XMLHttpRequest` in Node.js environment, you can use [xhr2](https://www.npmjs.com/package/xhr2), which implements [W3C XMLHttpRequest](https://www.w3.org/TR/XMLHttpRequest/) specification.
 <br>
 To use [xhr2](https://www.npmjs.com/package/xhr2) , you need to create a factory function that returns an `XMLHttpRequest` instance and pass it as a parameter to the `HttpXhrBackend` constructor:
 
@@ -164,7 +164,7 @@ setupConfig({
 
 ### Fetch API
 
-If you need to use `Fetch API` in Node.js environment, you can use [node-fetch](https://www.npmjs.com/package/node-fetch) and [abort-controller](https://www .npmjs.com/package/abort-controller).
+If you need to use `Fetch API` in Node.js environment, you can use [node-fetch](https://www.npmjs.com/package/node-fetch) and [abort-controller](https://www.npmjs.com/package/abort-controller).
 <br>
 To apply them, you need to add them to `global` of `Node.js` respectively:
 
