@@ -10,8 +10,14 @@ describe('Timer', () => {
     @Throttle(1000)
     throttle() { }
 
+    @Throttle(1000)
+    throttle2() { }
+
     @Debounce(2000)
-    debounce() { }
+    debounce(cb: () => void) { cb(); }
+
+    @Debounce(2000)
+    debounce2(cb: () => void) { cb(); }
 
     @Delay(3000)
     delay() { }
@@ -30,6 +36,8 @@ describe('Timer', () => {
   describe('throttle', () => {
     it('basic usage', () => {
       obj.throttle();
+      obj.throttle();
+      obj.throttle();
 
       jest.runAllTimers();
 
@@ -37,27 +45,25 @@ describe('Timer', () => {
       expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1000);
     });
 
-    it('should be throttle', () => {
-      obj.throttle();
-      obj.throttle();
-      obj.throttle();
-
-      jest.runAllTimers();
-
-      expect(setTimeout).toHaveBeenCalledTimes(3);
-      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1000);
-    });
   });
 
   describe('debounce', () => {
     it('basic usage', () => {
-      obj.debounce();
-      obj.debounce();
-      obj.debounce();
+      const cb = jest.fn();
+      obj.debounce(cb);
+      obj.debounce(cb);
+      obj.debounce(cb);
+
+      const cb2 = jest.fn();
+      obj.debounce2(cb2);
+      obj.debounce2(cb2);
+      obj.debounce2(cb2);
 
       jest.runAllTimers();
 
-      expect(setTimeout).toHaveBeenCalledTimes(1);
+      expect(cb).toHaveBeenCalledTimes(1);
+      expect(cb2).toHaveBeenCalledTimes(1);
+      expect(setTimeout).toHaveBeenCalledTimes(6);
       expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 2000);
     });
   });
