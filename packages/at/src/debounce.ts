@@ -11,10 +11,8 @@ export function Debounce(wait: number): MethodDecorator {
     const fn = descriptor.value as (...args: SafeAny[]) => void;
 
     descriptor.value = function (...args: SafeAny[]) {
-      map.has(this) || map.set(this, setTimeout(() => {
-        fn.apply(this, args);
-        map.delete(this);
-      }, wait));
+      map.has(fn) && clearTimeout(map.get(fn));
+      map.set(fn, setTimeout(() => fn.apply(this, args), wait));
     };
   }
 }

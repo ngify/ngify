@@ -11,8 +11,10 @@ export function Throttle(wait: number): MethodDecorator {
     const fn = descriptor.value as (...args: SafeAny[]) => void;
 
     descriptor.value = function (...args: SafeAny[]) {
-      map.has(this) && clearTimeout(map.get(this));
-      map.set(this, setTimeout(() => fn.apply(this, args), wait));
+      map.has(fn) || map.set(fn, setTimeout(() => {
+        fn.apply(this, args);
+        map.delete(fn);
+      }, wait));
     };
   }
 }
