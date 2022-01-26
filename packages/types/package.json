@@ -1,6 +1,6 @@
 {
   "name": "@ngify/types",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "",
   "typedocMain": "./src/index.ts",
   "main": "./dist/cjs/index.js",

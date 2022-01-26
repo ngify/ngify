@@ -1,6 +1,6 @@
 {
   "name": "@ngify/at",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "A practical decorator library",
   "typedocMain": "./src/index.ts",
   "main": "./dist/cjs/index.js",
@@ -36,11 +36,9 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {},
   "devDependencies": {
     "@types/jest": "27.4.0",
     "jest": "27.4.7",
     "ts-jest": "27.1.3"
-  },
-  "peerDependencies": {}
+  }
 }
