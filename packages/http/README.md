@@ -6,7 +6,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/ngify/ngify/badge)](https://www.codefactor.io/repository/github/ngify/ngify)
 [![简体中文](https://img.shields.io/static/v1?label=简体中文&message=zh-CN&color=212121)](https://github.com/ngify/ngify/blob/main/packages/http/README.zh-CN.md)
 
-An HTTP client in the form of `@angular/common/http`, offers the following major features:
+An reactive HTTP client in the form of `@angular/common/http`, offers the following major features:
 
 - The ability to request [typed response objects](https://angular.io/guide/http#typed-response).
 - Streamlined [error handling](https://angular.io/guide/http#error-handling).

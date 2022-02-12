@@ -6,7 +6,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/ngify/ngify/badge)](https://www.codefactor.io/repository/github/ngify/ngify)
 [![English](https://img.shields.io/static/v1?label=English&message=en-US&color=212121)](https://github.com/ngify/ngify/blob/main/packages/http/README.md)
 
-一个形如 `@angular/common/http` 的 HTTP 客户端，提供了以下主要功能：
+一个形如 `@angular/common/http` 的响应式 HTTP 客户端，提供了以下主要功能：
 
 - 请求[类型化响应对象](https://angular.cn/guide/http#typed-response)的能力。
 - 简化的[错误处理](https://angular.cn/guide/http#error-handling)。
