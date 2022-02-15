@@ -15,7 +15,7 @@
 		"build:types": "node scripts/build.mjs --pkg=types --prod",
 		"build": "node scripts/build.mjs --prod",
 		"build:docs": "typedoc",
-		"test": "lerna run --scope @ngify/http --scope @ngify/store test:ci",
+		"test": "lerna run --scope @ngify/http --scope @ngify/store --scope @ngify/at test:ci",
 		"publish": "npm run build & lerna publish --force-publish=* --exact",
 		"bootstrap": "lerna bootstrap --hoist"
 	},
