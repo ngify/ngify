@@ -101,8 +101,7 @@ export class HttpXhrBackend implements HttpBackend {
           return headerResponse;
         }
 
-        // Read status and normalize an IE9 bug (https://bugs.jquery.com/ticket/1450).
-        const status: number = xhr.status === 1223 ? HttpStatusCode.NoContent : xhr.status;
+        const status: number = xhr.status;
         const statusText = xhr.statusText || 'OK';
 
         // Parse headers from XMLHttpRequest - this step is lazy.
