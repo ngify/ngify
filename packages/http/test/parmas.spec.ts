@@ -185,8 +185,8 @@ describe('HttpParams', () => {
     it('should encode parameters', () => {
       const params = new HttpParams('a=standard_chars');
       expect(params.toString()).toEqual('a=standard_chars');
-      const params2 = new HttpParams('a=1 2 3&b=mail@test&c=3_^[]$&d=eq=1');
-      expect(params2.toString()).toEqual('a=1%202%203&b=mail@test&c=3_%5E%5B%5D$&d=eq=1');
+      const params2 = new HttpParams('a=1 2 3&b=mail@test&c=3_^[]$&d=eq=1&e=1+1');
+      expect(params2.toString()).toEqual('a=1%202%203&b=mail@test&c=3_%5E%5B%5D$&d=eq=1&e=1%2B1');
     });
   });
 
