@@ -22,13 +22,73 @@ const stringify = (value: string | number | boolean) => (
   value === null || value === undefined ? '' : `${value}`
 );
 
+export interface HttpParameterCodec {
+  encodeKey(key: string): string;
+  encodeValue(value: string): string;
+  decodeKey(key: string): string;
+  decodeValue(value: string): string;
+}
+
+/**
+ * Provides encoding and decoding of URL parameter and query-string values.
+ *
+ * Serializes and parses URL parameter keys and values to encode and decode them.
+ * If you pass URL query parameters without encoding,
+ * the query parameters can be misinterpreted at the receiving end.
+ */
+export class HttpUrlEncodingCodec implements HttpParameterCodec {
+  /**
+   * Encodes a key name for a URL parameter or query-string.
+   * @param key The key name.
+   * @returns The encoded key name.
+   */
+  encodeKey(key: string): string {
+    return standardEncoding(key);
+  }
+
+  /**
+   * Encodes the value of a URL parameter or query-string.
+   * @param value The value.
+   * @returns The encoded value.
+   */
+  encodeValue(value: string): string {
+    return standardEncoding(value);
+  }
+
+  /**
+   * Decodes an encoded URL parameter or query-string key.
+   * @param key The encoded key name.
+   * @returns The decoded key name.
+   */
+  decodeKey(key: string): string {
+    return decodeURIComponent(key);
+  }
+
+  /**
+   * Decodes an encoded URL parameter or query-string value.
+   * @param value The encoded value.
+   * @returns The decoded value.
+   */
+  decodeValue(value: string) {
+    return decodeURIComponent(value);
+  }
+}
+
 export class HttpParams {
   private map: Map<string, string[]> = new Map<string, string[]>();
+  private encoder: HttpParameterCodec;
 
-  constructor(source?: string | { [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean> }) {
+  constructor(
+    source?: string | { [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean> } | null,
+    encoder?: HttpParameterCodec
+  ) {
+    this.encoder = encoder ?? new HttpUrlEncodingCodec();
+
     if (typeof source === 'string') {
       source.replace(/^\?/, '').split('&').forEach((param: string) => {
-        const [key, value] = param.split(/=(.*)/, 2).map(o => o === undefined ? '' : decodeURIComponent(o));
+        const [key, value] = param.split(/=(.*)/, 2).map((o, i) => (
+          o === undefined ? '' : (i === 0 ? this.encoder.decodeKey(o) : this.encoder.decodeValue(o))
+        ));
         const values = this.map.get(key) || [];
         values.push(value);
         this.map.set(key, values);
@@ -103,12 +163,12 @@ export class HttpParams {
 
   toString(): string {
     return this.keys().map(key => (
-      this.map.get(key)!.map(value => standardEncoding(key) + '=' + standardEncoding(value)).join('&')
+      this.map.get(key)!.map(value => this.encoder.encodeKey(key) + '=' + this.encoder.encodeValue(value)).join('&')
     )).filter(param => param !== '').join('&');
   }
 
   private clone(): HttpParams {
-    const clone = new HttpParams();
+    const clone = new HttpParams(null, this.encoder);
 
     this.map.forEach((value, name) => {
       clone.map.set(name, [...value]);
