@@ -202,18 +202,26 @@ describe('HttpParams', () => {
     it('should stringify number params', () => {
       const params = new HttpParams({ a: '', b: 2, c: 3 });
       expect(params.toString()).toBe('a=&b=2&c=3');
+      // make sure the param value is now a string
+      expect(params.get('b')).toBe('2');
     });
     it('should stringify number array params', () => {
       const params = new HttpParams({ a: '', b: [21, 22], c: 3 });
       expect(params.toString()).toBe('a=&b=21&b=22&c=3');
+      // make sure the param values are now strings
+      expect(params.getAll('b')).toEqual(['21', '22']);
     });
     it('should stringify boolean params', () => {
       const params = new HttpParams({ a: '', b: true, c: 3 });
       expect(params.toString()).toBe('a=&b=true&c=3');
+      // make sure the param value is now a boolean
+      expect(params.get('b')).toBe('true');
     });
     it('should stringify boolean array params', () => {
       const params = new HttpParams({ a: '', b: [true, false], c: 3 });
       expect(params.toString()).toBe('a=&b=true&b=false&c=3');
+      // make sure the param values are now booleans
+      expect(params.getAll('b')).toEqual(['true', 'false']);
     });
     it('should stringify array params of different types', () => {
       const params = new HttpParams({ a: ['', false, 3] as const });
