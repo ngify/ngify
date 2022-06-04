@@ -17,7 +17,8 @@
 		"build:docs": "typedoc",
 		"test": "lerna run --scope @ngify/http --scope @ngify/store --scope @ngify/at test:ci",
 		"publish": "npm run build & lerna publish --force-publish=* --exact",
-		"bootstrap": "lerna bootstrap --hoist"
+		"bootstrap": "lerna bootstrap --hoist",
+		"clean": "lerna clean"
 	},
 	"author": "HyperLife1119 <hyperlife1119@qq.com>",
 	"license": "MIT",
