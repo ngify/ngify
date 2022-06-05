@@ -46,10 +46,10 @@
     "rxjs": "^7.0.0"
   },
   "devDependencies": {
-    "@types/jest": "27.5.0",
+    "@types/jest": "28.1.1",
     "@types/wechat-miniprogram": "3.4.1",
-    "jest": "28.0.3",
-    "ts-jest": "28.0.1"
+    "jest": "28.1.0",
+    "ts-jest": "28.0.4"
   },
   "peerDependencies": {
     "@ngify/types": "^1.0.0",
