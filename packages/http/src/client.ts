@@ -23,7 +23,7 @@ interface RequestOptions<T extends ResponseType = ResponseType> {
   responseType?: T;
   reportProgress?: boolean;
   withCredentials?: boolean;
-};
+}
 
 export class HttpClient {
   private handler: HttpHandler;

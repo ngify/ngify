@@ -134,7 +134,7 @@ export class HttpXhrBackend implements HttpBackend {
 
         // Normalize another potential bug (this one comes from CORS).
         if (status === 0) {
-          status = !!body ? HttpStatusCode.Ok : 0;
+          status = !body ? 0 : HttpStatusCode.Ok;
         }
 
         // ok determines whether the response will be transmitted on the event or
@@ -225,7 +225,7 @@ export class HttpXhrBackend implements HttpBackend {
 
         // Start building the download progress event to deliver on the response
         // event stream.
-        let progressEvent: HttpDownloadProgressEvent = {
+        const progressEvent: HttpDownloadProgressEvent = {
           type: HttpEventType.DownloadProgress,
           loaded: event.loaded,
         };
@@ -251,7 +251,7 @@ export class HttpXhrBackend implements HttpBackend {
       const onUpProgress = (event: ProgressEvent) => {
         // Upload progress events are simpler. Begin building the progress
         // event.
-        let progress: HttpUploadProgressEvent = {
+        const progress: HttpUploadProgressEvent = {
           type: HttpEventType.UploadProgress,
           loaded: event.loaded,
         };
