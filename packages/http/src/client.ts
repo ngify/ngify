@@ -69,9 +69,9 @@ export class HttpClient {
   delete(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'body' }): Observable<string>
   delete(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<string>>
   delete(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<string>>
-  delete(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<Object>
-  delete(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<Object>>
-  delete(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<Object>>
+  delete(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<SafeAny>
+  delete(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<SafeAny>>
+  delete(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<SafeAny>>
   delete<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<R>
   delete<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<R>>
   delete<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<R>>
@@ -97,9 +97,9 @@ export class HttpClient {
   get(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'body' }): Observable<string>
   get(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<string>>
   get(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<string>>
-  get(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<Object>
-  get(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<Object>>
-  get(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<Object>>
+  get(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<SafeAny>
+  get(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<SafeAny>>
+  get(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<SafeAny>>
   get<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<R>
   get<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<R>>
   get<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<R>>
@@ -125,9 +125,9 @@ export class HttpClient {
   head(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'body' }): Observable<string>
   head(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<string>>
   head(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<string>>
-  head(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<Object>
-  head(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<Object>>
-  head(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<Object>>
+  head(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<SafeAny>
+  head(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<SafeAny>>
+  head(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<SafeAny>>
   head<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<R>
   head<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<R>>
   head<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<R>>
@@ -153,9 +153,9 @@ export class HttpClient {
   options(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'body' }): Observable<string>
   options(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<string>>
   options(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<string>>
-  options(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<Object>
-  options(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<Object>>
-  options(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<Object>>
+  options(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<SafeAny>
+  options(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<SafeAny>>
+  options(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<SafeAny>>
   options<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<R>
   options<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<R>>
   options<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<R>>
@@ -181,9 +181,9 @@ export class HttpClient {
   post(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'body' }): Observable<string>
   post(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<string>>
   post(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<string>>
-  post(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'body' }): Observable<Object>
-  post(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<Object>>
-  post(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<Object>>
+  post(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'body' }): Observable<SafeAny>
+  post(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<SafeAny>>
+  post(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<SafeAny>>
   post<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'body' }): Observable<R>
   post<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<R>>
   post<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<R>>
@@ -209,9 +209,9 @@ export class HttpClient {
   put(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'body' }): Observable<string>
   put(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<string>>
   put(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<string>>
-  put(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'body' }): Observable<Object>
-  put(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<Object>>
-  put(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<Object>>
+  put(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'body' }): Observable<SafeAny>
+  put(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<SafeAny>>
+  put(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<SafeAny>>
   put<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'body' }): Observable<R>
   put<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<R>>
   put<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<R>>
@@ -237,9 +237,9 @@ export class HttpClient {
   patch(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'body' }): Observable<string>
   patch(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<string>>
   patch(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<string>>
-  patch(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'body' }): Observable<Object>
-  patch(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<Object>>
-  patch(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<Object>>
+  patch(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'body' }): Observable<SafeAny>
+  patch(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<SafeAny>>
+  patch(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<SafeAny>>
   patch<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'body' }): Observable<R>
   patch<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<R>>
   patch<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<R>>
