@@ -46,7 +46,7 @@
     "rxjs": "^7.0.0"
   },
   "devDependencies": {
-    "@types/jest": "28.1.1",
+    "@types/jest": "28.1.6",
     "@types/wechat-miniprogram": "3.4.1",
     "jest": "28.1.0",
     "ts-jest": "28.0.1"
