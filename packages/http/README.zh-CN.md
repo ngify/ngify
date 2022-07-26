@@ -137,10 +137,17 @@ setupConfig({
 });
 ```
 
-如果需要为某个 `HttpClient` 单独配置 `HttpBackend`，可以在 `HttpClient` 构造方法的第二个参数传入：
+如果需要为某个 `HttpClient` 单独配置 `HttpBackend`，可以在 `HttpClient` 构造方法中传入：
 
 ```ts
-const http = new HttpClient(null, new CustomHttpBackend())
+const http = new HttpClient(new CustomHttpBackend());
+
+// 或者
+
+const http = new HttpClient({
+  interceptors: [/* 一些拦截器 */],
+  backend: new CustomHttpBackend()
+});
 ```
 
 ## 在 Node.js 中使用

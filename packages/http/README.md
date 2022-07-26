@@ -137,10 +137,17 @@ setupConfig({
 });
 ```
 
-If you need to configure `HttpClient` separately for a `HttpBackend`, you can pass in the second parameter of the `HttpBackend` constructor:
+If you need to configure `HttpBackend` separately for a `HttpClient`, you can pass it in the `HttpClient` constructor:
 
 ```ts
-const http = new HttpClient(null, new CustomHttpBackend())
+const http = new HttpClient(new CustomHttpBackend());
+
+// Or
+
+const http = new HttpClient({
+  interceptors: [/* Some interceptors */],
+  backend: new CustomHttpBackend()
+});
 ```
 
 ## Use in Node.js
