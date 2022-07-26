@@ -1,6 +1,6 @@
 {
 	"name": "ngify",
-	"version": "1.0.0",
+	"version": "1.2.1",
 	"description": "Pretend to be using Angular",
 	"main": "index.js",
 	"scripts": {
@@ -17,6 +17,7 @@
 		"build:docs": "typedoc",
 		"test": "lerna run --scope @ngify/http --scope @ngify/store --scope @ngify/at test:ci",
 		"publish": "npm run build & lerna publish --force-publish=* --exact",
+		"version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
 		"bootstrap": "lerna bootstrap --hoist",
 		"clean": "lerna clean"
 	},
@@ -29,6 +30,7 @@
 	"devDependencies": {
 		"@rollup/plugin-node-resolve": "13.3.0",
 		"@rollup/plugin-typescript": "8.3.3",
+		"conventional-changelog-cli": "^2.2.2",
 		"lerna": "5.1.8",
 		"minimist": "1.2.6",
 		"rollup": "2.77.0",
