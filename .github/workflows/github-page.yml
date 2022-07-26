@@ -20,7 +20,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
       - run: npm ci
-      - run: npx lerna bootstrap
+      - run: npm run bootstrap
+      - run: npm run build
       - run: npm run build:docs
 
       - name: Deploy
