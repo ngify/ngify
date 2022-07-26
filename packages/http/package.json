@@ -2,7 +2,9 @@
   "name": "@ngify/http",
   "version": "1.2.1",
   "description": "A reactive HTTP client API",
-  "typedocMain": "./src/index.ts",
+  "typedoc": {
+    "entryPoint": "./src/index.ts"
+  },
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
