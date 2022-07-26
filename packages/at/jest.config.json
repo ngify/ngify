@@ -1,5 +1,4 @@
 {
-  "name": "at",
   "displayName": "at",
   "preset": "ts-jest",
   "globals": {

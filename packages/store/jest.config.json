@@ -1,5 +1,4 @@
 {
-  "name": "store",
   "displayName": "store",
   "preset": "ts-jest",
   "globals": {

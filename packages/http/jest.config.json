@@ -1,5 +1,4 @@
 {
-  "name": "http",
   "displayName": "http",
   "preset": "ts-jest",
   "globals": {
