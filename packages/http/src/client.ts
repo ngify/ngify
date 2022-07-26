@@ -28,7 +28,24 @@ interface RequestOptions<T extends ResponseType = ResponseType> {
 export class HttpClient {
   private handler: HttpHandler;
 
-  constructor(interceptors?: ReadonlyArray<HttpInterceptor> | null, backend?: HttpBackend) {
+  constructor(backend?: HttpBackend);
+  constructor(interceptors?: ReadonlyArray<HttpInterceptor>);
+  constructor(options?: { interceptors?: ReadonlyArray<HttpInterceptor>, backend?: HttpBackend });
+  constructor(options?: { interceptors?: ReadonlyArray<HttpInterceptor>, backend?: HttpBackend } | ReadonlyArray<HttpInterceptor> | HttpBackend) {
+    let interceptors: ReadonlyArray<HttpInterceptor> | undefined = undefined;
+    let backend: HttpBackend | undefined = undefined;
+
+    if (options) {
+      if (Array.isArray(options)) {
+        interceptors = options;
+      } else if ('handle' in options) {
+        backend = options;
+      } else if ('interceptors' in options || 'backend' in options) {
+        interceptors = options.interceptors;
+        backend = options.backend;
+      }
+    }
+
     if (!backend) {
       backend = config.backend ?? new HttpXhrBackend();
     }

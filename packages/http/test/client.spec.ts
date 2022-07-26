@@ -17,7 +17,7 @@ import { HttpClientTestingBackend } from '../testing/src/backend';
     let backend: HttpClientTestingBackend = null!;
     beforeEach(() => {
       backend = new HttpClientTestingBackend();
-      client = new HttpClient(null, backend);
+      client = new HttpClient(backend);
     });
     afterEach(() => {
       backend.verify();
