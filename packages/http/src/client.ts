@@ -76,15 +76,10 @@ export class HttpClient {
   delete<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<R>>
   delete<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<R>>
   delete(url: string, params?: Params, options: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
-    const { body, headers, context, responseType, reportProgress, withCredentials, observe } = options;
+    const { observe, ...requestOptions } = options;
     return this.request<SafeAny>(new HttpRequest('DELETE', url, {
-      body,
       params,
-      headers,
-      context,
-      responseType,
-      reportProgress,
-      withCredentials
+      ...requestOptions
     }), { observe });
   }
 
@@ -104,15 +99,10 @@ export class HttpClient {
   get<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<R>>
   get<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<R>>
   get(url: string, params?: Params, options: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
-    const { body, headers, context, responseType, reportProgress, withCredentials, observe } = options;
+    const { observe, ...requestOptions } = options;
     return this.request<SafeAny>(new HttpRequest('GET', url, {
-      body,
       params,
-      headers,
-      context,
-      responseType,
-      reportProgress,
-      withCredentials
+      ...requestOptions
     }), { observe });
   }
 
@@ -132,15 +122,10 @@ export class HttpClient {
   head<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<R>>
   head<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<R>>
   head(url: string, params?: Params, options: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
-    const { body, headers, context, responseType, reportProgress, withCredentials, observe } = options;
+    const { observe, ...requestOptions } = options;
     return this.request<SafeAny>(new HttpRequest('HEAD', url, {
-      body,
       params,
-      headers,
-      context,
-      responseType,
-      reportProgress,
-      withCredentials
+      ...requestOptions
     }), { observe });
   }
 
@@ -160,15 +145,10 @@ export class HttpClient {
   options<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<R>>
   options<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<R>>
   options(url: string, params?: Params, options: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
-    const { body, headers, context, responseType, reportProgress, withCredentials, observe } = options;
+    const { observe, ...requestOptions } = options;
     return this.request<SafeAny>(new HttpRequest('OPTIONS', url, {
-      body,
       params,
-      headers,
-      context,
-      responseType,
-      reportProgress,
-      withCredentials
+      ...requestOptions
     }), { observe });
   }
 
@@ -188,15 +168,10 @@ export class HttpClient {
   post<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<R>>
   post<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<R>>
   post(url: string, body?: Body, options: Omit<RequestOptions, 'body'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
-    const { params, headers, context, responseType, reportProgress, withCredentials, observe } = options;
+    const { observe, ...requestOptions } = options;
     return this.request<SafeAny>(new HttpRequest('POST', url, {
       body,
-      params,
-      headers,
-      context,
-      responseType,
-      reportProgress,
-      withCredentials
+      ...requestOptions
     }), { observe });
   }
 
@@ -216,15 +191,10 @@ export class HttpClient {
   put<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<R>>
   put<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<R>>
   put(url: string, body?: Body, options: Omit<RequestOptions, 'body'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
-    const { params, headers, context, responseType, reportProgress, withCredentials, observe } = options;
+    const { observe, ...requestOptions } = options;
     return this.request<SafeAny>(new HttpRequest('PUT', url, {
       body,
-      params,
-      headers,
-      context,
-      responseType,
-      reportProgress,
-      withCredentials
+      ...requestOptions
     }), { observe });
   }
 
@@ -244,15 +214,10 @@ export class HttpClient {
   patch<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<R>>
   patch<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<R>>
   patch(url: string, body?: Body, options: Omit<RequestOptions, 'body'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
-    const { params, headers, context, responseType, reportProgress, withCredentials, observe } = options;
+    const { observe, ...requestOptions } = options;
     return this.request<SafeAny>(new HttpRequest('PATCH', url, {
       body,
-      params,
-      headers,
-      context,
-      responseType,
-      reportProgress,
-      withCredentials
+      ...requestOptions
     }), { observe });
   }
 }
