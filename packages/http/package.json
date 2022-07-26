@@ -1,6 +1,6 @@
 {
   "name": "@ngify/http",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "A reactive HTTP client API",
   "typedoc": {
     "entryPoint": "./src/index.ts"
@@ -44,7 +44,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@ngify/types": "1.2.1",
+    "@ngify/types": "1.3.0",
     "rxjs": "^7.0.0"
   },
   "devDependencies": {

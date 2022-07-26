@@ -1,3 +1,20 @@
+# [1.3.0](https://github.com/ngify/ngify/compare/v1.2.1...v1.3.0) (2022-07-26)
+
+
+### Bug Fixes
+
+* fix test config ([53485c6](https://github.com/ngify/ngify/commit/53485c62277b5670dbff073209036f8e53886dd5))
+* **http:** change `HttpContext#set()` method sign ([12d9a95](https://github.com/ngify/ngify/commit/12d9a952b1157a569aea66fac3c41804707db1c0))
+* **http:** fix some issues ([f190aa5](https://github.com/ngify/ngify/commit/f190aa536735c95af52c7a398d2630a0af5fb1f4))
+* **http:** fix type ([2d9df6c](https://github.com/ngify/ngify/commit/2d9df6cb08a82a32339e611ce403458321d79624))
+
+
+### Features
+
+* **http:** simplify some codes ([14043ec](https://github.com/ngify/ngify/commit/14043ecbb824de1e7238c0d57025f24f20e50a4a))
+
+
+
 ## [1.2.1](https://github.com/ngify/ngify/compare/v1.2.0...v1.2.1) (2022-05-06)
 
 
