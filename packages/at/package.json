@@ -1,6 +1,6 @@
 {
   "name": "@ngify/at",
-  "version": "1.3.1",
+  "version": "1.3.0",
   "description": "A practical decorator library",
   "typedoc": {
     "entryPoint": "./src/index.ts"
@@ -39,7 +39,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@ngify/types": "1.3.1"
+    "@ngify/types": "1.3.0"
   },
   "devDependencies": {
     "@types/jest": "28.1.1",
