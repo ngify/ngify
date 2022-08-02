@@ -1,6 +1,6 @@
 {
   "name": "@ngify/http",
-  "version": "1.3.1",
+  "version": "1.3.0",
   "description": "A reactive HTTP client API",
   "typedoc": {
     "entryPoint": "./src/index.ts"

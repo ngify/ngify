@@ -1,6 +1,6 @@
 {
   "name": "@ngify/at",
-  "version": "1.3.1",
+  "version": "1.3.0",
   "description": "A practical decorator library",
   "typedoc": {
     "entryPoint": "./src/index.ts"
