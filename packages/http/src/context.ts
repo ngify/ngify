@@ -5,8 +5,8 @@ export class HttpContextToken<T> {
 export class HttpContext {
   private readonly map = new Map<HttpContextToken<unknown>, unknown>();
 
-  set<T>(token: HttpContextToken<T>, value: T): HttpContext {
-    this.map.set(token, value);
+  set<T>(token: HttpContextToken<T>, value?: T): HttpContext {
+    this.map.set(token, value === undefined ? token.defaultValue() : value);
     return this;
   }
 
