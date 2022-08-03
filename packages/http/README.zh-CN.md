@@ -61,8 +61,8 @@ http.delete('url', new HttpParams('k=v'), {
 > `@ngify/http` 会按照您提供拦截器的顺序应用它们。
 
 ```ts
-import { HttpClient, HttpHandler, HttpRequest, HttpEvent, HttpInterceptor } from '@ngify/http';
-import { Observable, map } from 'rxjs';
+import { HttpClient, HttpHandler, HttpRequest, HttpEvent, HttpInterceptor, HttpEventType } from '@ngify/http';
+import { Observable, tap } from 'rxjs';
 
 const http = new HttpClient([
   new class implements HttpInterceptor {
@@ -84,7 +84,11 @@ const http = new HttpClient([
       console.log('拦截后的请求', request);
 
       return next.handle(request).pipe(
-        tap(response => console.log('拦截后的响应', response))
+        tap(response => {
+          if (response.type === HttpEventType.Response) {
+            console.log('拦截后的响应', response)
+          }
+        })
       );
     }
   }

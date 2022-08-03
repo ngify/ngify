@@ -61,8 +61,8 @@ With interception, you declare interceptors that inspect and transform HTTP requ
 > `@ngify/http` applies interceptors in the order that you provide them。
 
 ```ts
-import { HttpClient, HttpHandler, HttpRequest, HttpEvent, HttpInterceptor } from '@ngify/http';
-import { Observable, map } from 'rxjs';
+import { HttpClient, HttpHandler, HttpRequest, HttpEvent, HttpInterceptor, HttpEventType } from '@ngify/http';
+import { Observable, tap } from 'rxjs';
 
 const http = new HttpClient([
   new class implements HttpInterceptor {
@@ -84,7 +84,11 @@ const http = new HttpClient([
       console.log('Request after interception', request);
 
       return next.handle(request).pipe(
-        tap(response => console.log('Response after interception', response))
+        tap(response => {
+          if (response.type === HttpEventType.Response) {
+            console.log('Response after interception', response)
+          }
+        })
       );
     }
   }
