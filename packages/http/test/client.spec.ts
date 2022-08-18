@@ -6,8 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { lastValueFrom } from 'rxjs';
-import { toArray } from 'rxjs/operators';
+import { lastValueFrom, toArray } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpEventType, HttpResponse, HttpStatusCode } from '../src';
 import { HttpClientTestingBackend } from '../testing/src/backend';
 

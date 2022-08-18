@@ -6,8 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { lastValueFrom, Observable } from 'rxjs';
-import { toArray } from 'rxjs/operators';
+import { lastValueFrom, Observable, toArray } from 'rxjs';
 import { HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpRequest, HttpResponse, HttpResponseBase, HttpStatusCode, HttpUploadProgressEvent, HttpXhrBackend } from '../src';
 import { MockXhrFactory } from './xhr_mock';
 
