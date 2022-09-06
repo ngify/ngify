@@ -31,7 +31,7 @@
 		"@rollup/plugin-node-resolve": "13.3.0",
 		"@rollup/plugin-typescript": "8.5.0",
 		"conventional-changelog-cli": "2.2.2",
-		"lerna": "5.4.0",
+		"lerna": "5.5.0",
 		"minimist": "1.2.6",
 		"rollup": "2.79.0",
 		"typedoc": "0.23.11",
