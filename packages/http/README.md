@@ -25,6 +25,12 @@ Before working with the `@ngify/http`, you should have a basic understanding of 
 
 For the full API definition, please visit [https://ngify.github.io/ngify](https://ngify.github.io/ngify/modules/_ngify_http.html).
 
+## Install
+
+```bash
+npm i @ngify/http
+```
+
 ## Basic usage
 
 ```ts

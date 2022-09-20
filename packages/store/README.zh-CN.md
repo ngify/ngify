@@ -19,6 +19,12 @@
 
 有关完整的 API 定义，请访问 [https://ngify.github.io/ngify](https://ngify.github.io/ngify/modules/_ngify_store.html)。
 
+## 安装
+
+```bash
+npm i @ngify/store
+```
+
 ## 用法
 
 定义状态：

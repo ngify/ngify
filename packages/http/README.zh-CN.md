@@ -25,6 +25,12 @@
 
 有关完整的 API 定义，请访问 [https://ngify.github.io/ngify](https://ngify.github.io/ngify/modules/_ngify_http.html).
 
+## 安装
+
+```bash
+npm i @ngify/http
+```
+
 ## 基本用法
 
 ```ts

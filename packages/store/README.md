@@ -19,6 +19,12 @@ By convention, only methods of the state class object can modify the state value
 
 For the full API definition, please visit [https://ngify.github.io/ngify](https://ngify.github.io/ngify/modules/_ngify_store.html).
 
+## Install
+
+```bash
+npm i @ngify/store
+```
+
 ## Usage
 
 Definition state:
