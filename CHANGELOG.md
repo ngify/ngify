@@ -1,3 +1,12 @@
+# [1.3.0](https://github.com/ngify/ngify/compare/v1.3.1...v1.3.0) (2022-09-20)
+
+
+### Features
+
+* **http:** adjust sign of HttpContext#set method ([41e83bc](https://github.com/ngify/ngify/commit/41e83bc2467c9e27e11aa2ca9d2f97c276cbc3c6))
+
+
+
 # [1.3.0](https://github.com/ngify/ngify/compare/v1.2.1...v1.3.0) (2022-07-26)
 
 
