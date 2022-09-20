@@ -28,7 +28,7 @@
 		"packages/*"
 	],
 	"devDependencies": {
-		"@rollup/plugin-node-resolve": "13.3.0",
+		"@rollup/plugin-node-resolve": "14.1.0",
 		"@rollup/plugin-typescript": "8.5.0",
 		"conventional-changelog-cli": "2.2.2",
 		"lerna": "5.5.0",
