@@ -8,8 +8,8 @@ Use some of angular's features and design patterns to pretend you are using angu
 
 ## Packages
 
-| Project   | Package                                                                   | Intro                         | Version                                                                                                        |
-| --------- | ------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| **HTTP**  | [`@ngify/http`](https://github.com/ngify/ngify/tree/main/packages/http)   | A reactive HTTP client        | [![version](https://img.shields.io/npm/v/@ngify/http/latest.svg)](https://www.npmjs.com/package/@ngify/http)   |
-| **STORE** | [`@ngify/store`](https://github.com/ngify/ngify/tree/main/packages/store) | A mini state manager          | [![version](https://img.shields.io/npm/v/@ngify/store/latest.svg)](https://www.npmjs.com/package/@ngify/store) |
-| **AT**    | [`@ngify/at`](https://github.com/ngify/ngify/tree/main/packages/at)       | A practical decorator library | [![version](https://img.shields.io/npm/v/@ngify/at/latest.svg)](https://www.npmjs.com/package/@ngify/at)       |
+| Package                                                                   | Intro                                                        | Version                                                                                                        |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| [`@ngify/http`](https://github.com/ngify/ngify/tree/main/packages/http)   | A reactive HTTP client in the form of `@angular/common/http` | [![version](https://img.shields.io/npm/v/@ngify/http/latest.svg)](https://www.npmjs.com/package/@ngify/http)   |
+| [`@ngify/store`](https://github.com/ngify/ngify/tree/main/packages/store) | A simple state manager based on decorator and rxjs.          | [![version](https://img.shields.io/npm/v/@ngify/store/latest.svg)](https://www.npmjs.com/package/@ngify/store) |
+| [`@ngify/at`](https://github.com/ngify/ngify/tree/main/packages/at)       | A practical decorator library (experimental).                | [![version](https://img.shields.io/npm/v/@ngify/at/latest.svg)](https://www.npmjs.com/package/@ngify/at)       |

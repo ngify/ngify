@@ -1,12 +1,12 @@
 # @ngify/store
 
-一个基于 `装饰器` 和 `rxjs` 的简易状态管理器。
-
 [![version](https://img.shields.io/npm/v/@ngify/store/latest.svg)](https://www.npmjs.com/package/@ngify/store)
 ![Node.js CI](https://github.com/ngify/ngify/workflows/Node.js%20CI/badge.svg)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 [![CodeFactor](https://www.codefactor.io/repository/github/ngify/ngify/badge)](https://www.codefactor.io/repository/github/ngify/ngify)
 [![English](https://img.shields.io/static/v1?label=English&message=en-US&color=212121)](https://github.com/ngify/ngify/blob/main/packages/store/README.md)
+
+一个基于 `装饰器` 和 `rxjs` 的简易状态管理器。
 
 ## 概念
 
