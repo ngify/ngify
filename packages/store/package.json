@@ -15,6 +15,8 @@
   ],
   "sideEffects": false,
   "scripts": {
+    "dev": "node ../../scripts/build.mjs --pkg=store",
+    "build": "node ../../scripts/build.mjs --pkg=store --prod",
     "test": "jest --config ./jest.config.json",
     "test:ci": "jest --config ./jest.config.json -i",
     "test:coverage": "jest --config ./jest.config.json --coverage"

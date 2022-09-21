@@ -1,22 +1,27 @@
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import chalk from 'chalk';
-import { exec, execSync } from 'child_process';
+import { exec } from 'child_process';
 import fs from 'fs';
 import minimist from 'minimist';
+import path, { dirname } from 'path';
 import { rollup, watch } from 'rollup';
+import { fileURLToPath } from 'url';
 
 const { pkg, prod } = minimist(process.argv.slice(2));
 const pkgs = pkg ? [pkg] : ['types', 'store', 'http', 'at'];
 const formats = ['cjs', 'esm'];
 const log = console.log;
+const dir = dirname(fileURLToPath(import.meta.url));
 
 const createInputOptions = (pkg, prod) => {
   const options = {
-    input: `packages/${pkg}/src/index.ts`,
+    input: path.resolve(dir, '..', `packages/${pkg}/src/index.ts`),
     external: ['rxjs', 'rxjs/fetch', '@ngify/types', 'tslib'],
     plugins: [
       typescript({
+        declaration: false,
+        declarationDir: null,
         removeComments: true
       }),
       nodeResolve()
@@ -31,7 +36,7 @@ const createInputOptions = (pkg, prod) => {
 };
 
 const createOutputOptions = (pkg, fmt) => ({
-  dir: `packages/${pkg}/dist/${fmt}`,
+  dir: path.resolve(dir, '..', `packages/${pkg}/dist/${fmt}`),
   format: fmt,
   name: `ngify.${pkg}`,
   sourcemap: true,
@@ -41,18 +46,7 @@ const createOutputOptions = (pkg, fmt) => ({
 const emitDeclaration = pkg => {
   log(chalk.magenta(`[@ngify/${pkg}] emitting declaration file...`));
 
-  const cmd = `tsc --project ./packages/${pkg}/tsconfig.json --emitDeclarationOnly`;
-
-  if (pkg === 'types') {
-    try {
-      execSync(cmd);
-      log(chalk.magenta(`[@ngify/${pkg}] declaration file emit is complete!`));
-    } catch (error) {
-      log(chalk.red(`[@ngify/${pkg}] failed to emit declaration file!`));
-      log(error);
-    }
-    return;
-  }
+  const cmd = `tsc --project ${path.resolve(dir, '..', `packages/${pkg}/tsconfig.json`)} --emitDeclarationOnly`;
 
   exec(cmd, error => {
     if (error) {
@@ -70,7 +64,7 @@ if (prod) {
     const directory = `packages/${pkg}/dist`;
     fs.existsSync(directory) && fs.rmSync(directory, { recursive: true });
 
-    for (const fmt of formats) {
+    if (pkg !== 'types') for (const fmt of formats) {
       log(chalk.blue(`[@ngify/${pkg}] start to build ${fmt} format...`));
 
       // create a bundle

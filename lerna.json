@@ -1,4 +1,6 @@
 {
+  "useNx": true,
+  "useWorkspaces": true,
   "packages": [
     "packages/*"
   ],
