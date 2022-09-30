@@ -23,9 +23,7 @@ export class HttpFetchBackend implements HttpBackend {
     let headers: HttpHeaders;
 
     return of({ type: HttpEventType.Sent }).pipe(
-      concatMap(() => fromFetch<Response>(request.urlWithParams, {
-        // @ts-expect-error
-        selector: undefined,
+      concatMap(() => fromFetch(request.urlWithParams, {
         method: request.method,
         headers: request.headers.keys().reduce((headers, name) => (
           headers[name] = request.headers.getAll(name)!.join(','),
@@ -34,7 +32,7 @@ export class HttpFetchBackend implements HttpBackend {
         body: request.serializeBody(),
         ...request.context.get(FETCH_TOKEN)
       })),
-      switchMap<Response, Observable<ArrayBuffer | Blob | Object | string>>(response => {
+      switchMap(response => {
         url = response.url;
         status = response.status;
         statusText = response.statusText;
