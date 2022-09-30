@@ -24,7 +24,7 @@ export class HttpFetchBackend implements HttpBackend {
 
     return of({ type: HttpEventType.Sent }).pipe(
       concatMap(() => fromFetch<Response>(request.urlWithParams, {
-        // @ts-ignore
+        // @ts-expect-error
         selector: undefined,
         method: request.method,
         headers: request.headers.keys().reduce((headers, name) => (
