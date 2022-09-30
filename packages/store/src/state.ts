@@ -4,8 +4,8 @@ import { store } from './store';
 
 export function State(): ClassDecorator {
   return (target: SafeAny) => class extends target {
-    constructor() {
-      super(...arguments);
+    constructor(...args: SafeAny[]) {
+      super(...args);
       store.put(this);
     }
   } as typeof target;
@@ -15,8 +15,8 @@ export function Action(action?: string): MethodDecorator {
   return (target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<SafeAny>) => {
     const fn = descriptor.value;
 
-    descriptor.value = function () {
-      const returnValue = fn.apply(this, arguments);
+    descriptor.value = function (...args: SafeAny[]) {
+      const returnValue = fn.apply(this, args);
 
       if (returnValue instanceof Promise) {
         return returnValue.then(o => (store.dispatch(this, action || propertyKey as string), o));
