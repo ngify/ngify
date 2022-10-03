@@ -6,9 +6,9 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import { HttpBackend, HttpEvent, HttpEventType, HttpRequest } from '@ngify/http';
 import { SafeAny } from '@ngify/types';
 import { Observable, Observer } from 'rxjs';
-import { HttpBackend, HttpEvent, HttpEventType, HttpRequest } from '../../src';
 import { HttpTestingController, RequestMatch } from './api';
 import { TestRequest } from './request';
 

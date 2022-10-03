@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import { HttpRequest } from '@ngify/http';
 import { SafeAny } from '@ngify/types';
-import { HttpRequest } from '../../src';
 import { TestRequest } from './request';
 
 /**

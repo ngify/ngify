@@ -6,9 +6,9 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import { HttpErrorResponse, HttpEvent, HttpHeaders, HttpRequest, HttpResponse, HttpStatusCode } from '@ngify/http';
 import { SafeAny } from '@ngify/types';
 import { Observer } from 'rxjs';
-import { HttpErrorResponse, HttpEvent, HttpHeaders, HttpRequest, HttpResponse, HttpStatusCode } from '../../src';
 
 /**
  * Type that describes options that can be used to create an error

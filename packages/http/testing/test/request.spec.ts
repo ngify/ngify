@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { HttpClient } from '../../src';
-import { HttpClientTestingBackend } from '../src/backend';
+import { HttpClient } from '@ngify/http';
+import { HttpClientTestingBackend } from '../src';
 
 describe('HttpClient TestRequest', () => {
   it('accepts a null body', () => {
