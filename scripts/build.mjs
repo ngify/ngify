@@ -4,22 +4,39 @@ import chalk from 'chalk';
 import { exec } from 'child_process';
 import fs from 'fs';
 import minimist from 'minimist';
-import path, { dirname } from 'path';
+import { dirname, resolve } from 'path';
 import { rollup, watch } from 'rollup';
 import { fileURLToPath } from 'url';
 
 const { pkg, prod } = minimist(process.argv.slice(2));
-const pkgs = pkg ? [pkg] : ['types', 'store', 'http', 'at'];
+const pkgs = pkg ? [pkg] : ['types', 'store', 'http', 'http/testing', 'at'];
+/** @type {['cjs', 'esm']} */
 const formats = ['cjs', 'esm'];
 const log = console.log;
 const dir = dirname(fileURLToPath(import.meta.url));
+/**
+ * @param  {string} segment
+ * @returns {string}
+ */
+const resolvePath = segment => resolve(dir, '..', segment);
 
+/**
+ * @param {string} pkg
+ * @param {boolean} prod
+ * @returns {import('rollup').OutputOptions}
+ */
 const createInputOptions = (pkg, prod) => {
   const options = {
-    input: path.resolve(dir, '..', `packages/${pkg}/src/index.ts`),
-    external: ['rxjs', 'rxjs/fetch', '@ngify/types', 'tslib'],
+    input: resolvePath(`packages/${pkg}/src/index.ts`),
+    external: [
+      'rxjs',
+      'rxjs/fetch',
+      /@ngify\/.+/,
+      'tslib'
+    ],
     plugins: [
       typescript({
+        tsconfig: resolvePath(`packages/${pkg}/tsconfig.json`),
         declaration: false,
         declarationDir: null,
         removeComments: true
@@ -36,9 +53,8 @@ const createInputOptions = (pkg, prod) => {
 };
 
 const createOutputOptions = (pkg, fmt) => ({
-  dir: path.resolve(dir, '..', `packages/${pkg}/dist/${fmt}`),
+  dir: resolvePath(`packages/${pkg}/dist/${fmt}`),
   format: fmt,
-  name: `ngify.${pkg}`,
   sourcemap: true,
   preserveModules: true
 });
@@ -46,7 +62,8 @@ const createOutputOptions = (pkg, fmt) => ({
 const emitDeclaration = pkg => {
   log(chalk.magenta(`[@ngify/${pkg}] emitting declaration file...`));
 
-  const cmd = `tsc --project ${path.resolve(dir, '..', `packages/${pkg}/tsconfig.json`)} --emitDeclarationOnly`;
+  const project = resolvePath(`packages/${pkg}/tsconfig.json`);
+  const cmd = `tsc --project ${project} --emitDeclarationOnly`;
 
   exec(cmd, error => {
     if (error) {
@@ -58,12 +75,17 @@ const emitDeclaration = pkg => {
   });
 };
 
+const clearDistributable = pkg => {
+  const directory = resolvePath(`packages/${pkg}/dist`);
+  fs.existsSync(directory) && fs.rmSync(directory, { recursive: true });
+}
+
 if (prod) {
   for (const pkg of pkgs) {
     // delete the dist directory
-    const directory = `packages/${pkg}/dist`;
-    fs.existsSync(directory) && fs.rmSync(directory, { recursive: true });
+    clearDistributable(pkg);
 
+    // @ngify/types does not need rollup build
     if (pkg !== 'types') for (const fmt of formats) {
       log(chalk.blue(`[@ngify/${pkg}] start to build ${fmt} format...`));
 
