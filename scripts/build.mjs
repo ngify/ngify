@@ -90,15 +90,14 @@ if (prod) {
       log(chalk.blue(`[@ngify/${pkg}] start to build ${fmt} format...`));
 
       // create a bundle
-      rollup(createInputOptions(pkg, prod)).then(async (bundle) => {
-        const outputOptions = createOutputOptions(pkg, fmt);
-        // generate code and a sourcemap
-        await bundle.generate(outputOptions);
-        // or write the bundle to disk
-        await bundle.write(outputOptions);
+      const bundle = await rollup(createInputOptions(pkg, prod));
+      const outputOptions = createOutputOptions(pkg, fmt);
+      // generate code and a sourcemap
+      await bundle.generate(outputOptions);
+      // or write the bundle to disk
+      await bundle.write(outputOptions);
 
-        log(chalk.green(`[@ngify/${pkg}] ${fmt} format build is complete!`));
-      });
+      log(chalk.green(`[@ngify/${pkg}] ${fmt} format build is complete!`));
     }
 
     // emit declaration file
