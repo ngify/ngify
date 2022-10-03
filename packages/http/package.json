@@ -19,9 +19,8 @@
   "sideEffects": false,
   "scripts": {
     "dev": "node ../../scripts/build.mjs --pkg=http",
-    "build": "npm run build:http & npm run build:testing",
-    "build:http": "node ../../scripts/build.mjs --pkg=http --prod",
-    "build:testing": "node ../../scripts/build.mjs --pkg=http/testing --prod",
+    "build": "node ../../scripts/build.mjs --pkg=http --prod",
+    "postbuild": "node ../../scripts/build.mjs --pkg=http/testing --prod",
     "test": "jest --config ./jest.config.json",
     "test:ci": "jest --config ./jest.config.json -i",
     "test:coverage": "jest --config ./jest.config.json --coverage"
