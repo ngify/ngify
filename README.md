@@ -4,7 +4,7 @@
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 [![CodeFactor](https://www.codefactor.io/repository/github/ngify/ngify/badge)](https://www.codefactor.io/repository/github/ngify/ngify)
 
-Use some of angular's features and design patterns to pretend you are using angular.
+Use its features outside of Angular.
 
 ## Packages
 
