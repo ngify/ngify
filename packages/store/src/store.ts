@@ -29,7 +29,7 @@ export class Store {
   dispatch<T extends object>(state: T, action: string) {
     const key = state.constructor as Type<SafeAny>;
     state = { ...state };
-    this.states.set(key, Object.assign(this.states.get(key), state));
+    this.states.set(key, Object.assign(this.states.get(key)!, state));
     this.subject.next({ key, action, state });
   }
 
