@@ -23,3 +23,8 @@ export type Method<T> = Omit<T, keyof Property<T>>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type SafeAny = any;
+
+/** Any Object */
+export type AnyObject = Record<string, SafeAny>;
+/** Any Array */
+export type AnyArray = SafeAny[];
