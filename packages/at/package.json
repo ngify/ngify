@@ -19,7 +19,8 @@
     "build": "node ../../scripts/build.mjs --pkg=at --prod",
     "test": "jest --config ./jest.config.json",
     "test:ci": "jest --config ./jest.config.json -i",
-    "test:coverage": "jest --config ./jest.config.json --coverage"
+    "test:coverage": "jest --config ./jest.config.json --coverage",
+    "lint": "eslint . --fix"
   },
   "repository": {
     "type": "git",

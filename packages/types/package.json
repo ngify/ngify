@@ -14,7 +14,8 @@
   ],
   "scripts": {
     "dev": "node ../../scripts/build.mjs --pkg=types",
-    "build": "node ../../scripts/build.mjs --pkg=types --prod"
+    "build": "node ../../scripts/build.mjs --pkg=types --prod",
+    "lint": "eslint . --fix"
   },
   "repository": {
     "type": "git",

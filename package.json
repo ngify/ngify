@@ -8,6 +8,7 @@
     "build": "lerna run build",
     "build:docs": "typedoc",
     "test": "lerna run test:ci",
+    "lint": "lerna run lint",
     "publish": "npm run build & lerna publish --force-publish=* --exact",
     "bootstrap": "lerna bootstrap --hoist",
     "clean": "lerna clean"
@@ -21,6 +22,9 @@
   "devDependencies": {
     "@rollup/plugin-node-resolve": "15.0.0",
     "@rollup/plugin-typescript": "9.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.42.1",
+    "@typescript-eslint/parser": "^5.42.1",
+    "eslint": "^8.27.0",
     "lerna": "6.0.1",
     "minimist": "1.2.6",
     "nx": "15.0.0",
