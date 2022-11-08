@@ -11,7 +11,8 @@
     "lint": "lerna run lint",
     "publish": "npm run build & lerna publish --force-publish=* --exact",
     "bootstrap": "lerna bootstrap --hoist",
-    "clean": "lerna clean"
+    "clean": "lerna clean",
+    "prepare": "husky install"
   },
   "author": "HyperLife1119 <hyperlife1119@qq.com>",
   "license": "MIT",
@@ -27,6 +28,7 @@
     "@typescript-eslint/eslint-plugin": "^5.42.1",
     "@typescript-eslint/parser": "^5.42.1",
     "eslint": "^8.27.0",
+    "husky": "^8.0.2",
     "lerna": "6.0.1",
     "minimist": "1.2.6",
     "nx": "15.0.0",
