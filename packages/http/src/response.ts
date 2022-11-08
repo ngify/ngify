@@ -1,7 +1,7 @@
 import { SafeAny } from '@ngify/types';
 import { HttpHeaders } from './headers';
 
-export type HttpEvent<T> = HttpSentEvent | HttpHeaderResponse | HttpResponse<T> | HttpProgressEvent | HttpUserEvent<T>;
+export type HttpEvent<T> = HttpSentEvent | HttpHeaderResponse | HttpResponse<T> | HttpProgressEvent | HttpUserEvent;
 
 /** Type enumeration for the different kinds of `HttpEvent`. */
 export enum HttpEventType {
@@ -47,7 +47,7 @@ export interface HttpSentEvent {
 }
 
 /** A user-defined event. */
-export interface HttpUserEvent<T> {
+export interface HttpUserEvent {
   type: HttpEventType.User;
 }
 
@@ -71,7 +71,7 @@ export abstract class HttpResponseBase {
     status?: number,
     statusText?: string,
     headers?: HttpHeaders,
-  }, defaultStatus: number = HttpStatusCode.Ok, defaultStatusText: string = 'OK') {
+  }, defaultStatus: number = HttpStatusCode.Ok, defaultStatusText = 'OK') {
     this.url = options.url || null;
     this.status = options.status !== undefined ? options.status : defaultStatus;
     this.statusText = options.statusText || defaultStatusText;

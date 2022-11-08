@@ -14,5 +14,5 @@ export function Debounce(wait: number): MethodDecorator {
       map.has(this) && clearTimeout(map.get(this));
       map.set(this, setTimeout(() => fn.apply(this, args), wait));
     };
-  }
+  };
 }

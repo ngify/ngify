@@ -1,5 +1,5 @@
 import { SafeAny, Type } from '@ngify/types';
-import { filter, map, Observable, Subject } from "rxjs";
+import { filter, map, Observable, Subject } from 'rxjs';
 
 export class Store {
   private readonly subject = new Subject<{ key: Type<SafeAny>, action: string, state: object }>();

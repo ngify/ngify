@@ -59,7 +59,7 @@ export function Retryable(options: number | Type<unknown>[] | RetryOptions): Met
         }
       }
     };
-  }
+  };
 }
 
 const isInlude = (include: RetryOptions['include'], error: unknown) => {
@@ -74,7 +74,7 @@ const isInlude = (include: RetryOptions['include'], error: unknown) => {
   }
 
   return false;
-}
+};
 
 const isExclude = (exclude: RetryOptions['exclude'], error: unknown) => {
   if (!exclude) {
@@ -88,4 +88,4 @@ const isExclude = (exclude: RetryOptions['exclude'], error: unknown) => {
   }
 
   return false;
-}
+};

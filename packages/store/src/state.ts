@@ -29,6 +29,6 @@ export function Action(action?: string): MethodDecorator {
       store.dispatch(this, action || propertyKey as string);
 
       return returnValue;
-    }
+    };
   };
 }

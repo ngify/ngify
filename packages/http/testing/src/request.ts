@@ -60,7 +60,7 @@ export class TestRequest {
       statusText?: string,
     } = {}): void {
     if (this.cancelled) {
-      throw new Error(`Cannot flush a cancelled request.`);
+      throw new Error('Cannot flush a cancelled request.');
     }
     const url = this.request.urlWithParams;
     const headers =
@@ -98,10 +98,10 @@ export class TestRequest {
   error(error: ProgressEvent, opts?: TestRequestErrorOptions): void;
   error(error: ProgressEvent | ErrorEvent, opts: TestRequestErrorOptions = {}): void {
     if (this.cancelled) {
-      throw new Error(`Cannot return an error for a cancelled request.`);
+      throw new Error('Cannot return an error for a cancelled request.');
     }
     if (opts.status && opts.status >= 200 && opts.status < 300) {
-      throw new Error(`error() called with a successful status.`);
+      throw new Error('error() called with a successful status.');
     }
     const headers =
       (opts.headers instanceof HttpHeaders) ? opts.headers : new HttpHeaders(opts.headers);
@@ -120,7 +120,7 @@ export class TestRequest {
    */
   event(event: HttpEvent<SafeAny>): void {
     if (this.cancelled) {
-      throw new Error(`Cannot send events to a cancelled request.`);
+      throw new Error('Cannot send events to a cancelled request.');
     }
     this.observer.next(event);
   }
@@ -164,7 +164,7 @@ function _toBlob(body: ArrayBuffer | Blob | string | number | Object |
 function _toJsonBody(
   body: ArrayBuffer | Blob | boolean | string | number | Object |
     (boolean | string | number | Object | null)[],
-  format: string = 'JSON'): Object | string | number | (Object | string | number)[] {
+  format = 'JSON'): Object | string | number | (Object | string | number)[] {
   if (typeof ArrayBuffer !== 'undefined' && body instanceof ArrayBuffer) {
     throw new Error(`Automatic conversion to ${format} is not supported for ArrayBuffers.`);
   }

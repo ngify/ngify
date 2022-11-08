@@ -11,5 +11,5 @@ export function Delay(delay: number): MethodDecorator {
     descriptor.value = function (...args: SafeAny[]) {
       setTimeout(() => fn.apply(this, args), delay);
     };
-  }
+  };
 }

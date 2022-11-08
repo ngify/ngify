@@ -16,5 +16,5 @@ export function Throttle(wait: number): MethodDecorator {
         map.delete(this);
       }, wait));
     };
-  }
+  };
 }

@@ -11,7 +11,7 @@ export function Limit(limit: number): MethodDecorator {
     descriptor.value = function (...args: SafeAny[]) {
       limit-- > 0 && fn.apply(this, args);
     };
-  }
+  };
 }
 
 /**
