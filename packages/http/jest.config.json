@@ -1,14 +1,17 @@
 {
   "displayName": "http",
   "preset": "ts-jest",
-  "globals": {
-    "ts-jest": {
-      "tsconfig": "tsconfig.spec.json"
-    }
-  },
   "rootDir": "./",
   "testMatch": [
     "<rootDir>/**/*.spec.ts"
   ],
-  "coverageDirectory": "./coverage"
+  "coverageDirectory": "./coverage",
+  "transform": {
+    ".+\\.ts$": [
+      "ts-jest",
+      {
+        "tsconfig": "tsconfig.spec.json"
+      }
+    ]
+  }
 }
