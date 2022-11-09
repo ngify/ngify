@@ -21,7 +21,7 @@ const TEST_STRING = `I'm a body!`;
         const req = new HttpRequest('GET', TEST_URL);
         expect(req.url).toBe(TEST_URL);
       });
-      it('doesn\'t require a body for body-less methods', () => {
+      it(`doesn't require a body for body-less methods`, () => {
         let req = new HttpRequest('GET', TEST_URL);
         expect(req.method).toBe('GET');
         expect(req.body).toBeNull();
@@ -109,7 +109,7 @@ const TEST_STRING = `I'm a body!`;
       it('handles a null body', () => {
         expect(baseReq.detectContentTypeHeader()).toBeNull();
       });
-      it('doesn\'t associate a content type with ArrayBuffers', () => {
+      it(`doesn't associate a content type with ArrayBuffers`, () => {
         const req = baseReq.clone({ body: new ArrayBuffer(4) });
         expect(req.detectContentTypeHeader()).toBeNull();
       });
