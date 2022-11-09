@@ -8,11 +8,11 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { SafeAny } from '@ngify/types';
+import type { SafeAny } from '@ngify/types';
 import { Observable, Observer } from 'rxjs';
-import { HttpBackend } from '../backend';
+import type { HttpBackend } from '../backend';
 import { HttpHeaders } from '../headers';
-import { HttpRequest } from '../request';
+import type { HttpRequest } from '../request';
 import { HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpJsonParseError, HttpResponse, HttpStatusCode, HttpUploadProgressEvent } from '../response';
 
 const XSSI_PREFIX = /^\)\]\}',?\n/;

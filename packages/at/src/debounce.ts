@@ -1,4 +1,4 @@
-import { SafeAny } from '@ngify/types';
+import type { SafeAny } from '@ngify/types';
 
 /**
  * Debounce decorator for class methods

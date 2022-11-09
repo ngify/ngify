@@ -1,12 +1,12 @@
-import { SafeAny } from '@ngify/types';
+import type { SafeAny } from '@ngify/types';
 import { concatMap, filter, map, Observable, of } from 'rxjs';
-import { HttpBackend, HttpHandler } from './backend';
+import type { HttpBackend, HttpHandler } from './backend';
 import { HttpXhrBackend } from './backends';
 import { config } from './config';
-import { HttpContext } from './context';
-import { HttpHeaders } from './headers';
+import type { HttpContext } from './context';
+import type { HttpHeaders } from './headers';
 import { HttpInterceptor, HttpInterceptorHandler } from './interceptor';
-import { HttpParams } from './params';
+import type { HttpParams } from './params';
 import { HttpRequest } from './request';
 import { HttpEvent, HttpResponse } from './response';
 

@@ -1,8 +1,8 @@
-import { SafeAny } from '@ngify/types';
-import { Observable } from 'rxjs';
-import { HttpHandler } from './backend';
-import { HttpRequest } from './request';
-import { HttpEvent } from './response';
+import type { SafeAny } from '@ngify/types';
+import type { Observable } from 'rxjs';
+import type { HttpHandler } from './backend';
+import type { HttpRequest } from './request';
+import type { HttpEvent } from './response';
 
 export interface HttpInterceptor {
   intercept(request: HttpRequest<SafeAny>, next: HttpHandler): Observable<HttpEvent<SafeAny>>;

@@ -1,4 +1,4 @@
-import { Property, SafeAny } from '@ngify/types';
+import type { Property, SafeAny } from '@ngify/types';
 import { HttpContext } from './context';
 import { HttpHeaders } from './headers';
 import { HttpParams } from './params';

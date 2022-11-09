@@ -1,4 +1,4 @@
-import { SafeAny, Type } from '@ngify/types';
+import type { SafeAny, Type } from '@ngify/types';
 import { filter, map, Observable, Subject } from 'rxjs';
 
 export class Store {

@@ -1,4 +1,4 @@
-import { SafeAny } from '@ngify/types';
+import type { SafeAny } from '@ngify/types';
 
 /**
  * Throttle decorator for class methods

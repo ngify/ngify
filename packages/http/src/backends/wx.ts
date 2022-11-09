@@ -1,9 +1,9 @@
-import { SafeAny } from '@ngify/types';
+import type { SafeAny } from '@ngify/types';
 import { Observable, Observer } from 'rxjs';
-import { HttpBackend } from '../backend';
+import type { HttpBackend } from '../backend';
 import { HttpContextToken } from '../context';
 import { HttpHeaders } from '../headers';
-import { HttpRequest } from '../request';
+import type { HttpRequest } from '../request';
 import { HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpJsonParseError, HttpResponse, HttpSentEvent, HttpUploadProgressEvent } from '../response';
 
 /** Use this token to pass additional `wx.uploadFile()` parameter */

@@ -1,4 +1,4 @@
-import { SafeAny } from '@ngify/types';
+import type { SafeAny } from '@ngify/types';
 import { Observable, tap } from 'rxjs';
 import { store } from './store';
 

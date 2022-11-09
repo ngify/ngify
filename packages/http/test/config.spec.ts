@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs';
-import { HttpBackend } from '../src/backend';
+import type { HttpBackend } from '../src/backend';
 import { HttpClient } from '../src/client';
 import { setupConfig } from '../src/config';
-import { HttpRequest } from '../src/request';
+import type { HttpRequest } from '../src/request';
 import { HttpEvent, HttpEventType, HttpResponse } from '../src/response';
 
 describe('HttpConfig', () => {

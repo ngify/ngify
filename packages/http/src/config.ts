@@ -1,4 +1,4 @@
-import { HttpBackend } from './backend';
+import type { HttpBackend } from './backend';
 
 export interface HttpConfig {
   /** The default HTTP backend handler */

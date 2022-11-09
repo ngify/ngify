@@ -1,10 +1,10 @@
-import { SafeAny } from '@ngify/types';
+import type { SafeAny } from '@ngify/types';
 import { catchError, concatMap, from, map, Observable, of, switchMap, throwError } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { HttpBackend } from '../backend';
+import type { HttpBackend } from '../backend';
 import { HttpContextToken } from '../context';
 import { HttpHeaders } from '../headers';
-import { HttpRequest } from '../request';
+import type { HttpRequest } from '../request';
 import { HttpErrorResponse, HttpEvent, HttpEventType, HttpResponse } from '../response';
 
 export const FETCH_TOKEN = new HttpContextToken<

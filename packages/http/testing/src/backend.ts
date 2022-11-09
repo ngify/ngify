@@ -7,9 +7,9 @@
  */
 
 import { HttpBackend, HttpEvent, HttpEventType, HttpRequest } from '@ngify/http';
-import { SafeAny } from '@ngify/types';
+import type { SafeAny } from '@ngify/types';
 import { Observable, Observer } from 'rxjs';
-import { HttpTestingController, RequestMatch } from './api';
+import type { HttpTestingController, RequestMatch } from './api';
 import { TestRequest } from './request';
 
 /**

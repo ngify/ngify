@@ -1,7 +1,7 @@
-import { SafeAny } from '@ngify/types';
-import { Observable } from 'rxjs';
-import { HttpRequest } from './request';
-import { HttpEvent } from './response';
+import type { SafeAny } from '@ngify/types';
+import type { Observable } from 'rxjs';
+import type { HttpRequest } from './request';
+import type { HttpEvent } from './response';
 
 export interface HttpHandler {
   handle(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>>;

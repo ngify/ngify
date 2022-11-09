@@ -19,6 +19,7 @@
     "rootDir": ".",
     "importHelpers": true,
     "esModuleInterop": true,
+    "importsNotUsedAsValues": "error",
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "typeRoots": [

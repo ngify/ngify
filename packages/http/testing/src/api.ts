@@ -6,9 +6,9 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { HttpRequest } from '@ngify/http';
-import { SafeAny } from '@ngify/types';
-import { TestRequest } from './request';
+import type { HttpRequest } from '@ngify/http';
+import type { SafeAny } from '@ngify/types';
+import type { TestRequest } from './request';
 
 /**
  * Defines a matcher for requests based on URL, method, or both.
