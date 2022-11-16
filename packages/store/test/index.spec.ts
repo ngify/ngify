@@ -1,6 +1,6 @@
 import { Observable, take } from 'rxjs';
 import { Action, State } from '../src/state';
-import { store } from '../src/store';
+import { getStore } from '../src/store';
 
 describe('Index', () => {
   @State()
@@ -78,6 +78,7 @@ describe('Index', () => {
   }
 
   let a: Readonly<A>, b: Readonly<B>;
+  const store = getStore();
 
   beforeEach(() => {
     new B();
