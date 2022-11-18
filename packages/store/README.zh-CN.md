@@ -87,9 +87,11 @@ new User('小明', 15, 100);
 侦听状态变更：
 
 ```ts
-import { store } from '@ngify/store';
+import { getStore } from '@ngify/store';
 import { map } from 'rxjs';
 import { User } from './xxx';
+
+const store = getStore();
 
 store.on(User).subscribe(o => {
   console.log('User：变更了', o);
@@ -109,9 +111,9 @@ store.on(User, '减肥').subscribe(o => {
 获取状态对象：
 
 ```ts
-import { store } from '@ngify/store';
+import { getStore } from '@ngify/store';
 import { User } from './xxx';
 
-const user = store.get(User);
+const user = getStore().get(User);
 user.changeName('小红');
 ```

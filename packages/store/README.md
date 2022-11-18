@@ -87,9 +87,11 @@ new User('Jack', 15, 100);
 Listen for state change:
 
 ```ts
-import { store } from '@ngify/store';
+import { getStore } from '@ngify/store';
 import { map } from 'rxjs';
 import { User } from './xxx';
+
+const store = getStore();
 
 store.on(User).subscribe(o => {
   console.log('User: changed', o);
@@ -109,9 +111,9 @@ store.on(User, 'lose-weight').subscribe(o => {
 Get state object:
 
 ```ts
-import { store } from '@ngify/store';
+import { getStore } from '@ngify/store';
 import { User } from './xxx';
 
-const user = store.get(User);
+const user = getStore().get(User);
 user.changeName('Jobs');
 ```
