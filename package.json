@@ -24,19 +24,19 @@
     "@commitlint/cli": "^17.2.0",
     "@commitlint/config-conventional": "^17.2.0",
     "@rollup/plugin-node-resolve": "15.0.0",
-    "@rollup/plugin-typescript": "9.0.1",
+    "@rollup/plugin-typescript": "10.0.1",
     "@typescript-eslint/eslint-plugin": "^5.42.1",
     "@typescript-eslint/parser": "^5.42.1",
     "eslint": "^8.27.0",
     "husky": "^8.0.2",
-    "lerna": "6.0.1",
+    "lerna": "6.1.0",
     "minimist": "1.2.6",
-    "nx": "15.0.0",
+    "nx": "15.3.0",
     "rollup": "3.2.0",
     "typedoc": "0.23.21",
     "typescript": "4.9.3"
   },
   "dependencies": {
-    "tslib": "2.4.0"
+    "tslib": "2.4.1"
   }
 }
