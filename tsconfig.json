@@ -30,6 +30,5 @@
         "packages/*"
       ]
     }
-  },
-  "references": []
+  }
 }

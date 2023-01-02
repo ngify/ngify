@@ -1,4 +1,4 @@
-import type { Property, SafeAny } from '@ngify/types';
+import type { PickProperty, SafeAny } from '@ngify/types';
 import { HttpContext } from './context';
 import { HttpHeaders } from './headers';
 import { HttpParams } from './params';
@@ -141,7 +141,7 @@ export class HttpRequest<T> {
     return (this.body as SafeAny).toString();
   }
 
-  clone<D = T>(update: Partial<Property<HttpRequest<unknown>>> = {}): HttpRequest<D> {
+  clone<D = T>(update: Partial<PickProperty<HttpRequest<unknown>>> = {}): HttpRequest<D> {
     return new HttpRequest<D>(
       update.method || this.method,
       update.url || this.url,
