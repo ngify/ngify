@@ -58,7 +58,7 @@
     "@types/jest": "29.4.0",
     "@types/wechat-miniprogram": "3.4.1",
     "jest": "29.4.1",
-    "ts-jest": "29.0.3"
+    "ts-jest": "29.0.5"
   },
   "peerDependencies": {
     "@ngify/types": "^1.0.0",
