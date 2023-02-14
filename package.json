@@ -9,7 +9,7 @@
     "build:docs": "typedoc",
     "test": "lerna run test:ci",
     "lint": "lerna run lint",
-    "publish": "npm run build & lerna publish --force-publish=* --exact",
+    "publish": "lerna publish --force-publish=* --exact",
     "bootstrap": "lerna bootstrap --hoist",
     "clean": "lerna clean",
     "prepare": "husky install"
