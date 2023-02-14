@@ -1,6 +1,6 @@
 {
   "name": "@ngify/store",
-  "version": "1.5.0-alpha.0",
+  "version": "1.5.0",
   "description": "A simple state manager based on decorators and rxjs.",
   "typedoc": {
     "entryPoint": "./src/index.ts"
@@ -43,7 +43,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@ngify/types": "1.5.0-alpha.0"
+    "@ngify/types": "1.5.0"
   },
   "peerDependencies": {
     "rxjs": "^7.0.0"
