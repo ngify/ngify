@@ -6,7 +6,6 @@
     "entryPoint": "./src/index.ts"
   },
   "types": "./dist/types/index.d.ts",
-  "typings": "./dist/types/index.d.ts",
   "sideEffects": false,
   "files": [
     "src",
