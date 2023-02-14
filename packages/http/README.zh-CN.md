@@ -122,7 +122,9 @@ const http = new HttpClient([
 默认使用 `HttpXhrBackend`，可以通过修改配置切换到其他的 HTTP 请求类：
 
 ```ts
-import { HttpFetchBackend, HttpWxBackend, setupConfig } from '@ngify/http';
+import { setupConfig } from '@ngify/http';
+import { HttpFetchBackend } from '@ngify/http/fetch';
+import { HttpWxBackend } from '@ngify/http/wx';
 
 setupConfig({
   backend: new HttpFetchBackend()
@@ -188,7 +190,8 @@ setupConfig({
 ```ts
 import fetch from 'node-fetch';
 import AbortController from 'abort-controller';
-import { HttpFetchBackend, HttpWxBackend, setupConfig } from '@ngify/http';
+import { setupConfig } from '@ngify/http';
+import { HttpFetchBackend } from '@ngify/http/fetch';
 
 global.fetch = fetch;
 global.AbortController = AbortController;
@@ -205,7 +208,8 @@ setupConfig({
 ### Fetch API 额外参数
 
 ```ts
-import { HttpContext, FETCH_TOKEN } from '@ngify/http';
+import { HttpContext } from '@ngify/http';
+import { FETCH_TOKEN } from '@ngify/http/fetch';
 
 // ...
 
@@ -221,7 +225,7 @@ http.get('url', null, {
 ### 微信小程序额外参数
 
 ```ts
-import { HttpContext, WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http';
+import { HttpContext, WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http/wx';
 
 // ...
 

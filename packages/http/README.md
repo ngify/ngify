@@ -122,7 +122,9 @@ If you must alter a request, clone it first and modify the clone before passing 
 By default, `HttpXhrBackend` is used, and you can switch to other HTTP backend class by modifying the configuration:
 
 ```ts
-import { HttpFetchBackend, HttpWxBackend, setupConfig } from '@ngify/http';
+import { setupConfig } from '@ngify/http';
+import { HttpFetchBackend } from '@ngify/http/fetch';
+import { HttpWxBackend } from '@ngify/http/wx';
 
 setupConfig({
   backend: new HttpFetchBackend()
@@ -188,7 +190,8 @@ To apply them, you need to add them to `global` of `Node.js` respectively:
 ```ts
 import fetch from 'node-fetch';
 import AbortController from 'abort-controller';
-import { HttpFetchBackend, HttpWxBackend, setupConfig } from '@ngify/http';
+import { setupConfig } from '@ngify/http';
+import { HttpFetchBackend } from '@ngify/http/fetch';
 
 global.fetch = fetch;
 global.AbortController = AbortController;
@@ -205,7 +208,8 @@ In order to keep the API uniform, some extra parameters need to be passed throug
 ### Extra parameters for Fetch API
 
 ```ts
-import { HttpContext, FETCH_TOKEN } from '@ngify/http';
+import { HttpContext } from '@ngify/http';
+import { FETCH_TOKEN } from '@ngify/http/fetch';
 
 // ...
 
@@ -221,7 +225,7 @@ http.get('url', null, {
 ### Extra parameters for WeChatMiniProgram
 
 ```ts
-import { HttpContext, WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http';
+import { HttpContext, WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http/wx';
 
 // ...
 
