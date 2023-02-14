@@ -8,10 +8,15 @@
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
-  "typings": "./dist/types/index.d.ts",
   "files": [
     "src",
     "dist",
+    "wx/src",
+    "wx/dist",
+    "wx/package.json",
+    "fetch/src",
+    "fetch/dist",
+    "fetch/package.json",
     "testing/src",
     "testing/dist",
     "testing/package.json"
@@ -20,7 +25,10 @@
   "scripts": {
     "dev": "node ../../scripts/build.mjs --pkg=http",
     "build": "node ../../scripts/build.mjs --pkg=http --prod",
-    "postbuild": "node ../../scripts/build.mjs --pkg=http/testing --prod",
+    "build:wx": "node ../../scripts/build.mjs --pkg=http/wx --prod",
+    "build:fetch": "node ../../scripts/build.mjs --pkg=http/fetch --prod",
+    "build:testing": "node ../../scripts/build.mjs --pkg=http/testing --prod",
+    "postbuild": "npm run build:wx & npm run build:fetch & npm run build:testing",
     "test": "jest --config ./jest.config.json",
     "test:ci": "jest --config ./jest.config.json -i",
     "test:coverage": "jest --config ./jest.config.json --coverage",
@@ -39,6 +47,7 @@
   "keywords": [
     "wx",
     "xhr",
+    "fetch",
     "http",
     "ajax",
     "interceptor",
@@ -51,17 +60,12 @@
     "access": "public"
   },
   "dependencies": {
-    "@ngify/types": "1.4.0",
-    "rxjs": "^7.0.0"
+    "@ngify/types": "1.4.0"
   },
   "devDependencies": {
-    "@types/jest": "29.4.0",
-    "@types/wechat-miniprogram": "3.4.1",
-    "jest": "29.4.1",
-    "ts-jest": "29.0.3"
+    "@types/wechat-miniprogram": "3.4.1"
   },
   "peerDependencies": {
-    "@ngify/types": "^1.0.0",
     "@types/wechat-miniprogram": "^3.4.0",
     "rxjs": "^7.0.0"
   }
