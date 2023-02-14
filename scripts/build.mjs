@@ -9,7 +9,15 @@ import { rollup, watch } from 'rollup';
 import { fileURLToPath } from 'url';
 
 const { pkg, prod } = minimist(process.argv.slice(2));
-const pkgs = pkg ? [pkg] : ['types', 'store', 'http', 'http/testing', 'at'];
+const pkgs = pkg ? [pkg] : [
+  'types',
+  'store',
+  'http',
+  'http/wx',
+  'http/fetch',
+  'http/testing',
+  'at'
+];
 /** @type {['cjs', 'esm']} */
 const formats = ['cjs', 'esm'];
 const log = console.log;
@@ -30,8 +38,8 @@ const createInputOptions = (pkg, prod) => {
     input: resolvePath(`packages/${pkg}/src/index.ts`),
     external: [
       'rxjs',
-      'rxjs/fetch',
-      /@ngify\/.+/,
+      /rxjs\/\w+/,
+      /@ngify\/\w+/,
       'tslib'
     ],
     plugins: [
