@@ -25,6 +25,6 @@ export type PickMethod<T> = Omit<T, keyof PickProperty<T>>;
 export type SafeAny = any;
 
 /** Any Object */
-export type AnyObject = Record<string, SafeAny>;
+export type AnyObject = Record<string | number | symbol, SafeAny>;
 /** Any Array */
 export type AnyArray = SafeAny[];
