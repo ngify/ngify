@@ -4,7 +4,7 @@ import { HttpHeaders } from './headers';
 export type HttpEvent<T> = HttpSentEvent | HttpHeaderResponse | HttpResponse<T> | HttpProgressEvent | HttpUserEvent;
 
 /** Type enumeration for the different kinds of `HttpEvent`. */
-export enum HttpEventType {
+export const enum HttpEventType {
   /** The request was sent out over the wire. */
   Sent,
   /** An upload progress event was received. */
