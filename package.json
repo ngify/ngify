@@ -1,6 +1,6 @@
 {
   "name": "ngify",
-  "version": "1.3.0",
+  "version": "0.0.0",
   "description": "Pretend to be using Angular",
   "main": "index.js",
   "scripts": {

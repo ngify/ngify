@@ -22,6 +22,7 @@
     "importsNotUsedAsValues": "error",
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
+    "preserveConstEnums": true,
     "typeRoots": [
       "node_modules/@types"
     ],
