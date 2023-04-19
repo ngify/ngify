@@ -2,9 +2,6 @@
   "name": "@ngify/types",
   "version": "1.5.1",
   "description": "",
-  "typedoc": {
-    "entryPoint": "./src/index.ts"
-  },
   "types": "./dist/types/index.d.ts",
   "sideEffects": false,
   "files": [
