@@ -23,7 +23,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.2.0",
     "@commitlint/config-conventional": "^17.2.0",
-    "@rollup/plugin-node-resolve": "15.0.0",
+    "@rollup/plugin-node-resolve": "15.1.0",
     "@rollup/plugin-typescript": "11.1.0",
     "@types/jest": "^29.4.0",
     "@typescript-eslint/eslint-plugin": "^5.42.1",
