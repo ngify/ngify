@@ -34,7 +34,7 @@
     "lerna": "6.6.2",
     "minimist": "1.2.6",
     "nx": "15.9.2",
-    "rollup": "3.23.0",
+    "rollup": "3.25.1",
     "ts-jest": "^29.0.5",
     "typedoc": "0.24.6",
     "typescript": "4.9.3"
