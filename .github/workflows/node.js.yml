@@ -27,8 +27,6 @@ jobs:
           cache: "npm"
       - name: install
         run: npm ci
-      - name: bootstrap
-        run: npm run bootstrap
       - name: lint
         run: npm run lint
       - name: build
