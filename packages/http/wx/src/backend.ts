@@ -3,26 +3,29 @@ import { HttpContextToken, HttpDownloadProgressEvent, HttpErrorResponse, HttpEve
 import type { SafeAny } from '@ngify/types';
 import { Observable, Observer } from 'rxjs';
 
+type WxCallbackName = 'success' | 'fail' | 'complete';
+
+type WxUploadFileOption = Omit<
+  WechatMiniprogram.UploadFileOption & { fileName: string },  // 原本的 name 重命名为 fileName
+  'url' | 'header' | 'name' | 'formData' | WxCallbackName
+>;
+
+type WxDownloadFileOption = Omit<
+  WechatMiniprogram.DownloadFileOption,
+  'url' | 'header' | WxCallbackName
+>;
+
+type WxRequestOption = Omit<
+  WechatMiniprogram.RequestOption,
+  'url' | 'header' | 'method' | 'data' | 'dataType' | 'responseType' | WxCallbackName
+>;
+
 /** Use this token to pass additional `wx.uploadFile()` parameter */
-export const WX_UPLOAD_FILE_TOKEN = new HttpContextToken<{
-  filePath?: string,
-  fileName?: string,
-  timeout?: number,
-}>(() => ({}));
-
+export const WX_UPLOAD_FILE_TOKEN = new HttpContextToken<WxUploadFileOption>(() => ({ fileName: '', filePath: '' }));
 /** Use this token to pass additional `wx.downloadFile()` parameter */
-export const WX_DOWNLOAD_FILE_TOKEN = new HttpContextToken<{
-  filePath?: string,
-  timeout?: number,
-}>(() => ({}));
-
+export const WX_DOWNLOAD_FILE_TOKEN = new HttpContextToken<WxDownloadFileOption>(() => ({}));
 /** Use this token to pass additional `wx.request()` parameter */
-export const WX_REQUSET_TOKEN = new HttpContextToken<{
-  enableCache?: boolean,
-  enableHttp2?: boolean,
-  enableQuic?: boolean,
-  timeout?: number
-}>(() => ({}));
+export const WX_REQUSET_TOKEN = new HttpContextToken<WxRequestOption>(() => ({}));
 
 export class HttpWxBackend implements HttpBackend {
   handle(req: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
@@ -61,15 +64,13 @@ function upload(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
       } as HttpUploadProgressEvent);
     };
 
-    const { filePath, fileName, timeout } = request.context.get(WX_UPLOAD_FILE_TOKEN);
+    const extraOptions = request.context.get(WX_UPLOAD_FILE_TOKEN);
 
     const task = wx.uploadFile({
       url: request.urlWithParams,
-      filePath: filePath!,
-      name: fileName!,
+      name: extraOptions.fileName,
       header: buildHeaders(request),
       formData: request.body,
-      timeout: timeout,
       success: ({ data, statusCode: status, errMsg: statusText }) => {
         let ok = status >= 200 && status < 300;
         let body = null;
@@ -108,6 +109,7 @@ function upload(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
           statusText: errMsg
         }));
       },
+      ...extraOptions
     });
 
     observer.next({ type: HttpEventType.Sent } as HttpSentEvent);
@@ -151,13 +153,9 @@ function download(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>>
       } as HttpDownloadProgressEvent);
     };
 
-    const { filePath, timeout } = request.context.get(WX_DOWNLOAD_FILE_TOKEN);
-
     const task = wx.downloadFile({
       url: request.urlWithParams,
-      filePath: filePath,
       header: buildHeaders(request),
-      timeout: timeout,
       success: ({ statusCode: status, errMsg: statusText }) => {
         const ok = status >= 200 && status < 300;
 
@@ -182,6 +180,7 @@ function download(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>>
           statusText: errMsg
         }));
       },
+      ...request.context.get(WX_DOWNLOAD_FILE_TOKEN)
     });
 
     observer.next({ type: HttpEventType.Sent } as HttpSentEvent);

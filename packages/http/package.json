@@ -60,10 +60,10 @@
     "@ngify/types": "1.5.1"
   },
   "devDependencies": {
-    "@types/wechat-miniprogram": "3.4.1"
+    "miniprogram-api-typings": "3.10.0"
   },
   "peerDependencies": {
-    "@types/wechat-miniprogram": "^3.4.0",
+    "miniprogram-api-typings": "3.10.0",
     "rxjs": "^7.0.0"
   }
 }
