@@ -1,6 +1,6 @@
 {
   "name": "@ngify/at",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "A practical decorator library",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -38,6 +38,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@ngify/types": "1.5.1"
+    "@ngify/types": "1.5.2"
   }
 }
