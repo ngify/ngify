@@ -2,17 +2,25 @@
   "name": "@ngify/store",
   "version": "1.5.3",
   "description": "A simple state manager based on decorators and rxjs.",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "files": [
     "src",
     "dist"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "sideEffects": false,
   "scripts": {
-    "dev": "node ../../scripts/build.mjs --pkg=store",
-    "build": "node ../../scripts/build.mjs --pkg=store --prod",
+    "dev": "rollup --config rollup.config.mjs --watch",
+    "build": "rollup --config rollup.config.mjs",
     "test": "jest --config ./jest.config.json",
     "test:ci": "jest --config ./jest.config.json -i",
     "test:coverage": "jest --config ./jest.config.json --coverage",

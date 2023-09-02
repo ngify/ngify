@@ -1,6 +1,5 @@
+import { Action, State, getStore } from '@ngify/store';
 import { Observable, take } from 'rxjs';
-import { Action, State } from '../src/state';
-import { getStore } from '../src/store';
 
 describe('Index', () => {
   @State()
