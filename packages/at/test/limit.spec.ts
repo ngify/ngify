@@ -1,38 +1,28 @@
-import { Limit, Once } from '../src/limit';
+import { Limit, Once } from '@ngify/at';
 
 describe('Limit', () => {
-  class Cls {
-    @Limit(2)
-    limit(cb: () => void) { cb(); }
+  it('multi', () => {
+    const obj = new class {
+      @Limit(2)
+      limit(value: number) { return value; }
+    }
 
-    @Once()
-    once(cb: () => void) { cb(); }
-  }
+    let result = obj.limit(1);
+    result = obj.limit(2);
+    result = obj.limit(3);
 
-  let obj: Cls;
-
-  beforeEach(() => {
-    obj = new Cls();
+    expect(result).toBe(2);
   });
 
-  describe('limit', () => {
-    it('basic usage', () => {
-      const cb = jest.fn()
-      obj.limit(cb);
-      obj.limit(cb);
-      obj.limit(cb);
+  it('once', () => {
+    const obj = new class {
+      @Once()
+      once(value: number) { return value; }
+    }
 
-      expect(cb).toHaveBeenCalledTimes(2);
-    });
-  });
+    let result = obj.once(1);
+    result = obj.once(2);
 
-  describe('once', () => {
-    it('basic usage', () => {
-      const cb = jest.fn()
-      obj.once(cb);
-      obj.once(cb);
-
-      expect(cb).toHaveBeenCalledTimes(1);
-    });
+    expect(result).toBe(1);
   });
 });

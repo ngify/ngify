@@ -1,17 +1,20 @@
 {
   "displayName": "at",
-  "preset": "ts-jest",
+  "preset": "ts-jest/presets/default-esm",
   "rootDir": "./",
   "testMatch": [
     "<rootDir>/test/*.spec.ts"
   ],
   "coverageDirectory": "./coverage",
   "transform": {
-    ".+\\.ts$": [
+    ".ts": [
       "ts-jest",
       {
-        "tsconfig": "tsconfig.spec.json"
+        "isolatedModules": true
       }
     ]
+  },
+  "moduleNameMapper": {
+    "^lodash-es$": "lodash"
   }
 }

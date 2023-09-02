@@ -2,17 +2,25 @@
   "name": "@ngify/at",
   "version": "1.5.3",
   "description": "A practical decorator library",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "files": [
     "src",
     "dist"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "sideEffects": false,
   "scripts": {
-    "dev": "node ../../scripts/build.mjs --pkg=at",
-    "build": "node ../../scripts/build.mjs --pkg=at --prod",
+    "dev": "rollup --config rollup.config.mjs --watch",
+    "build": "rollup --config rollup.config.mjs",
     "test": "jest --config ./jest.config.json",
     "test:ci": "jest --config ./jest.config.json -i",
     "test:coverage": "jest --config ./jest.config.json --coverage",
@@ -38,6 +46,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@ngify/types": "1.5.3"
+    "@ngify/types": "1.5.3",
+    "@types/lodash-es": "^4.17.8",
+    "lodash-es": "^4.17.21"
   }
 }

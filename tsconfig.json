@@ -1,35 +1,17 @@
 {
-  "include": [
-    "packages/*/src"
-  ],
   "exclude": [
-    "node_modules",
     "dist",
-    "test",
-    "**/*.spec.ts"
   ],
   "compilerOptions": {
     "strict": true,
     "target": "es2015",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "module": "esnext",
     "moduleResolution": "node",
     "baseUrl": ".",
-    "rootDir": ".",
     "importHelpers": true,
     "esModuleInterop": true,
-    "importsNotUsedAsValues": "error",
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "preserveConstEnums": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "paths": {
-      "@ngify/*": [
-        "packages/*"
-      ]
-    }
   }
 }
