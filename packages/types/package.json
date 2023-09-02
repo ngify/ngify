@@ -2,15 +2,25 @@
   "name": "@ngify/types",
   "version": "1.5.3",
   "description": "",
-  "types": "./dist/types/index.d.ts",
-  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "files": [
     "src",
     "dist"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
   "scripts": {
-    "dev": "node ../../scripts/build.mjs --pkg=types",
-    "build": "node ../../scripts/build.mjs --pkg=types --prod",
+    "dev": "rollup --config rollup.config.mjs --watch",
+    "build": "rollup --config rollup.config.mjs",
     "lint": "eslint . --fix"
   },
   "repository": {
