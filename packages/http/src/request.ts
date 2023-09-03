@@ -121,7 +121,7 @@ export class HttpRequest<T> {
   /**
    * Transform the free-form body into a serialized format suitable for transmission to the server.
    */
-  serializeBody(): ArrayBuffer | Blob | FormData | string | null {
+  serializeBody(): ArrayBuffer | Blob | FormData | URLSearchParams | string | null {
     if (this.body === null) {
       return null;
     }

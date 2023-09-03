@@ -5,10 +5,10 @@ import { HttpXhrBackend } from './backends';
 import { config } from './config';
 import type { HttpContext } from './context';
 import type { HttpHeaders } from './headers';
-import { HttpInterceptor, HttpInterceptorHandler } from './interceptor';
+import { HttpInterceptorHandler, type HttpInterceptor } from './interceptor';
 import type { HttpParams } from './params';
 import { HttpRequest } from './request';
-import { HttpEvent, HttpResponse } from './response';
+import { HttpResponse, type HttpEvent } from './response';
 
 type Body = HttpRequest<SafeAny>['body'];
 type Params = ConstructorParameters<typeof HttpParams>[0] | HttpParams | null;

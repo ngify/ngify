@@ -9,11 +9,11 @@
  */
 
 import type { SafeAny } from '@ngify/types';
-import { Observable, Observer } from 'rxjs';
+import { Observable, type Observer } from 'rxjs';
 import type { HttpBackend } from '../backend';
 import { HttpHeaders } from '../headers';
 import type { HttpRequest } from '../request';
-import { HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpJsonParseError, HttpResponse, HttpStatusCode, HttpUploadProgressEvent } from '../response';
+import { HttpErrorResponse, HttpEventType, HttpHeaderResponse, HttpResponse, HttpStatusCode, type HttpDownloadProgressEvent, type HttpEvent, type HttpJsonParseError, type HttpUploadProgressEvent } from '../response';
 
 const XSSI_PREFIX = /^\)\]\}',?\n/;
 

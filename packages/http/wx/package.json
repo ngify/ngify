@@ -1,7 +1,7 @@
 {
-  "name": "@ngify/http/fetch",
-  "types": "./dist/types/index.d.ts",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
+  "name": "@ngify/http/wx",
+  "types": "../dist/wx/index.d.ts",
+  "main": "../dist/wx/index.js",
+  "module": "../dist/wx/index.mjs",
   "sideEffects": false
 }

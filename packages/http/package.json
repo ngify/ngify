@@ -2,30 +2,46 @@
   "name": "@ngify/http",
   "version": "1.5.3",
   "description": "A reactive HTTP client API",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "files": [
     "src",
     "dist",
     "wx/src",
-    "wx/dist",
     "wx/package.json",
     "fetch/src",
-    "fetch/dist",
     "fetch/package.json",
     "testing/src",
-    "testing/dist",
     "testing/package.json"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./wx": {
+      "types": "./dist/wx/index.d.ts",
+      "import": "./dist/wx/index.mjs",
+      "require": "./dist/wx/index.js"
+    },
+    "./fetch": {
+      "types": "./dist/fetch/index.d.ts",
+      "import": "./dist/fetch/index.mjs",
+      "require": "./dist/fetch/index.js"
+    },
+    "./testing": {
+      "types": "./dist/testing/index.d.ts",
+      "import": "./dist/testing/index.mjs",
+      "require": "./dist/testing/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "sideEffects": false,
   "scripts": {
-    "dev": "node ../../scripts/build.mjs --pkg=http",
-    "build": "node ../../scripts/build.mjs --pkg=http --prod",
-    "build:wx": "node ../../scripts/build.mjs --pkg=http/wx --prod",
-    "build:fetch": "node ../../scripts/build.mjs --pkg=http/fetch --prod",
-    "build:testing": "node ../../scripts/build.mjs --pkg=http/testing --prod",
-    "postbuild": "npm run build:wx & npm run build:fetch & npm run build:testing",
+    "dev": "rollup --config rollup.config.mjs --watch",
+    "build": "rollup --config rollup.config.mjs",
     "test": "jest --config ./jest.config.json",
     "test:ci": "jest --config ./jest.config.json -i",
     "test:coverage": "jest --config ./jest.config.json --coverage",
@@ -42,16 +58,19 @@
   },
   "homepage": "https://github.com/ngify/ngify/tree/main/packages/http",
   "keywords": [
-    "wx",
-    "xhr",
-    "fetch",
-    "http",
     "ajax",
-    "interceptor",
+    "wx",
+    "miniprogram",
+    "http",
+    "http-client",
     "observable",
+    "observable-http",
     "reactive",
+    "reactive-http",
     "rxjs",
-    "angular"
+    "rxjs-http",
+    "angular",
+    "angular-http"
   ],
   "publishConfig": {
     "access": "public"

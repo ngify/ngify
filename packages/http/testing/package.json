@@ -1,7 +1,7 @@
 {
   "name": "@ngify/http/testing",
-  "types": "./dist/types/index.d.ts",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
+  "types": "../dist/testing/index.d.ts",
+  "main": "../dist/testing/index.js",
+  "module": "../dist/testing/index.mjs",
   "sideEffects": false
 }

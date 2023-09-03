@@ -1,16 +1,6 @@
 {
-  "extends": "../../../tsconfig.json",
-  "include": [
-    "./src/**/*.ts"
-  ],
-  "exclude": [
-    "./**/*.spec.ts"
-  ],
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "rootDir": "./src",
-    "declaration": true,
-    "declarationDir": "./dist/types",
     "types": [
       "miniprogram-api-typings"
     ]
