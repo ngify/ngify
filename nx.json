@@ -4,9 +4,9 @@
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "useDaemonProcess": false,
         "cacheableOperations": [
           "build",
+          "lint",
           "test",
           "test:ci",
           "test:coverage"
