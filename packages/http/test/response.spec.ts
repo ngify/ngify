@@ -6,8 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { HttpHeaders } from '../src/headers';
-import { HttpResponse, HttpStatusCode } from '../src/response';
+import { HttpHeaders, HttpResponse, HttpStatusCode } from '@ngify/http';
 
 describe('HttpResponse', () => {
   describe('constructor()', () => {

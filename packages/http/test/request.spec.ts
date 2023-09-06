@@ -6,10 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { HttpContext } from '../src/context';
-import { HttpHeaders } from '../src/headers';
-import { HttpParams } from '../src/params';
-import { HttpRequest } from '../src/request';
+import { HttpContext, HttpHeaders, HttpParams, HttpRequest } from '@ngify/http';
 
 const TEST_URL = 'https://angular.io/';
 const TEST_STRING = `I'm a body!`;

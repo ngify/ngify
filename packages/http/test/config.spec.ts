@@ -1,9 +1,5 @@
+import { HttpClient, HttpEvent, HttpEventType, HttpResponse, setupConfig, type HttpBackend, type HttpRequest } from '@ngify/http';
 import { Observable } from 'rxjs';
-import type { HttpBackend } from '../src/backend';
-import { HttpClient } from '../src/client';
-import { setupConfig } from '../src/config';
-import type { HttpRequest } from '../src/request';
-import { HttpEvent, HttpEventType, HttpResponse } from '../src/response';
 
 describe('HttpConfig', () => {
   let client: HttpClient = null!;

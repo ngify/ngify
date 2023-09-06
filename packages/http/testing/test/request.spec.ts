@@ -7,7 +7,7 @@
  */
 
 import { HttpClient } from '@ngify/http';
-import { HttpClientTestingBackend } from '../src';
+import { HttpClientTestingBackend } from '@ngify/http/testing';
 
 describe('HttpClient TestRequest', () => {
   it('accepts a null body', () => {

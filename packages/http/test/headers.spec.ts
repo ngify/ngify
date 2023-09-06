@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { HttpHeaders } from '../src/headers';
+import { HttpHeaders } from '@ngify/http';
 
 describe('HttpHeaders', () => {
   describe('initialization', () => {

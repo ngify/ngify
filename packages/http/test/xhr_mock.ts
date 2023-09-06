@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { HttpHeaders } from '../src';
+import { HttpHeaders } from '@ngify/http';
 
 export class MockXhrFactory {
   // TODO(issue/24571): remove '!'.

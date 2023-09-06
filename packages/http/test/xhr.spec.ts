@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import { jest } from '@jest/globals';
 import { lastValueFrom, Observable, toArray } from 'rxjs';
 import { HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpRequest, HttpResponse, HttpResponseBase, HttpStatusCode, HttpUploadProgressEvent, HttpXhrBackend } from '../src';
 import { MockXhrFactory } from './xhr_mock';

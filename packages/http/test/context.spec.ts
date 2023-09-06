@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { HttpContext, HttpContextToken } from '../src/context';
+import { HttpContext, HttpContextToken } from '@ngify/http';
 
 const IS_ENABLED = new HttpContextToken<boolean>(() => false);
 const CACHE_OPTION = new HttpContextToken<{ cache: boolean, expiresIn?: number }>(() => ({ cache: false }));
