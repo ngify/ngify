@@ -4,7 +4,7 @@ import { HttpHeaders } from './headers';
 export type HttpEvent<T> = HttpSentEvent | HttpHeaderResponse | HttpResponse<T> | HttpProgressEvent | HttpUserEvent;
 
 /** Type enumeration for the different kinds of `HttpEvent`. */
-export const enum HttpEventType {
+export enum HttpEventType {
   /** The request was sent out over the wire. */
   Sent,
   /** An upload progress event was received. */
@@ -159,7 +159,7 @@ export class HttpErrorResponse extends HttpResponseBase implements Error {
  * As per https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
  * @publicApi
  */
-export const enum HttpStatusCode {
+export enum HttpStatusCode {
   Continue = 100,
   SwitchingProtocols = 101,
   Processing = 102,
