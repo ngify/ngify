@@ -1,6 +1,6 @@
 {
   "name": "@ngify/http",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "description": "A reactive HTTP client API",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -76,7 +76,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@ngify/types": "1.5.3",
+    "@ngify/types": "1.6.0",
     "miniprogram-api-typings": "3.12.0",
     "tslib": "^2.0.0"
   },
