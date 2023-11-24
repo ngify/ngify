@@ -7,8 +7,7 @@
   ],
   "entryPointStrategy": "packages",
   "exclude": [
-    "**/*.(test|spec|d).ts",
-    "packages/store"
+    "**/*.(test|spec|d).ts"
   ],
   "excludeExternals": true,
   "excludeInternal": true,
