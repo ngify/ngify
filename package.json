@@ -22,7 +22,7 @@
   "devDependencies": {
     "@commitlint/cli": "^18.0.0",
     "@commitlint/config-conventional": "^18.0.0",
-    "@rollup/plugin-typescript": "11.1.0",
+    "@rollup/plugin-typescript": "11.1.6",
     "@types/jest": "^29.4.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
