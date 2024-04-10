@@ -34,7 +34,7 @@
     "rollup": "4.12.0",
     "rollup-plugin-delete": "^2.0.0",
     "ts-jest": "^29.0.5",
-    "typedoc": "0.25.0",
+    "typedoc": "0.25.13",
     "typescript": "^5.2.2"
   },
   "dependencies": {
