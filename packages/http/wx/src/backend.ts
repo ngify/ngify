@@ -156,14 +156,15 @@ function download(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>>
     const task = wx.downloadFile({
       url: request.urlWithParams,
       header: buildHeaders(request),
-      success: ({ statusCode: status, errMsg: statusText }) => {
+      success: ({ statusCode: status, errMsg: statusText, ...body }) => {
         const ok = status >= 200 && status < 300;
 
         if (ok) {
           observer.next(new HttpResponse({
             url: request.url,
             status,
-            statusText
+            statusText,
+            body
           }));
           observer.complete();
         } else {
