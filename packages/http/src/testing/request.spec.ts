@@ -6,13 +6,13 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { HttpClient } from '@ngify/http';
+import { HttpClient, HttpFeatureKind } from '@ngify/http';
 import { HttpClientTestingBackend } from '@ngify/http/testing';
 
 describe('HttpClient TestRequest', () => {
   it('accepts a null body', () => {
     const mock = new HttpClientTestingBackend();
-    const client = new HttpClient(mock);
+    const client = new HttpClient({ kind: HttpFeatureKind.Backend, value: mock });
 
     let resp: any;
     client.post('/some-url', { test: 'test' }).subscribe(body => {
@@ -27,7 +27,7 @@ describe('HttpClient TestRequest', () => {
 
   it('throws if no request matches', () => {
     const mock = new HttpClientTestingBackend();
-    const client = new HttpClient(mock);
+    const client = new HttpClient({ kind: HttpFeatureKind.Backend, value: mock });
 
     let resp: any;
     client.get('/some-other-url').subscribe(body => {
@@ -48,7 +48,7 @@ describe('HttpClient TestRequest', () => {
 
   it('throws if no request matches the exact parameters', () => {
     const mock = new HttpClientTestingBackend();
-    const client = new HttpClient(mock);
+    const client = new HttpClient({ kind: HttpFeatureKind.Backend, value: mock });
 
     let resp: any;
     const params = { query: 'hello' };
@@ -70,7 +70,7 @@ describe('HttpClient TestRequest', () => {
 
   it('throws if no request matches with several requests received', () => {
     const mock = new HttpClientTestingBackend();
-    const client = new HttpClient(mock);
+    const client = new HttpClient({ kind: HttpFeatureKind.Backend, value: mock });
 
     let resp: any;
     client.get('/some-other-url?query=world').subscribe(body => {
