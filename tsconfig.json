@@ -1,17 +1,6 @@
 {
-  "exclude": [
-    "dist",
-  ],
-  "compilerOptions": {
-    "strict": true,
-    "target": "es2015",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "baseUrl": ".",
-    "importHelpers": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "preserveConstEnums": true,
-  }
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": []
 }

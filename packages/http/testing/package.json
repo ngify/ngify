@@ -1,7 +1,0 @@
-{
-  "name": "@ngify/http/testing",
-  "types": "../dist/testing/index.d.ts",
-  "main": "../dist/testing/index.js",
-  "module": "../dist/testing/index.mjs",
-  "sideEffects": false
-}

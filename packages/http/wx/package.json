@@ -1,7 +1,0 @@
-{
-  "name": "@ngify/http/wx",
-  "types": "../dist/wx/index.d.ts",
-  "main": "../dist/wx/index.js",
-  "module": "../dist/wx/index.mjs",
-  "sideEffects": false
-}

@@ -1,44 +1,21 @@
 {
-  "name": "ngify",
+  "name": "@ngify/source",
   "version": "0.0.0",
-  "description": "Pretend to be using Angular",
-  "main": "index.js",
-  "scripts": {
-    "dev": "lerna run dev",
-    "build": "lerna run build",
-    "build:docs": "typedoc",
-    "test": "lerna run test:ci",
-    "lint": "lerna run lint",
-    "publish": "lerna publish --force-publish=* --exact",
-    "clean": "lerna clean",
-    "prepare": "husky install"
-  },
-  "author": "HyperLife1119 <hyperlife1119@qq.com>",
   "license": "MIT",
+  "scripts": {},
   "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "@nx/js": "20.0.5",
+    "@swc-node/register": "~1.9.1",
+    "@swc/core": "~1.5.7",
+    "@swc/helpers": "~0.5.11",
+    "nx": "20.0.5",
+    "prettier": "^2.6.2",
+    "tslib": "^2.3.0",
+    "typescript": "~5.5.2"
+  },
   "workspaces": [
     "packages/*"
-  ],
-  "devDependencies": {
-    "@commitlint/cli": "^18.0.0",
-    "@commitlint/config-conventional": "^18.0.0",
-    "@rollup/plugin-typescript": "11.1.6",
-    "@types/jest": "^29.4.0",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "eslint": "^8.27.0",
-    "husky": "^8.0.2",
-    "jest": "^29.4.2",
-    "lerna": "^7.1.1",
-    "nx": "16.7.4",
-    "rollup": "4.12.0",
-    "rollup-plugin-delete": "^2.0.0",
-    "ts-jest": "^29.0.5",
-    "typedoc": "0.25.13",
-    "typescript": "^5.2.2"
-  },
-  "dependencies": {
-    "rxjs": "^7.8.0",
-    "tslib": "2.6.0"
-  }
+  ]
 }

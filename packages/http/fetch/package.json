@@ -1,7 +1,0 @@
-{
-  "name": "@ngify/http/fetch",
-  "types": "../dist/fetch/index.d.ts",
-  "main": "../dist/fetch/index.js",
-  "module": "../dist/fetch/index.mjs",
-  "sideEffects": false
-}

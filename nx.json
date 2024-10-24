@@ -1,17 +1,23 @@
 {
-  "extends": "nx/presets/npm.json",
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx/tasks-runners/default",
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "production": ["default"],
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
+  },
+  "nxCloudId": "671a2301c5733e344302f4bd",
+  "plugins": [
+    {
+      "plugin": "@nx/js/typescript",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "test:ci",
-          "test:coverage"
-        ]
+        "typecheck": {
+          "targetName": "typecheck"
+        },
+        "build": {
+          "targetName": "build",
+          "configName": "tsconfig.lib.json"
+        }
       }
     }
-  }
+  ]
 }
