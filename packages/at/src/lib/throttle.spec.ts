@@ -2,7 +2,7 @@ import { Throttle } from '@ngify/at';
 
 describe('Throttle', () => {
   it('should call once', () => {
-    const cb = jest.fn();
+    const cb = vitest.fn();
 
     const obj = new class {
       @Throttle(100)
@@ -18,7 +18,7 @@ describe('Throttle', () => {
   });
 
   it('should not call', () => {
-    const cb = jest.fn();
+    const cb = vitest.fn();
 
     const obj = new class {
       @Throttle(100, { leading: false })

@@ -2,7 +2,7 @@ import { Debounce } from '@ngify/at';
 
 describe('Debounce', () => {
   it('should call once', () => {
-    const cb = jest.fn();
+    const cb = vitest.fn();
 
     const obj = new class {
       @Debounce(100)
@@ -18,7 +18,7 @@ describe('Debounce', () => {
   });
 
   it('should not call', () => {
-    const cb = jest.fn();
+    const cb = vitest.fn();
 
     const obj = new class {
       @Debounce(100, { leading: true })
