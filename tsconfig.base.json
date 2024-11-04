@@ -8,17 +8,33 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ngify/at": ["packages/at/src/index.ts"],
-      "@ngify/core": ["packages/core/src/index.ts"],
-      "@ngify/http": ["packages/http/src/index.ts"],
-      "@ngify/http/wx": ["packages/http/src/lib/wx/wx.ts"],
-      "@ngify/tmp": ["packages/tmp/src/index.ts"]
+      "@ngify/at": [
+        "packages/at/src/index.ts"
+      ],
+      "@ngify/core": [
+        "packages/core/src/index.ts"
+      ],
+      "@ngify/http": [
+        "packages/http/src/index.ts"
+      ],
+      "@ngify/http/wx": [
+        "packages/http/src/wx/index.ts"
+      ],
+      "@ngify/http/testing": [
+        "packages/http/src/testing/index.ts"
+      ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

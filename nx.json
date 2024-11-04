@@ -20,16 +20,6 @@
   },
   "nxCloudId": "6724aad400cb764d73c5ef3e",
   "targetDefaults": {
-    "@nx/js:tsc": {
-      "cache": true,
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "production",
-        "^production"
-      ]
-    },
     "@nx/vite:test": {
       "cache": true,
       "inputs": [
@@ -43,6 +33,12 @@
       "plugin": "@nx/eslint/plugin",
       "options": {
         "targetName": "lint"
+      }
+    },
+    {
+      "plugin": "@nx/rollup/plugin",
+      "options": {
+        "buildTargetName": "build"
       }
     }
   ]

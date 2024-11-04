@@ -5,36 +5,13 @@
   "projectType": "library",
   "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nx/rollup:rollup",
-      "options": {
-        "format": [
-          "esm",
-          "cjs"
-        ],
-        "main": "packages/http/src/index.ts",
-        "additionalEntryPoints": [
-          "packages/http/src/lib/wx/wx.ts"
-        ],
-        "generateExportsField": true,
-        "outputPath": "dist/http",
-        "tsConfig": "packages/http/tsconfig.lib.json",
-        "assets": [
-          {
-            "input": "./packages/http",
-            "glob": "*.md",
-            "output": "./"
-          }
-        ]
-      }
-    },
     "test": {
       "executor": "@nx/vite:test",
       "outputs": [
         "{options.reportsDirectory}"
       ],
       "options": {
-        "reportsDirectory": "../../coverage/packages/tmp"
+        "reportsDirectory": "../../coverage/http"
       }
     }
   }

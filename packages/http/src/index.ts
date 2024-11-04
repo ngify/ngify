@@ -1,1 +1,10 @@
-export * from './lib/http';
+export * from './backend';
+export * from './client';
+export { setupConfig, type HttpConfig } from './config';
+export * from './context';
+export * from './headers';
+export * from './interceptor';
+export * from './params';
+export * from './request';
+export * from './response';
+export * from './xhr';

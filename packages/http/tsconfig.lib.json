@@ -4,7 +4,7 @@
     "outDir": "../../dist/out-tsc",
     "declaration": true,
     "types": [
-      "node"
+      "miniprogram-api-typings"
     ]
   },
   "include": [
