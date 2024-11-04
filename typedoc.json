@@ -1,7 +1,7 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "name": "ngify",
-  "out": "docs",
+  "out": "dist/docs",
   "entryPoints": [
     "packages/*"
   ],
