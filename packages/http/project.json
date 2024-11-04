@@ -5,6 +5,35 @@
   "projectType": "library",
   "tags": [],
   "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/http",
+        "main": "packages/http/src/index.ts",
+        "tsConfig": "packages/http/tsconfig.lib.json",
+        "assets": [
+          "packages/http/*.md"
+        ],
+        "additionalEntryPoints": [
+          "packages/http/src/wx/index.ts"
+        ],
+        "generateExportsField": true
+      }
+    },
+    "postbuild": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "commands": [
+          "node scripts/flat.js http"
+        ]
+      }
+    },
     "test": {
       "executor": "@nx/vite:test",
       "outputs": [

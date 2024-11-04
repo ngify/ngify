@@ -5,6 +5,32 @@
   "projectType": "library",
   "tags": [],
   "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/core",
+        "main": "packages/core/src/index.ts",
+        "tsConfig": "packages/core/tsconfig.lib.json",
+        "assets": [
+          "packages/core/*.md"
+        ],
+        "generateExportsField": true
+      }
+    },
+    "postbuild": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "commands": [
+          "node scripts/flat.js core"
+        ]
+      }
+    },
     "test": {
       "executor": "@nx/vite:test",
       "outputs": [

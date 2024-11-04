@@ -6,21 +6,21 @@
     "declaration": false,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
+    "target": "esnext",
     "module": "esnext",
     "lib": [
-      "es2020",
+      "esnext",
       "dom"
     ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ngify/at": [
-        "packages/at/src/index.ts"
-      ],
       "@ngify/core": [
         "packages/core/src/index.ts"
+      ],
+      "@ngify/at": [
+        "packages/at/src/index.ts"
       ],
       "@ngify/http": [
         "packages/http/src/index.ts"
