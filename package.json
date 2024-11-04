@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "docs": "typedoc",
     "build": "nx run-many --target=build,postbuild",
     "test": "nx run-many --target=test",
     "test:watch": "nx run-many --target=test --code-coverage --watch",
@@ -36,6 +37,7 @@
     "nx": "20.0.7",
     "prettier": "^3.0.0",
     "tslib": "^2.3.0",
+    "typedoc": "^0.26.11",
     "typescript": "~5.5.2",
     "typescript-eslint": "^8.0.0",
     "vite": "^5.0.0",

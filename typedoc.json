@@ -1,0 +1,17 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "name": "ngify",
+  "out": "docs",
+  "entryPoints": [
+    "packages/*"
+  ],
+  "entryPointStrategy": "packages",
+  "exclude": [
+    "**/*.(test|spec|d).ts"
+  ],
+  "excludeExternals": true,
+  "excludeInternal": true,
+  "githubPages": true,
+  "readme": "./README.md",
+  "categorizeByGroup": false
+}
