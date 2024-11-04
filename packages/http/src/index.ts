@@ -1,5 +1,4 @@
 export * from './backend';
-export * from './backends';
 export * from './client';
 export { setupConfig, type HttpConfig } from './config';
 export * from './context';
@@ -8,3 +7,4 @@ export * from './interceptor';
 export * from './params';
 export * from './request';
 export * from './response';
+export * from './xhr';

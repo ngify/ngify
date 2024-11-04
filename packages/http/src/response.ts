@@ -1,4 +1,4 @@
-import type { SafeAny } from '@ngify/types';
+import type { SafeAny } from '@ngify/core';
 import { HttpHeaders } from './headers';
 
 export type HttpEvent<T> = HttpSentEvent | HttpHeaderResponse | HttpResponse<T> | HttpProgressEvent | HttpUserEvent;

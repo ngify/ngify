@@ -1,17 +1,44 @@
 {
-  "extends": "nx/presets/npm.json",
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx/tasks-runners/default",
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "namedInputs": {
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
+    "production": [
+      "default",
+      "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/eslint.config.js",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/src/test-setup.[jt]s",
+      "!{projectRoot}/test-setup.[jt]s"
+    ],
+    "sharedGlobals": [
+      "{workspaceRoot}/.github/workflows/ci.yml"
+    ]
+  },
+  "nxCloudId": "6724aad400cb764d73c5ef3e",
+  "targetDefaults": {
+    "@nx/js:tsc": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "@nx/vite:test": {
+      "cache": true,
+      "inputs": [
+        "default",
+        "^production"
+      ]
+    }
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/eslint/plugin",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "test:ci",
-          "test:coverage"
-        ]
+        "targetName": "lint"
       }
     }
-  }
+  ]
 }

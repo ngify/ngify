@@ -1,4 +1,4 @@
-import type { SafeAny } from '@ngify/types';
+import type { SafeAny } from '@ngify/core';
 
 /**
  * Delay decorator for class methods

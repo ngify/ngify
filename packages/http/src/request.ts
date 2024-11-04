@@ -1,4 +1,4 @@
-import type { PickProperty, SafeAny } from '@ngify/types';
+import type { PickProperty, SafeAny } from '@ngify/core';
 import { HttpContext } from './context';
 import { HttpHeaders } from './headers';
 import { HttpParams } from './params';

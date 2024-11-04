@@ -1,53 +1,15 @@
 {
   "name": "@ngify/at",
-  "version": "1.6.0",
-  "description": "A practical decorator library",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "src",
-    "dist"
-  ],
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    },
-    "./package.json": "./package.json"
-  },
-  "sideEffects": false,
-  "scripts": {
-    "dev": "rollup --config rollup.config.mjs --watch",
-    "build": "rollup --config rollup.config.mjs",
-    "test": "jest --config ./jest.config.json",
-    "test:ci": "jest --config ./jest.config.json -i",
-    "test:coverage": "jest --config ./jest.config.json --coverage",
-    "lint": "eslint . --fix"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ngify/ngify.git"
-  },
-  "author": "HyperLife1119 <hyperlife1119@qq.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ngify/ngify/issues"
-  },
-  "homepage": "https://github.com/ngify/ngify/tree/main/packages/at",
-  "keywords": [
-    "debounce",
-    "throttle",
-    "decorator",
-    "wrapper"
-  ],
+  "version": "0.0.1",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@ngify/types": "1.6.0",
-    "@types/lodash-es": "^4.17.8",
+    "@ngify/core": "0.0.1",
+    "tslib": "^2.3.0",
     "lodash-es": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.12"
   }
 }

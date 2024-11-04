@@ -1,0 +1,40 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "esnext",
+    "module": "esnext",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@ngify/core": [
+        "packages/core/src/index.ts"
+      ],
+      "@ngify/at": [
+        "packages/at/src/index.ts"
+      ],
+      "@ngify/http": [
+        "packages/http/src/index.ts"
+      ],
+      "@ngify/http/wx": [
+        "packages/http/src/wx/index.ts"
+      ],
+      "@ngify/http/testing": [
+        "packages/http/src/testing/index.ts"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
+}

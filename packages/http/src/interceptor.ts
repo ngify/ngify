@@ -1,4 +1,4 @@
-import type { SafeAny } from '@ngify/types';
+import type { SafeAny } from '@ngify/core';
 import type { Observable } from 'rxjs';
 import type { HttpHandler } from './backend';
 import type { HttpRequest } from './request';

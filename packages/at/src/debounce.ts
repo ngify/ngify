@@ -1,4 +1,4 @@
-import type { SafeAny } from '@ngify/types';
+import type { SafeAny } from '@ngify/core';
 import { debounce, type DebounceSettings } from 'lodash-es';
 
 /**
