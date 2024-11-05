@@ -1,13 +1,3 @@
-// Modify from https://github.com/angular/angular/blob/master/packages/common/http/src/xhr.ts
-
-/**
- * @license
- * Copyright Google LLC All Rights Reserved.
- *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
- */
-
 import type { SafeAny } from '@ngify/core';
 import { Observable, type Observer } from 'rxjs';
 import type { HttpBackend } from './backend';
@@ -32,11 +22,10 @@ function getResponseUrl(xhr: SafeAny): string | null {
 }
 
 export class HttpXhrBackend implements HttpBackend {
-  private factory: () => XMLHttpRequest;
 
-  constructor(factory?: () => XMLHttpRequest) {
-    this.factory = factory || (() => new XMLHttpRequest());
-  }
+  constructor(
+    private factory: () => XMLHttpRequest = (() => new XMLHttpRequest())
+  ) { }
 
   /**
    * Processes a request and returns a stream of response events.
