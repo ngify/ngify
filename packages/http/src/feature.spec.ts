@@ -24,8 +24,8 @@ describe('provideHttpClient', () => {
     const client = new HttpClient(
       { kind: HttpFeatureKind.Backend, value: controller },
       withLegacyInterceptors([
-        makeLegacyInterceptor('alpha'),
-        makeLegacyInterceptor('beta'),
+        makeLegacyTagInterceptor('alpha'),
+        makeLegacyTagInterceptor('beta'),
       ])
     );
     client.get('/test', null, { responseType: 'text' }).subscribe();
@@ -65,7 +65,7 @@ describe('provideHttpClient', () => {
       const client = new HttpClient(
         { kind: HttpFeatureKind.Backend, value: controller },
         withInterceptors([makeLiteralTagInterceptorFn('functional')]),
-        withLegacyInterceptors([makeLegacyInterceptor('legacy')]),
+        withLegacyInterceptors([makeLegacyTagInterceptor('legacy')]),
       );
       client.get('/test', null, { responseType: 'text' }).subscribe();
       const req = controller.expectOne('/test');
@@ -76,7 +76,7 @@ describe('provideHttpClient', () => {
     it('should allow combination with legacy interceptors, after the legacy stack', () => {
       const client = new HttpClient(
         { kind: HttpFeatureKind.Backend, value: controller },
-        withLegacyInterceptors([makeLegacyInterceptor('legacy')]),
+        withLegacyInterceptors([makeLegacyTagInterceptor('legacy')]),
         withInterceptors([makeLiteralTagInterceptorFn('functional')]),
       );
       client.get('/test', null, { responseType: 'text' }).subscribe();
@@ -167,7 +167,7 @@ function setCookie(cookie: string): void {
   // });
 }
 
-function makeLegacyInterceptor(tag: string): HttpInterceptor {
+function makeLegacyTagInterceptor(tag: string): HttpInterceptor {
   return {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
       return next.handle(addTagToRequest(req, tag));
