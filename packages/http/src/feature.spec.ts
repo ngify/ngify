@@ -1,4 +1,4 @@
-import { HttpClient, HttpEvent, HttpFeatureKind, HttpHandler, HttpInterceptor, HttpInterceptorFn, HttpRequest, withInterceptors, withLegacyInterceptors } from '@ngify/http';
+import { HttpClient, HttpEvent, HttpFeatureKind, HttpHandler, HttpInterceptor, HttpInterceptorFn, HttpRequest, withInterceptors, withLegacyInterceptors, withXsrf } from '@ngify/http';
 import { HttpClientTestingBackend } from '@ngify/http/testing';
 import { Observable } from 'rxjs';
 
@@ -20,7 +20,7 @@ describe('provideHttpClient', () => {
     controller.expectOne('/test').flush('');
   });
 
-  it('withLegacyInterceptors() should enable legacy interceptors', () => {
+  it('should enable legacy interceptors', () => {
     const client = new HttpClient(
       { kind: HttpFeatureKind.Backend, value: controller },
       withLegacyInterceptors([
@@ -86,73 +86,50 @@ describe('provideHttpClient', () => {
     });
   });
 
-  // describe('xsrf protection', () => {
-  //   it('should enable xsrf protection by default', () => {
-  //     TestBed.configureTestingModule({
-  //       providers: [
-  //         provideHttpClient(),
-  //         provideHttpClientTesting(),
-  //         { provide: PLATFORM_ID, useValue: 'test' },
-  //       ],
-  //     });
+  describe('xsrf protection', () => {
+    it('should enable xsrf protection', () => {
+      const client = new HttpClient(
+        { kind: HttpFeatureKind.Backend, value: controller },
+        withXsrf()
+      );
 
-  //     setXsrfToken('abcdefg');
+      setXsrfToken('abcdefg');
 
-  //     TestBed.inject(HttpClient).post('/test', '', { responseType: 'text' }).subscribe();
-  //     const req = controller.expectOne('/test');
-  //     expect(req.request.headers.get('X-XSRF-TOKEN')).toEqual('abcdefg');
-  //     req.flush('');
-  //   });
+      client.post('/test', '', { responseType: 'text' }).subscribe();
+      const req = controller.expectOne('/test');
+      expect(req.request.headers.get('X-XSRF-TOKEN')).toEqual('abcdefg');
+      req.flush('');
+    });
 
-  //   it('withXsrfConfiguration() should allow customization of xsrf config', () => {
-  //     TestBed.configureTestingModule({
-  //       providers: [
-  //         provideHttpClient(
-  //           withXsrfConfiguration({
-  //             cookieName: 'XSRF-CUSTOM-COOKIE',
-  //             headerName: 'X-Custom-Xsrf-Header',
-  //           }),
-  //         ),
-  //         provideHttpClientTesting(),
-  //         { provide: PLATFORM_ID, useValue: 'test' },
-  //       ],
-  //     });
+    it('should allow customization of xsrf config', () => {
+      const client = new HttpClient(
+        { kind: HttpFeatureKind.Backend, value: controller },
+        withXsrf({
+          cookieName: 'XSRF-CUSTOM-COOKIE',
+          headerName: 'X-Custom-Xsrf-Header',
+        })
+      );
 
-  //     setCookie('XSRF-CUSTOM-COOKIE=abcdefg');
-  //     TestBed.inject(HttpClient).post('/test', '', { responseType: 'text' }).subscribe();
-  //     const req = controller.expectOne('/test');
-  //     expect(req.request.headers.get('X-Custom-Xsrf-Header')).toEqual('abcdefg');
-  //     req.flush('');
-  //   });
+      setCookie('XSRF-CUSTOM-COOKIE=abcdefg');
+      client.post('/test', '', { responseType: 'text' }).subscribe();
+      const req = controller.expectOne('/test');
+      expect(req.request.headers.get('X-Custom-Xsrf-Header')).toEqual('abcdefg');
+      req.flush('');
+    });
 
-  //   it('withNoXsrfProtection() should disable xsrf protection', () => {
-  //     TestBed.configureTestingModule({
-  //       providers: [
-  //         provideHttpClient(withNoXsrfProtection()),
-  //         provideHttpClientTesting(),
-  //         { provide: PLATFORM_ID, useValue: 'test' },
-  //       ],
-  //     });
-  //     setXsrfToken('abcdefg');
+    it('should disable xsrf protection by default', () => {
+      const client = new HttpClient(
+        { kind: HttpFeatureKind.Backend, value: controller }
+      );
 
-  //     TestBed.inject(HttpClient).post('/test', '', { responseType: 'text' }).subscribe();
-  //     const req = controller.expectOne('/test');
-  //     expect(req.request.headers.has('X-Custom-Xsrf-Header')).toBeFalse();
-  //     req.flush('');
-  //   });
+      setXsrfToken('abcdefg');
 
-  //   it('should error if withXsrfConfiguration() and withNoXsrfProtection() are combined', () => {
-  //     expect(() => {
-  //       TestBed.configureTestingModule({
-  //         providers: [
-  //           provideHttpClient(withNoXsrfProtection(), withXsrfConfiguration({})),
-  //           provideHttpClientTesting(),
-  //           { provide: PLATFORM_ID, useValue: 'test' },
-  //         ],
-  //       });
-  //     }).toThrow();
-  //   });
-  // });
+      client.post('/test', '', { responseType: 'text' }).subscribe();
+      const req = controller.expectOne('/test');
+      expect(req.request.headers.has('X-Custom-Xsrf-Header')).toBe(false);
+      req.flush('');
+    });
+  });
 });
 
 function setXsrfToken(token: string): void {
@@ -160,11 +137,10 @@ function setXsrfToken(token: string): void {
 }
 
 function setCookie(cookie: string): void {
-  cookie
-  // Object.defineProperty(TestBed.inject(DOCUMENT), 'cookie', {
-  //   get: () => cookie,
-  //   configurable: true,
-  // });
+  Object.defineProperty(globalThis.document ??= {} as any, 'cookie', {
+    get: () => cookie,
+    configurable: true,
+  });
 }
 
 function makeLegacyTagInterceptor(tag: string): HttpInterceptor {

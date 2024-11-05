@@ -10,3 +10,4 @@ export * from './params';
 export * from './request';
 export * from './response';
 export * from './xhr';
+export * from './xsrf';

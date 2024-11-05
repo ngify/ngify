@@ -136,7 +136,7 @@ describe('HttpUrlEncodedParams', () => {
       expect(mutated.getAll('a')).toEqual(['1', '2', '3', '5']);
     });
 
-    it.only('should allow deletion of one value of a boolean parameter', () => {
+    it('should allow deletion of one value of a boolean parameter', () => {
       const body = new HttpParams('a=false&a=true&a=false');
       const mutated = body.delete('a', false);
       expect(mutated.getAll('a')).toEqual(['true', 'false']);
