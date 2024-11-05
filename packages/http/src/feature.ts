@@ -1,6 +1,6 @@
 import { HttpBackend } from './backend';
-import { HttpXhrBackend } from './backends';
 import { HttpInterceptor, HttpInterceptorFn } from './interceptor';
+import { HttpXhrBackend } from './xhr';
 
 export enum HttpFeatureKind {
   Backend,

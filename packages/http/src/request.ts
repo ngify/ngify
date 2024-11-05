@@ -35,6 +35,8 @@ function isUrlSearchParams(value: SafeAny): value is URLSearchParams {
   return typeof URLSearchParams !== 'undefined' && value instanceof URLSearchParams;
 }
 
+export type HttpMethod = 'DELETE' | 'GET' | 'HEAD' | 'POST' | 'OPTIONS' | 'PUT' | 'PATCH';
+
 export class HttpRequest<T> {
   readonly body: T | null;
   readonly params!: HttpParams;
@@ -46,7 +48,7 @@ export class HttpRequest<T> {
   readonly withCredentials: boolean;
 
   constructor(
-    public readonly method: 'DELETE' | 'GET' | 'HEAD' | 'POST' | 'OPTIONS' | 'PUT' | 'PATCH',
+    public readonly method: HttpMethod,
     public readonly url: string,
     options?: {
       body?: T,

@@ -4,26 +4,28 @@ export class HttpHeaders {
   /** Maintain a copy of header name in the form of `lowercase name => normalized name` */
   private normalizedNames: Map<string, string> = new Map();
 
-  constructor(headers?: string | { [name: string]: string | string[] }) {
+  constructor(headers?: string | { [name: string]: string | number | (string | number)[] } | Headers) {
     if (typeof headers === 'string') {
       headers.split('\n').forEach(line => {
         if (line.includes(':')) {
           const [name, value] = line.split(/:\s/, 2);
           const key = name.toLowerCase();
-          const base = this.headers.get(key) || [];
-
-          base.push(value);
-
-          this.headers.set(key, base);
+          this.addHeaderEntry(key, value);
           this.setNormalizedName(key, name);
         }
       });
-    } else if (headers) {
-      Object.keys(headers).forEach(name => {
+    } else if (typeof Headers !== 'undefined' && headers instanceof Headers) {
+      this.headers = new Map<string, string[]>();
+      headers.forEach((value: string, name: string) => {
         const key = name.toLowerCase();
-        const value = headers[name];
-
-        this.headers.set(key, Array.isArray(value) ? value : [value]);
+        this.addHeaderEntry(key, value);
+        this.setNormalizedName(key, name);
+      });
+    } else if (headers) {
+      Object.entries(headers).forEach(([name, value]) => {
+        const key = name.toLowerCase();
+        const values = (Array.isArray(value) ? value : [value]).map(value => value.toString());
+        this.headers.set(key, values);
         this.setNormalizedName(key, name);
       });
     }
@@ -126,11 +128,19 @@ export class HttpHeaders {
   }
 
   /**
-   * @param lowercase lowercase name
+   * @param key lowercase name
    * @param normalized normalized name
    */
-  private setNormalizedName(lowercase: string, normalized: string) {
-    this.normalizedNames.has(lowercase) || this.normalizedNames.set(lowercase, normalized);
+  private setNormalizedName(key: string, normalized: string) {
+    this.normalizedNames.has(key) || this.normalizedNames.set(key, normalized);
+  }
+
+  private addHeaderEntry(key: string, value: string) {
+    if (this.headers.has(key)) {
+      this.headers.get(key)!.push(value);
+    } else {
+      this.headers.set(key, [value]);
+    }
   }
 
 }

@@ -9,7 +9,6 @@ import { HttpInterceptorFn, HttpInterceptorHandler, legacyInterceptorFnFactory }
 import type { HttpParams } from './params';
 import { HttpRequest } from './request';
 import { HttpResponse, type HttpEvent } from './response';
-import { HttpXhrBackend } from './xhr';
 
 type Body = HttpRequest<SafeAny>['body'];
 type Params = ConstructorParameters<typeof HttpParams>[0] | HttpParams | null;
