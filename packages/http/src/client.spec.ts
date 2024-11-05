@@ -1,12 +1,6 @@
-import {
-  HttpClient, HttpErrorResponse,
-  HttpEventType,
-  HttpFeatureKind,
-  HttpResponse,
-  HttpStatusCode
-} from '@ngify/http';
+import { HttpClient, HttpErrorResponse, HttpEventType, HttpFeatureKind, HttpResponse, HttpStatusCode } from '@ngify/http';
 import { HttpClientTestingBackend } from '@ngify/http/testing';
-import { toArray } from 'rxjs/operators';
+import { toArray } from 'rxjs';
 
 describe('HttpClient', () => {
   let client: HttpClient = null!;

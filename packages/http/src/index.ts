@@ -3,6 +3,7 @@ export * from './client';
 export { setupConfig, type HttpConfig } from './config';
 export * from './context';
 export * from './feature';
+export * from './fetch';
 export * from './headers';
 export * from './interceptor';
 export * from './params';

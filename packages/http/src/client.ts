@@ -39,7 +39,7 @@ export class HttpClient {
           break;
 
         case HttpFeatureKind.Interceptors:
-          interceptorFns = value;
+          interceptorFns = interceptorFns.concat(value);
           break;
 
         case HttpFeatureKind.LegacyInterceptors:
