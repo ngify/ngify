@@ -1,4 +1,4 @@
-import { HttpFeatureKind } from '../feature';
+import { HttpFeatureKind } from '@ngify/http';
 import { HttpWxBackend } from './backend';
 
 export function withWx() {

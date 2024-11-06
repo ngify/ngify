@@ -25,12 +25,12 @@
       "@ngify/http": [
         "packages/http/src/index.ts"
       ],
-      "@ngify/http/wx": [
-        "packages/http/src/wx/index.ts"
-      ],
       "@ngify/http/testing": [
         "packages/http/src/testing/index.ts"
-      ]
+      ],
+      "@ngify/http-wx": [
+        "packages/http-wx/src/index.ts"
+      ],
     }
   },
   "exclude": [

@@ -1,14 +1,17 @@
 {
-  "name": "@ngify/http",
+  "name": "@ngify/http-wx",
   "version": "0.0.1",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
     "@ngify/core": "0.0.1",
+    "@ngify/http": "0.0.1",
+    "miniprogram-api-typings": "^4.0.0",
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
+    "miniprogram-api-typings": "^4.0.0",
     "rxjs": "^7.0.0"
   }
 }

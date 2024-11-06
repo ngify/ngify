@@ -1,6 +1,5 @@
 import type { SafeAny } from '@ngify/core';
-import type { HttpBackend, HttpRequest } from '@ngify/http';
-import { HttpContextToken, HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpHeaders, HttpJsonParseError, HttpResponse, HttpSentEvent, HttpUploadProgressEvent } from '@ngify/http';
+import { HttpBackend, HttpContextToken, HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpHeaders, HttpJsonParseError, HttpRequest, HttpResponse, HttpSentEvent, HttpUploadProgressEvent } from '@ngify/http';
 import { Observable, Observer } from 'rxjs';
 
 type WxCallbackName = 'success' | 'fail' | 'complete';

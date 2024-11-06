@@ -1,7 +1,7 @@
 {
-  "name": "http",
+  "name": "http-wx",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/http/src",
+  "sourceRoot": "packages/http-wx/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -11,14 +11,11 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/http",
-        "main": "packages/http/src/index.ts",
-        "tsConfig": "packages/http/tsconfig.lib.json",
+        "outputPath": "dist/http-wx",
+        "main": "packages/http-wx/src/index.ts",
+        "tsConfig": "packages/http-wx/tsconfig.lib.json",
         "assets": [
-          "packages/http/*.md"
-        ],
-        "additionalEntryPoints": [
-          "packages/http/src/testing/index.ts"
+          "packages/http-wx/*.md"
         ],
         "generateExportsField": true
       }
@@ -30,7 +27,7 @@
       ],
       "options": {
         "commands": [
-          "node scripts/flat.js http"
+          "node scripts/flat.js http-wx"
         ]
       }
     },
@@ -40,7 +37,7 @@
         "{options.reportsDirectory}"
       ],
       "options": {
-        "reportsDirectory": "../../coverage/http"
+        "reportsDirectory": "../../coverage/http-wx"
       }
     }
   }
