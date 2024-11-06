@@ -3,7 +3,7 @@ import { Observable, type Observer } from 'rxjs';
 import type { HttpBackend } from './backend';
 import { HttpHeaders } from './headers';
 import type { HttpRequest } from './request';
-import { HttpErrorResponse, HttpEventType, HttpHeaderResponse, HttpResponse, HttpStatusCode, type HttpDownloadProgressEvent, type HttpEvent, type HttpJsonParseError, type HttpUploadProgressEvent } from './response';
+import { HTTP_STATUS_CODE_NO_CONTENT, HTTP_STATUS_CODE_OK, HttpErrorResponse, HttpEventType, HttpHeaderResponse, HttpResponse, type HttpDownloadProgressEvent, type HttpEvent, type HttpJsonParseError, type HttpUploadProgressEvent } from './response';
 
 const XSSI_PREFIX = /^\)\]\}',?\n/;
 
@@ -116,14 +116,14 @@ export class HttpXhrBackend implements HttpBackend {
         // The body will be read out if present.
         let body: SafeAny | null = null;
 
-        if (status !== HttpStatusCode.NoContent) {
+        if (status !== HTTP_STATUS_CODE_NO_CONTENT) {
           // Use XMLHttpRequest.response if set, responseText otherwise.
           body = (typeof xhr.response === 'undefined') ? xhr.responseText : xhr.response;
         }
 
         // Normalize another potential bug (this one comes from CORS).
         if (status === 0) {
-          status = !body ? 0 : HttpStatusCode.Ok;
+          status = !body ? 0 : HTTP_STATUS_CODE_OK;
         }
 
         // ok determines whether the response will be transmitted on the event or

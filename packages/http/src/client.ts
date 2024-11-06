@@ -1,7 +1,6 @@
 import type { SafeAny } from '@ngify/core';
 import { concatMap, filter, map, Observable, of } from 'rxjs';
 import type { HttpBackend, HttpHandler } from './backend';
-import { config } from './config';
 import type { HttpContext } from './context';
 import { HttpFeature, HttpFeatureKind } from './feature';
 import type { HttpHeaders } from './headers';
@@ -9,6 +8,7 @@ import { HttpInterceptorFn, HttpInterceptorHandler, legacyInterceptorFnFactory }
 import type { HttpParams } from './params';
 import { HttpRequest } from './request';
 import { HttpResponse, type HttpEvent } from './response';
+import { config } from './setup';
 
 type Body = HttpRequest<SafeAny>['body'];
 type Params = ConstructorParameters<typeof HttpParams>[0] | HttpParams | null;
@@ -29,7 +29,7 @@ export class HttpClient {
   private handler: HttpHandler;
 
   constructor(...features: HttpFeature[]) {
-    let interceptorFns: HttpInterceptorFn[] = [];
+    let interceptorFns: HttpInterceptorFn[] = config.interceptorFns;
     let backend: HttpBackend = config.backend;
 
     for (const { kind, value } of features) {

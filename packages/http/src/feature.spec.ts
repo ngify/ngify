@@ -137,7 +137,7 @@ function setXsrfToken(token: string): void {
 }
 
 function setCookie(cookie: string): void {
-  Object.defineProperty(globalThis.document ??= {} as any, 'cookie', {
+  Object.defineProperty(globalThis.document ??= {} as Document, 'cookie', {
     get: () => cookie,
     configurable: true,
   });
