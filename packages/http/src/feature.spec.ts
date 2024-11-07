@@ -2,7 +2,7 @@ import { HttpClient, HttpEvent, HttpFeatureKind, HttpHandler, HttpInterceptor, H
 import { HttpClientTestingBackend } from '@ngify/http/testing';
 import { Observable } from 'rxjs';
 
-describe('provideHttpClient', () => {
+describe('HttpFeature', () => {
   let controller: HttpClientTestingBackend
 
   beforeEach(() => {

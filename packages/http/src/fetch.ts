@@ -33,7 +33,7 @@ function getResponseUrl(response: Response): string | null {
  *
  * @publicApi
  */
-export class FetchBackend implements HttpBackend {
+export class HttpFetchBackend implements HttpBackend {
 
   constructor(
     // We use an arrow function to always reference the current global implementation of `fetch`.

@@ -1,7 +1,7 @@
 import { HttpClient, HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpHeaders, HttpParams, HttpRequest, HttpResponse, HttpStatusCode, withFetch } from '@ngify/http';
 import { catchError, Observable, of, retry, scan, skip, Subject, take, toArray } from 'rxjs';
 import { MockInstance } from 'vitest';
-import { FetchBackend } from './fetch';
+import { HttpFetchBackend } from './fetch';
 
 function trackEvents(obs: Observable<any>): Promise<any[]> {
   return obs
@@ -34,7 +34,7 @@ const XSSI_PREFIX = ")]}'\n";
 
 describe('FetchBackend', async () => {
   let fetchMock: MockFetchFactory = null!;
-  let backend: FetchBackend = null!;
+  let backend: HttpFetchBackend = null!;
   let fetchSpy: MockInstance;
 
   function callFetchAndFlush(req: HttpRequest<any>): void {
@@ -45,7 +45,7 @@ describe('FetchBackend', async () => {
   beforeEach(() => {
     fetchMock = new MockFetchFactory();
     fetchSpy = vitest.spyOn(fetchMock, 'fetch');
-    backend = new FetchBackend(fetchMock.fetch);
+    backend = new HttpFetchBackend(fetchMock.fetch);
   });
 
   it('emits status immediately', () => {

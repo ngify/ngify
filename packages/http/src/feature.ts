@@ -1,5 +1,5 @@
 import { HttpBackend } from './backend';
-import { FetchBackend } from './fetch';
+import { HttpFetchBackend } from './fetch';
 import { HttpInterceptor, HttpInterceptorFn } from './interceptor';
 import { HttpXhrBackend } from './xhr';
 import { xsrfInterceptor } from './xsrf';
@@ -27,7 +27,7 @@ export function withXhr(factory?: () => XMLHttpRequest) {
 export function withFetch(fetchImpl?: typeof fetch) {
   return {
     kind: HttpFeatureKind.Backend,
-    value: new FetchBackend(fetchImpl)
+    value: new HttpFetchBackend(fetchImpl)
   } as const;
 }
 

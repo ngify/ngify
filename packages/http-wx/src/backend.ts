@@ -5,9 +5,12 @@ import { Observable, Observer } from 'rxjs';
 type WxCallbackName = 'success' | 'fail' | 'complete';
 
 type WxUploadFileOption = Omit<
-  WechatMiniprogram.UploadFileOption & { fileName: string },  // 原本的 name 重命名为 fileName
+  WechatMiniprogram.UploadFileOption,
   'url' | 'header' | 'name' | 'formData' | WxCallbackName
->;
+> & {
+  /** 文件对应的 key，开发者在服务端可以通过这个 key 获取文件的二进制内容 */
+  fileName: string // 原本的 name 重命名为 fileName
+};
 
 type WxDownloadFileOption = Omit<
   WechatMiniprogram.DownloadFileOption,
@@ -208,7 +211,7 @@ function download(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>>
 function request(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
   return new Observable((observer: Observer<HttpEvent<SafeAny>>) => {
     if (request.method === 'PATCH') {
-      throw Error('WeChat MiniProgram does not support http method as ' + request.method);
+      throw Error(`The http ${request.method} request is not supported yet`);
     }
 
     // The response header event handler
@@ -221,7 +224,7 @@ function request(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> 
 
     const task = wx.request({
       url: request.urlWithParams,
-      method: request.method as WechatMiniprogram.RequestOption['method'],
+      method: request.method,
       data: request.body,
       header: buildHeaders(request),
       // wx 从 responseType 中拆分出 dataType，这里需要处理一下
