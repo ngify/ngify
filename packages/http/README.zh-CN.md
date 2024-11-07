@@ -50,7 +50,7 @@ http.post<YourType>('url', 'body', {
 ).subscribe(console.log);
 ```
 
-### 发起请求
+## 发起请求
 
 `HttpClient` 具有与用于发出请求的不同 HTTP 动词相对应的方法，这些方法既可以加载数据，也可以在服务器上应用变更。每个方法都返回一个 [RxJS Observable](https://rxjs.dev/guide/observable)，订阅后会发送请求，然后在服务器响应时发出结果。
 
@@ -59,9 +59,9 @@ http.post<YourType>('url', 'body', {
 
 通过传递给请求方法的选项对象，可以调整请求的各种属性和返回的响应类型。
 
-#### 获取 JSON 数据
+### 获取 JSON 数据
 
-从后端获取数据通常需要使用 `HttpClient.get()` 方法发出 GET 请求。此方法采用两个参数：要从中获取的字符串端点 URL，以及用于配置请求的可选选项对象。
+从后端获取数据通常需要使用 `HttpClient.get()` 方法发出 GET 请求。此方法采用三个参数：要从中获取的字符串端点 URL、URL 参数，以及用于配置请求的可选选项对象。
 
 例如，要使用 `HttpClient.get()` 方法从假设的 API 获取配置数据：
 
@@ -79,7 +79,7 @@ http.get<Config>('/api/config').subscribe(config => {
 > [!CAUTION]
 > 请求方法的通用类型是关于服务器返回的数据的类型断言。 `HttpClient` 不会验证实际返回数据是否与该类型匹配。
 
-#### 获取其他类型的数据
+### 获取其他类型的数据
 
 默认情况下， `HttpClient` 假定服务器将返回 JSON 数据。与非 JSON API 交互时，您可以告诉 `HttpClient` 在发出请求时期望并返回什么响应类型。这是通过 `responseType` 选项完成的。
 
@@ -98,7 +98,7 @@ http.get('/images/dog.jpg', null, { responseType: 'arraybuffer' }).subscribe(buf
 });
 ```
 
-#### 改变服务器状态
+### 改变服务器状态
 
 执行修改的服务器 API 通常需要发出 POST 请求，并在请求正文中指定新状态或要进行的更改。
 
@@ -121,7 +121,7 @@ http.post<Config>('/api/config', newConfig).subscribe(config => {
 | [`FormData`](https://developer.mozilla.org/docs/Web/API/FormData)                                       | `multipart/form-data` 表单数据                             |
 | `HttpParams` 或 [`URLSearchParams`](https://developer.mozilla.org/docs/Web/API/URLSearchParams)         | `application/x-www-form-urlencoded formatted` 格式化字符串 |
 
-#### 设置 URL 参数
+### 设置 URL 参数
 
 使用 `params` 选项指定应包含在请求 URL 中的请求参数。
 
@@ -160,7 +160,7 @@ http.post('/api/config', body, {
 
 您可以使用自定义 `HttpParameterCodec` 实例化 `HttpParams`（构造方法中的第二个参数），该自定义 `HttpParameterCodec` 确定 `HttpClient` 如何将参数编码到 URL 中。
 
-#### 设置请求标头
+### 设置请求标头
 
 使用 `headers` 选项指定应包含在请求中的请求标头。
 
@@ -191,7 +191,7 @@ http.get<Config>('/api/config', params, {
 });
 ```
 
-#### 与服务器响应事件交互
+### 与服务器响应事件交互
 
 为了方便起见，`HttpClient` 默认返回服务器返回的数据的 `Observable`（body）。有时需要检查实际响应，例如检索特定的响应标头。
 
@@ -204,14 +204,14 @@ http.get<Config>('/api/config', params, { observe: 'response' }).subscribe(res =
 });
 ```
 
-#### 接收原始进度事件
+### 接收原始进度事件
 
 除了响应正文或响应对象之外， `HttpClient` 还可以返回与请求生命周期中的特定时刻相对应的原始事件流。这些事件包括何时发送请求、何时返回响应标头以及何时完成正文。这些事件还可以包括报告大型请求或响应正文的上传和下载状态的进度事件。
 
 默认情况下，进度事件处于禁用状态（因为它们会产生性能成本），但可以使用 `reportProgress` 选项来启用。
 
 > [!NOTE]
-> `HttpClient` 的 `fetch` 实现不会报告上传进度事件。
+> `HttpClient` 的 `fetch` 实现不支持报告上传进度事件。
 
 要观察事件流，请将 `observe` 选项设置为 `'events'`：
 
@@ -242,7 +242,7 @@ http.post('/api/upload', myData, {
 | `HttpEventType.Response`         | 已收到整个响应，包括响应正文。                     |
 | `HttpEventType.User`             | 来自 Http 拦截器的自定义事件。                     |
 
-#### 处理请求失败
+### 处理请求失败
 
 HTTP 请求失败有两种情况：
 - 网络或连接错误可能会阻止请求到达后端服务器。
@@ -257,7 +257,7 @@ HTTP 请求失败有两种情况：
 
 有时，诸如网络中断之类的暂时性错误可能会导致请求意外失败，只需重试请求即可使其成功。RxJS 提供了几个重试运算符，它们在某些条件下自动重新订阅失败的 `Observable`。例如，`retry()` 运算符将自动尝试重新订阅指定的次数。
 
-#### Http Observables
+### Http Observables
 
 `HttpClient` 上的每个请求方法都会构造并返回所请求响应类型的 `Observable`。使用 `HttpClient` 时，了解这些 `Observable` 的工作原理非常重要。
 
@@ -267,9 +267,7 @@ HTTP 请求失败有两种情况：
 
 由于自动完成，如果不清理 `HttpClient` 订阅，通常不存在内存泄漏的风险。
 
-但是，与任何异步操作一样，我们强烈建议您在使用订阅的组件被销毁时清理订阅，因为订阅回调可能会运行，并在尝试与被销毁的组件交互时遇到错误。
-
-### 拦截请求和响应
+## 拦截请求和响应
 
 `HttpClient` 支持一种称为*拦截器*的中间件形式。
 
@@ -278,7 +276,7 @@ HTTP 请求失败有两种情况：
 
 `HttpClient` 支持两种拦截器：函数式拦截器和基于 `class` 的拦截器。我们的建议是使用函数式拦截器，因为它们具有更可预测的行为，尤其是在复杂的设置中。本指南中的示例使用函数式拦截器，并且我们在最后的相应部分中介绍了基于 `class` 的拦截器。
 
-#### 拦截器
+### 拦截器
 
 拦截器通常是可以为每个请求运行的函数，并且具有影响请求和响应的内容和整体流程的广泛功能。
 
@@ -295,7 +293,7 @@ HTTP 请求失败有两种情况：
 - 在可配置的截止日期或超时后自动失败请求。
 - 定期轮询服务器并刷新结果。
 
-#### 定义拦截器
+### 定义拦截器
 
 拦截器的基本形式是接收传出 `HttpRequest` 的函数和代表拦截器链中下一个处理步骤的 `next` 函数。
 
@@ -310,7 +308,7 @@ export function loggingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerF
 
 为了让这个拦截器真正拦截请求，您必须配置 `HttpClient` 来使用它。
 
-#### 配置拦截器
+### 配置拦截器
 
 您可以使用 `withInterceptors` 函数配置 `HttpClient` 要使用的拦截器集合：
 
@@ -322,7 +320,7 @@ const http = new HttpClient(
 
 您配置的拦截器按照您列出的顺序链接在一起。在上面的示例中，`loggingInterceptor` 将处理请求，然后将其转发到 `cachingInterceptor`。
 
-##### 拦截响应事件
+#### 拦截响应事件
 
 拦截器可以转换 `next` 返回的 `HttpEvent` 的 `Observable` 流，以便访问或操作响应。由于此流包含所有响应事件，因此可能需要检查每个事件的 `.type` 以便识别最终响应对象。
 
@@ -339,7 +337,7 @@ export function loggingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerF
 > [!TIP]
 > 拦截器自然地将响应与其传出请求相关联，因为它们在捕获请求对象的闭包中转换响应流。
 
-#### 修改请求
+### 修改请求
 
 `HttpRequest` 和 `HttpResponse` 实例的大多数方面都是不可变的，拦截器无法直接修改它们。相反，拦截器通过使用 `.clone()` 操作克隆这些对象并指定应在新实例中改变哪些属性来应用变更。这可能涉及对值本身执行不可变的更新（如 `HttpHeaders` 或 `HttpParams`）。
 
@@ -356,13 +354,13 @@ const reqWithHeader = req.clone({
 > [!CAUTION]
 > 请求或响应的正文未受到深度变更的保护。如果拦截器必须改变主体，请注意处理同一请求的多次运行。
 
-#### 请求和响应元数据
+### 请求和响应元数据
 
 通常，在不发送到后端但专门用于拦截器的请求中包含信息很有用。 `HttpRequest` 有一个 `.context` 对象，它将此类元数据存储为 `HttpContext` 的实例。该对象充当类型映射，其键类型为 `HttpContextToken`。
 
 为了说明该系统的工作原理，让我们使用元数据来控制是否为给定的请求启用缓存拦截器。
 
-##### 定义上下文标记
+#### 定义上下文标记
 
 要存储缓存拦截器是否应在该请求的 `.context` 映射中缓存特定请求，请定义一个新的 `HttpContextToken` 来充当键：
 
@@ -372,7 +370,7 @@ export const CACHING_ENABLED = new HttpContextToken<boolean>(() => true);
 
 提供的函数为尚未显式设置值的请求创建令牌的默认值。使用函数可确保如果令牌的值是对象或数组，则每个请求都会获得自己的实例。
 
-##### 在拦截器中读取令牌
+#### 在拦截器中读取令牌
 
 然后，拦截器可以读取令牌并根据其值选择是否应用缓存逻辑：
 
@@ -388,7 +386,7 @@ export function cachingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerF
 }
 ```
 
-##### 发出请求时设置上下文令牌
+#### 发出请求时设置上下文令牌
 
 通过 `HttpClient` API 发出请求时，您可以为 `HttpContextToken` 提供值：
 
@@ -400,11 +398,11 @@ const data$ = http.get('/sensitive/data', {
 
 拦截器可以从请求的 `HttpContext` 中读取这些值。
 
-##### 请求上下文是可变的
+#### 请求上下文是可变的
 
 与 `HttpRequest` 的其他属性不同，关联的 `HttpContext` 是可变的。如果拦截器更改了稍后重试的请求的上下文，则同一拦截器在再次运行时将观察到上下文变化。如果需要，这对于在多次重试之间传递状态很有用。
 
-#### 构造响应
+### 构造响应
 
 大多数拦截器将在转换请求或响应时简单地调用下 `next` 处理程序，但这并不是严格的要求。本节讨论拦截器可以合并更高级行为的几种方法。
 
@@ -418,7 +416,7 @@ const resp = new HttpResponse({
 });
 ```
 
-#### 基于 class 的拦截器
+### 基于 class 的拦截器
 
 `HttpClient` 还支持基于 class 的拦截器，基于 class 的拦截器与函数式拦截器的功能相同，但配置方法不同。
 
@@ -441,11 +439,7 @@ const http = new HttpClient(
 );
 ```
 
-### 测试请求
-
-https://angular.dev/guide/http/testing
-
-### 更换 HTTP 请求实现
+## 更换 HTTP 请求实现
 
 `@ngify/http` 内置了以下 HTTP 请求实现：
 
@@ -459,7 +453,7 @@ https://angular.dev/guide/http/testing
 
 ```ts
 import { withXhr, withFetch } from '@ngify/http';
-import { HttpWxBackend } from '@ngify/http-wx';
+import { withWx } from '@ngify/http-wx';
 
 const xhrHttp = new HttpClient(
   withXhr()
@@ -495,5 +489,45 @@ const customHttp = new HttpClient(
 ```ts
 setupHttpClient(
   withFetch()
-)
+);
 ```
+
+## XSRF/CSRF 防护
+
+`HttpClient` 支持用于防止 XSRF 攻击的通用机制。执行 HTTP 请求时，拦截器从 cookie 中读取令牌（默认为 `XSRF-TOKEN`），并将其设置为 HTTP 标头（默认为 `X-XSRF-TOKEN`）。
+由于只有在您的域上运行的代码才能读取 cookie，因此后端可以确定 HTTP 请求来自您的客户端应用程序而不是攻击者。
+
+要启用 XSRF 防护，请在 `HttpClient` 实例化时或在 `setupHttpClient` 中传递 `withXsrfProtection()`：
+
+```ts
+const http = new HttpClient(
+  withXsrfProtection()
+);
+```
+
+如果您的后端服务对 XSRF 令牌 cookie 或标头使用不同的名称，请自定义 cookie 名称与标头名称：
+
+```ts
+withXsrfProtection({
+  cookieName: 'CUSTOM_XSRF_TOKEN',
+  headerName: 'X-Custom-Xsrf-Header',
+});
+```
+
+默认情况下，拦截器会在除 GET/HEAD 外的所有请求（例如 POST）上将此标头发送到相对 URL，但不会在具有绝对 URL 的请求上发送此标头。
+
+> [!NOTE]
+> #### 为什么不保护 GET 请求？
+> 仅对于可以更改后端状态的请求才需要 CSRF 保护。就其本质而言，CSRF 攻击跨越域边界，并且 Web 的同源策略将阻止攻击页面检索经过身份验证的 GET 请求的结果。
+
+为了利用这一点，您的服务器需要在页面加载或第一个 GET 请求时在名为 `XSRF-TOKEN` 的 cookie 中设置一个令牌。
+在后续请求中，服务器可以验证 cookie 是否与 `X-XSRF-TOKEN` HTTP 标头匹配，因此确保只有在您的域上运行的代码才能发送请求。
+令牌对于每个用户必须是唯一的，并且必须可由服务器验证；这可以防止客户端创建自己的令牌。
+
+> [!NOTE]
+> #### HttpClient 仅支持 XSRF 保护方案的客户端部分
+> 您的后端服务必须配置为为您的页面设置 cookie，并验证标头是否存在于所有符合条件的请求中。如果不这样做，HttpClient 的 XSRF 保护就会失效。
+
+## 测试请求
+
+参考 https://angular.dev/guide/http/testing

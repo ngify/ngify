@@ -10,7 +10,7 @@ interface HttpConfig {
 
 type HttpSetupFeature =
   | { kind: HttpFeatureKind.Backend, value: HttpBackend }
-  | { kind: HttpFeatureKind.Xsrf, value: HttpInterceptorFn };
+  | { kind: HttpFeatureKind.XsrfProtection, value: HttpInterceptorFn };
 
 export const config: HttpConfig = {
   backend: withXhr().value,
@@ -24,7 +24,7 @@ export function setupHttpClient(...features: HttpSetupFeature[]) {
         config.backend = value;
         break;
 
-      case HttpFeatureKind.Xsrf:
+      case HttpFeatureKind.XsrfProtection:
         config.interceptorFns.push(value);
         break
     }

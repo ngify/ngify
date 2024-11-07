@@ -46,7 +46,7 @@ export class HttpClient {
           interceptorFns = interceptorFns.concat(legacyInterceptorFnFactory(value));
           break;
 
-        case HttpFeatureKind.Xsrf:
+        case HttpFeatureKind.XsrfProtection:
           interceptorFns.push(value);
           break
       }

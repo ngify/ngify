@@ -1,4 +1,4 @@
-import { HttpClient, HttpEvent, HttpFeatureKind, HttpHandler, HttpInterceptor, HttpInterceptorFn, HttpRequest, withInterceptors, withLegacyInterceptors, withXsrf } from '@ngify/http';
+import { HttpClient, HttpEvent, HttpFeatureKind, HttpHandler, HttpInterceptor, HttpInterceptorFn, HttpRequest, withInterceptors, withLegacyInterceptors, withXsrfProtection } from '@ngify/http';
 import { HttpClientTestingBackend } from '@ngify/http/testing';
 import { Observable } from 'rxjs';
 
@@ -90,7 +90,7 @@ describe('HttpFeature', () => {
     it('should enable xsrf protection', () => {
       const client = new HttpClient(
         { kind: HttpFeatureKind.Backend, value: controller },
-        withXsrf()
+        withXsrfProtection()
       );
 
       setXsrfToken('abcdefg');
@@ -104,7 +104,7 @@ describe('HttpFeature', () => {
     it('should allow customization of xsrf config', () => {
       const client = new HttpClient(
         { kind: HttpFeatureKind.Backend, value: controller },
-        withXsrf({
+        withXsrfProtection({
           cookieName: 'XSRF-CUSTOM-COOKIE',
           headerName: 'X-Custom-Xsrf-Header',
         })

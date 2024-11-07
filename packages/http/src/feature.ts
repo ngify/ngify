@@ -8,14 +8,14 @@ export enum HttpFeatureKind {
   Backend,
   Interceptors,
   LegacyInterceptors,
-  Xsrf
+  XsrfProtection
 }
 
 export type HttpFeature =
   | { kind: HttpFeatureKind.Backend, value: HttpBackend }
   | { kind: HttpFeatureKind.Interceptors, value: HttpInterceptorFn[] }
   | { kind: HttpFeatureKind.LegacyInterceptors, value: HttpInterceptor[] }
-  | { kind: HttpFeatureKind.Xsrf, value: HttpInterceptorFn };
+  | { kind: HttpFeatureKind.XsrfProtection, value: HttpInterceptorFn };
 
 export function withXhr(factory?: () => XMLHttpRequest) {
   return {
@@ -45,9 +45,9 @@ export function withLegacyInterceptors(interceptors: HttpInterceptor[]) {
   } as const;
 }
 
-export function withXsrf(options?: { cookieName?: string; headerName?: string, tokenExtractor?: () => string | null }) {
+export function withXsrfProtection(options?: { cookieName?: string; headerName?: string, tokenExtractor?: () => string | null }) {
   return {
-    kind: HttpFeatureKind.Xsrf,
+    kind: HttpFeatureKind.XsrfProtection,
     value: xsrfInterceptor(options)
   } as const;
 }

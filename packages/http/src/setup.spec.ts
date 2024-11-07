@@ -1,4 +1,4 @@
-import { HttpClient, HttpFeatureKind, setupHttpClient, withXsrf } from '@ngify/http';
+import { HttpClient, HttpFeatureKind, setupHttpClient, withXsrfProtection } from '@ngify/http';
 import { HttpClientTestingBackend } from '@ngify/http/testing';
 
 describe('setupHttpClient', () => {
@@ -10,7 +10,7 @@ describe('setupHttpClient', () => {
 
     setupHttpClient(
       { kind: HttpFeatureKind.Backend, value: backend },
-      withXsrf()
+      withXsrfProtection()
     );
 
     client = new HttpClient();
