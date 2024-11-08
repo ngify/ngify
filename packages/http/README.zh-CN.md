@@ -11,7 +11,7 @@
 - 请求[类型化响应对象](https://angular.cn/guide/http#typed-response)的能力。
 - 简化的[错误处理](https://angular.cn/guide/http#error-handling)。
 - 请求和响应的[拦截机制](https://angular.cn/guide/http#intercepting-requests-and-responses)。
-- 默认支持但不限于 `XMLHttpRequest` 、`Fetch API` 与 `微信小程序`。
+- 支持但不限于 `XMLHttpRequest` 、`Fetch API` 与 `微信小程序`。
 
 ## 先决条件
 
@@ -39,7 +39,7 @@ import { timeout, retry } from 'rxjs';
 
 const http = new HttpClient();
 
-http.get('url', { k: 'v' }).subscribe(console.log);
+http.get('url', { k: 'v' }).subscribe();
 
 http.post<YourType>('url', 'body', {
   params: { k: 'v' }
@@ -47,7 +47,7 @@ http.post<YourType>('url', 'body', {
 }).pipe(
   timeout(3000),
   retry(3),
-).subscribe(console.log);
+).subscribe();
 ```
 
 ## 发起请求
@@ -435,7 +435,8 @@ export class LoggingInterceptor implements HttpInterceptor {
 
 ```ts
 const http = new HttpClient(
-  withLegacyInterceptors([new LoggingInterceptor()])
+  withLegacyInterceptors([new LoggingInterceptor()]),
+  withInterceptors([cachingInterceptor])
 );
 ```
 
@@ -484,14 +485,6 @@ const customHttp = new HttpClient(
 );
 ```
 
-您还可以使用 `setupHttpClient` 进行全局配置：
-
-```ts
-setupHttpClient(
-  withFetch()
-);
-```
-
 ## XSRF/CSRF 防护
 
 `HttpClient` 支持用于防止 XSRF 攻击的通用机制。执行 HTTP 请求时，拦截器从 cookie 中读取令牌（默认为 `XSRF-TOKEN`），并将其设置为 HTTP 标头（默认为 `X-XSRF-TOKEN`）。
@@ -528,6 +521,32 @@ withXsrfProtection({
 > #### HttpClient 仅支持 XSRF 保护方案的客户端部分
 > 您的后端服务必须配置为为您的页面设置 cookie，并验证标头是否存在于所有符合条件的请求中。如果不这样做，HttpClient 的 XSRF 保护就会失效。
 
+## 全局配置
+
+您可以使用 `setupHttpClient` 函数进行全局配置：
+
+```ts
+setupHttpClient(
+  withFetch(),
+  withXsrfProtection(),
+);
+```
+
 ## 测试请求
 
 参考 https://angular.dev/guide/http/testing
+
+## API 差异
+
+尽管 `@ngify/http` 与 `@angular/common/http` 在 API 上保持高度一致，但仍有一些重要的区别：
+
+| 差异       | @angular/common/http                         | @ngify/http                                                 |
+| ---------- | -------------------------------------------- | ----------------------------------------------------------- |
+| JSONP      | `http.jsonp()`                               | 不受支持                                                    |
+| Params     | `http.get('url', { params: { k: 'v' } })`    | `http.get('url', { k: 'v' })`                               |
+| fromObject | `new HttpParams({ fromObject: { k: 'v' } })` | `new HttpParams({ k: 'v' })`                                |
+| fromString | `new HttpParams({ fromString: 'k=v' })`      | `new HttpParams('k=v')`                                     |
+| setParams  | `request.clone({ setParams: { k: 'v' } })`   | `request.clone({ params: request.params.set('k', 'v') })`   |
+| setHeaders | `request.clone({ setHeaders: { k: 'v' } })`  | `request.clone({ headers: request.headers.set('k', 'v') })` |
+| request()  | `http.request('GET', 'url')`                 | `http.request(new HttpRequest('GET', 'url'))`               |
+| XSRF 防护  | 默认启用                                     | 默认禁用                                                    |

@@ -10,7 +10,7 @@ A reactive HTTP client similar to `@angular/common/http`, offering the following
 - Ability to request [typed response objects](https://angular.dev/guide/http#typed-response).
 - Simplified [error handling](https://angular.dev/guide/http#error-handling).
 - [Interception mechanism](https://angular.dev/guide/http#intercepting-requests-and-responses) for requests and responses.
-- Default support for, but not limited to, `XMLHttpRequest`, `Fetch API`, and `WeChat Mini Programs`.
+- Support for, but not limited to, `XMLHttpRequest`, `Fetch API`, and `WeChat Mini Programs`.
 
 ## Prerequisites
 
@@ -38,7 +38,7 @@ import { timeout, retry } from 'rxjs';
 
 const http = new HttpClient();
 
-http.get('url', { k: 'v' }).subscribe(console.log);
+http.get('url', { k: 'v' }).subscribe();
 
 http.post<YourType>('url', 'body', {
   params: { k: 'v' },
@@ -46,7 +46,7 @@ http.post<YourType>('url', 'body', {
 }).pipe(
   timeout(3000),
   retry(3),
-).subscribe(console.log);
+).subscribe();
 ```
 
 ## Making Requests
@@ -434,7 +434,8 @@ Class-based interceptors are configured using the `withLegacyInterceptors` funct
 
 ```ts
 const http = new HttpClient(
-  withLegacyInterceptors([new LoggingInterceptor()])
+  withLegacyInterceptors([new LoggingInterceptor()]),
+  withInterceptors([cachingInterceptor])
 );
 ```
 
@@ -483,13 +484,6 @@ const customHttp = new HttpClient(
 );
 ```
 
-You can also use `setupHttpClient` for global configuration:
-
-```ts
-setupHttpClient(
-  withFetch()
-);
-```
 ## XSRF/CSRF Protection
 
 `HttpClient` supports a generic mechanism for preventing XSRF attacks. When making HTTP requests, an interceptor reads a token from a cookie (default is `XSRF-TOKEN`) and sets it as an HTTP header (default is `X-XSRF-TOKEN`). Since only code running on your domain can read the cookie, the backend can ensure that the HTTP request is coming from your client application and not from an attacker.
@@ -523,6 +517,32 @@ To take advantage of this, your server needs to set a token in a cookie named `X
 > #### HttpClient only supports the client-side part of the XSRF protection scheme
 > Your backend service must be configured to set the cookie for your pages and verify the header's presence on all eligible requests. If not, HttpClient's XSRF protection will not be effective.
 
+## Global Configuration
+
+You can use the `setupHttpClient` function for global configuration:
+
+```ts
+setupHttpClient(
+  withFetch(),
+  withXsrfProtection(),
+);
+```
+
 ## Testing Requests
 
 Refer to https://angular.dev/guide/http/testing
+
+## API Differences
+
+Although `@ngify/http` maintains a high degree of consistency with `@angular/common/http` in terms of API, there are still some important differences:
+
+| Difference      | @angular/common/http                         | @ngify/http                                                 |
+| --------------- | -------------------------------------------- | ----------------------------------------------------------- |
+| JSONP           | `http.jsonp()`                               | Not supported                                               |
+| Params          | `http.get('url', { params: { k: 'v' } })`    | `http.get('url', { k: 'v' })`                               |
+| fromObject      | `new HttpParams({ fromObject: { k: 'v' } })` | `new HttpParams({ k: 'v' })`                                |
+| fromString      | `new HttpParams({ fromString: 'k=v' })`      | `new HttpParams('k=v')`                                     |
+| setParams       | `request.clone({ setParams: { k: 'v' } })`   | `request.clone({ params: request.params.set('k', 'v') })`   |
+| setHeaders      | `request.clone({ setHeaders: { k: 'v' } })`  | `request.clone({ headers: request.headers.set('k', 'v') })` |
+| request()       | `http.request('GET', 'url')`                 | `http.request(new HttpRequest('GET', 'url'))`               |
+| XSRF Protection | Enabled by default                           | Disabled by default                                         |

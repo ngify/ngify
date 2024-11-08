@@ -13,13 +13,21 @@
 npm install @ngify/http-wx
 ```
 
+## API
+
+有关完整的 API 定义，请访问 [https://ngify.github.io/ngify](https://ngify.github.io/ngify/modules/_ngify_http_wx.html).
+
+
 ## 基本用法
 
 ```ts
-import { HttpClient } from '@ngify/http';
 import { withWx } from '@ngify/http-wx';
 
 const http = new HttpClient(
+  withWx()
+);
+// or
+setupHttpClient(
   withWx()
 );
 ```
@@ -29,7 +37,7 @@ const http = new HttpClient(
 小程序请求还支持更多额外的参数，使用 `HttpContext` 来传递它们：
 
 ```ts
-import { HttpContext, WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http-wx';
+import { WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http-wx';
 
 // 微信小程序开启 HTTP2
 http.get('url', params, {
