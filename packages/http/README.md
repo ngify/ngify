@@ -443,13 +443,13 @@ const http = new HttpClient(
 
 `@ngify/http` comes with the following HTTP request implementations:
 
-| HTTP Request Implementation | Package          | Description                                  |
-| --------------------------- | ---------------- | -------------------------------------------- |
-| `withXhr`                   | `@ngify/http`    | Uses `XMLHttpRequest` for HTTP requests      |
-| `withFetch`                 | `@ngify/http`    | Uses `Fetch API` for HTTP requests           |
-| `withWx`                    | `@ngify/http-wx` | Uses HTTP requests in `WeChat Mini Programs` |
+| HTTP Request Implementation | Package                                                                       | Description                                  |
+| --------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------- |
+| `withXhr`                   | `@ngify/http`                                                                 | Uses `XMLHttpRequest` for HTTP requests      |
+| `withFetch`                 | `@ngify/http`                                                                 | Uses `Fetch API` for HTTP requests           |
+| `withWx`                    | [`@ngify/http-wx`](https://github.com/ngify/ngify/blob/main/packages/http-wx) | Uses HTTP requests in `WeChat Mini Programs` |
 
-`HttpClient` uses `HttpXhrBackend` by default, but you can switch to other implementations:
+`HttpClient` uses `withXhr` by default, but you can switch to other implementations:
 
 ```ts
 import { withXhr, withFetch } from '@ngify/http';
@@ -546,3 +546,49 @@ Although `@ngify/http` maintains a high degree of consistency with `@angular/com
 | setHeaders      | `request.clone({ setHeaders: { k: 'v' } })`  | `request.clone({ headers: request.headers.set('k', 'v') })` |
 | request()       | `http.request('GET', 'url')`                 | `http.request(new HttpRequest('GET', 'url'))`               |
 | XSRF Protection | Enabled by default                           | Disabled by default                                         |
+
+## Migration
+
+To migrate from v1 to v2, you need to make the following changes:
+
+1. Remove the `setupConfig` function and replace it with `setupHttpClient`:
+
+```ts
+// before
+setupConfig({
+  backend: new HttpFetchBackend(),
+});
+// after
+setupHttpClient(
+  withFetch()
+);
+```
+2. The constructor signature of `HttpClient` has changed, and you now need to pass `HttpFeature` configurations:
+
+```ts
+// before
+const http = new HttpClient([
+  new CustomInterceptor()
+]);
+// after
+const http = new HttpClient(
+  withLegacyInterceptors([new CustomInterceptor()])
+);
+```
+
+```ts
+// before
+const http = new HttpClient({
+  backend: new HttpFetchBackend(),
+  interceptors: [new CustomInterceptor()]
+});
+// after
+const http = new HttpClient(
+  withFetch(),
+  withLegacyInterceptors([new CustomInterceptor()])
+);
+```
+
+3. If you are using `@ngify/http/fetch`, update the import path to `@ngify/http`.
+4. If you are using `@ngify/http/wx`, install the [`@ngify/http-wx`](https://github.com/ngify/ngify/blob/main/packages/http-wx) package and update the import path.
+5. v2 only supports ESM and no longer supports CommonJS, if you need to use CommonJS, please continue to use v1.

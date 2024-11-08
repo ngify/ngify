@@ -444,13 +444,13 @@ const http = new HttpClient(
 
 `@ngify/http` 内置了以下 HTTP 请求实现：
 
-| HTTP 请求实现 | 包               | 描述                                 |
-| ------------- | ---------------- | ------------------------------------ |
-| `withXhr`     | `@ngify/http`    | 使用 `XMLHttpRequest` 进行 HTTP 请求 |
-| `withFetch`   | `@ngify/http`    | 使用 `Fetch API` 进行 HTTP 请求      |
-| `withWx`      | `@ngify/http-wx` | 在 `微信小程序` 中进行 HTTP 请求     |
+| HTTP 请求实现 | 包                                                                            | 描述                                 |
+| ------------- | ----------------------------------------------------------------------------- | ------------------------------------ |
+| `withXhr`     | `@ngify/http`                                                                 | 使用 `XMLHttpRequest` 进行 HTTP 请求 |
+| `withFetch`   | `@ngify/http`                                                                 | 使用 `Fetch API` 进行 HTTP 请求      |
+| `withWx`      | [`@ngify/http-wx`](https://github.com/ngify/ngify/blob/main/packages/http-wx) | 在 `微信小程序` 中进行 HTTP 请求     |
 
-`HttpClient` 默认使用 `HttpXhrBackend`，您可以自行切换到其他实现：
+`HttpClient` 默认使用 `withXhr`，您可以自行切换到其他实现：
 
 ```ts
 import { withXhr, withFetch } from '@ngify/http';
@@ -550,3 +550,49 @@ setupHttpClient(
 | setHeaders | `request.clone({ setHeaders: { k: 'v' } })`  | `request.clone({ headers: request.headers.set('k', 'v') })` |
 | request()  | `http.request('GET', 'url')`                 | `http.request(new HttpRequest('GET', 'url'))`               |
 | XSRF 防护  | 默认启用                                     | 默认禁用                                                    |
+
+## 迁移
+
+从 v1 迁移到 v2，您需要进行以下修改：
+
+1. 移除 `setupConfig` 函数，使用 `setupHttpClient` 替代：
+
+```ts
+// before
+setupConfig({
+  backend: new HttpFetchBackend(),
+});
+// after
+setupHttpClient(
+  withFetch()
+);
+```
+2. `HttpClient` 的构造方法签名已更改，您现在需要传递 `HttpFeature` 配置：
+
+```ts
+// before
+const http = new HttpClient([
+  new CustomInterceptor()
+]);
+// after
+const http = new HttpClient(
+  withLegacyInterceptors([new CustomInterceptor()])
+);
+```
+
+```ts
+// before
+const http = new HttpClient({
+  backend: new HttpFetchBackend(),
+  interceptors: [new CustomInterceptor()]
+});
+// after
+const http = new HttpClient(
+  withFetch(),
+  withLegacyInterceptors([new CustomInterceptor()])
+);
+```
+
+3. 如果您正在使用 `@ngify/http/fetch`，请将导入点更新为 `@ngify/http`。
+4. 如果您正在使用 `@ngify/http/wx`，请安装 [`@ngify/http-wx`](https://github.com/ngify/ngify/blob/main/packages/http-wx) 包并更新导入点。
+5. v2 仅支持 ESM，不再支持 CommonJS，如果您需要使用 CommonJS，请继续使用 v1。
