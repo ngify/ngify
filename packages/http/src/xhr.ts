@@ -1,19 +1,9 @@
-// Modify from https://github.com/angular/angular/blob/master/packages/common/http/src/xhr.ts
-
-/**
- * @license
- * Copyright Google LLC All Rights Reserved.
- *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
- */
-
 import type { SafeAny } from '@ngify/core';
 import { Observable, type Observer } from 'rxjs';
 import type { HttpBackend } from './backend';
 import { HttpHeaders } from './headers';
-import type { HttpRequest } from './request';
-import { HttpErrorResponse, HttpEventType, HttpHeaderResponse, HttpResponse, HttpStatusCode, type HttpDownloadProgressEvent, type HttpEvent, type HttpJsonParseError, type HttpUploadProgressEvent } from './response';
+import type { HttpRequest, HttpResponseType } from './request';
+import { HTTP_STATUS_CODE_NO_CONTENT, HTTP_STATUS_CODE_OK, HttpErrorResponse, HttpEventType, HttpHeaderResponse, HttpResponse, type HttpDownloadProgressEvent, type HttpEvent, type HttpJsonParseError, type HttpUploadProgressEvent } from './response';
 
 const XSSI_PREFIX = /^\)\]\}',?\n/;
 
@@ -32,11 +22,10 @@ function getResponseUrl(xhr: SafeAny): string | null {
 }
 
 export class HttpXhrBackend implements HttpBackend {
-  private factory: () => XMLHttpRequest;
 
-  constructor(factory?: () => XMLHttpRequest) {
-    this.factory = factory || (() => new XMLHttpRequest());
-  }
+  constructor(
+    private factory: () => XMLHttpRequest = (() => new XMLHttpRequest())
+  ) { }
 
   /**
    * Processes a request and returns a stream of response events.
@@ -44,7 +33,6 @@ export class HttpXhrBackend implements HttpBackend {
    * @returns An observable of the response events.
    */
   handle(req: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
-
     // Everything happens on Observable subscription.
     return new Observable((observer: Observer<HttpEvent<SafeAny>>) => {
       // Start by setting up the XHR object with request method, URL, and withCredentials flag.
@@ -73,14 +61,14 @@ export class HttpXhrBackend implements HttpBackend {
 
       // Set the responseType if one was requested.
       if (req.responseType) {
-        const responseType = req.responseType.toLowerCase();
+        const responseType = req.responseType.toLowerCase() as HttpResponseType;
 
         // JSON responses need to be processed as text. This is because if the server
         // returns an XSSI-prefixed JSON response, the browser will fail to parse it,
         // xhr.response will be null, and xhr.responseText cannot be accessed to
         // retrieve the prefixed JSON data in order to strip the prefix. Thus, all JSON
         // is parsed by first requesting text and then applying JSON.parse.
-        xhr.responseType = ((responseType !== 'json') ? responseType : 'text') as SafeAny;
+        xhr.responseType = responseType !== 'json' ? responseType : 'text';
       }
 
       // Serialize the request body if one is present. If not, this will be set to null.
@@ -127,14 +115,14 @@ export class HttpXhrBackend implements HttpBackend {
         // The body will be read out if present.
         let body: SafeAny | null = null;
 
-        if (status !== HttpStatusCode.NoContent) {
+        if (status !== HTTP_STATUS_CODE_NO_CONTENT) {
           // Use XMLHttpRequest.response if set, responseText otherwise.
           body = (typeof xhr.response === 'undefined') ? xhr.responseText : xhr.response;
         }
 
         // Normalize another potential bug (this one comes from CORS).
         if (status === 0) {
-          status = !body ? 0 : HttpStatusCode.Ok;
+          status = !body ? 0 : HTTP_STATUS_CODE_OK;
         }
 
         // ok determines whether the response will be transmitted on the event or

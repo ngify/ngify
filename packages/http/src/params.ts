@@ -18,9 +18,7 @@ const standardEncoding = (value: string) => (
   encodeURIComponent(value).replace(STANDARD_ENCODING_REGEX, (s, t) => STANDARD_ENCODING_REPLACEMENTS[t] ?? s)
 );
 
-const stringify = (value: string | number | boolean) => (
-  value === null || value === undefined ? '' : `${value}`
-);
+const stringify = (value: string | number | boolean) => `${value}`;
 
 export interface HttpParameterCodec {
   encodeKey(key: string): string;
@@ -80,9 +78,9 @@ export class HttpParams {
 
   constructor(
     source?: string | { [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean> } | null,
-    encoder?: HttpParameterCodec
+    options?: { encoder?: HttpParameterCodec }
   ) {
-    this.encoder = encoder ?? new HttpUrlEncodingCodec();
+    this.encoder = options?.encoder ?? new HttpUrlEncodingCodec();
 
     if (typeof source === 'string') {
       source.replace(/^\?/, '').split('&').forEach((param: string) => {
@@ -152,8 +150,16 @@ export class HttpParams {
     const clone = this.clone();
 
     if (value !== undefined) {
-      const values = (clone.map.get(param) || []).filter(o => o !== stringify(value));
-      values.length > 0 ? clone.map.set(param, values) : clone.map.delete(param);
+      const base = clone.getAll(param) || [];
+      const idx = base.indexOf(stringify(value));
+      if (idx >= 0) {
+        base.splice(idx, 1);
+      }
+      if (base.length > 0) {
+        this.map!.set(param, base);
+      } else {
+        this.map!.delete(param);
+      }
     } else {
       clone.map.delete(param);
     }
@@ -168,7 +174,7 @@ export class HttpParams {
   }
 
   private clone(): HttpParams {
-    const clone = new HttpParams(null, this.encoder);
+    const clone = new HttpParams(null, { encoder: this.encoder });
 
     this.map.forEach((value, name) => {
       clone.map.set(name, [...value]);

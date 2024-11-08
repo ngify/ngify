@@ -8,10 +8,11 @@ Use its features outside of Angular.
 
 ## Packages
 
-| Package                                                                 | Intro                                                         | Version                                                                                                      |
-| ----------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| [`@ngify/http`](https://github.com/ngify/ngify/tree/main/packages/http) | A reactive HTTP client in the form of `@angular/common/http`. | [![version](https://img.shields.io/npm/v/@ngify/http/latest.svg)](https://www.npmjs.com/package/@ngify/http) |
-| [`@ngify/at`](https://github.com/ngify/ngify/tree/main/packages/at)     | A practical decorator library (experimental).                 | [![version](https://img.shields.io/npm/v/@ngify/at/latest.svg)](https://www.npmjs.com/package/@ngify/at)     |
+| Package                                                                       | Intro                                                         | Version                                                                                                            |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| [`@ngify/http`](https://github.com/ngify/ngify/tree/main/packages/http)       | A reactive HTTP client in the form of `@angular/common/http`. | [![version](https://img.shields.io/npm/v/@ngify/http/latest.svg)](https://www.npmjs.com/package/@ngify/http)       |
+| [`@ngify/http-wx`](https://github.com/ngify/ngify/tree/main/packages/http-wx) | WeChat HTTP request adapter for `@ngify/http`.                | [![version](https://img.shields.io/npm/v/@ngify/http-wx/latest.svg)](https://www.npmjs.com/package/@ngify/http-wx) |
+| [`@ngify/at`](https://github.com/ngify/ngify/tree/main/packages/at)           | A practical decorator library (experimental).                 | [![version](https://img.shields.io/npm/v/@ngify/at/latest.svg)](https://www.npmjs.com/package/@ngify/at)           |
 
 &nbsp; ☝️ Click the links above to view the README for each package.
 

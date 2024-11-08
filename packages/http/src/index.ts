@@ -1,10 +1,13 @@
 export * from './backend';
 export * from './client';
-export { setupConfig, type HttpConfig } from './config';
 export * from './context';
+export * from './feature';
+export * from './fetch';
 export * from './headers';
 export * from './interceptor';
 export * from './params';
 export * from './request';
 export * from './response';
+export { setupHttpClient } from './setup';
 export * from './xhr';
+export * from './xsrf';

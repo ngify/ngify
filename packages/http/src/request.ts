@@ -35,18 +35,21 @@ function isUrlSearchParams(value: SafeAny): value is URLSearchParams {
   return typeof URLSearchParams !== 'undefined' && value instanceof URLSearchParams;
 }
 
+export type HttpMethod = 'DELETE' | 'GET' | 'HEAD' | 'POST' | 'OPTIONS' | 'PUT' | 'PATCH';
+export type HttpResponseType = 'arraybuffer' | 'blob' | 'json' | 'text';
+
 export class HttpRequest<T> {
   readonly body: T | null;
   readonly params!: HttpParams;
   readonly headers!: HttpHeaders;
   readonly context!: HttpContext;
-  readonly responseType: 'arraybuffer' | 'blob' | 'json' | 'text';
+  readonly responseType: HttpResponseType;
   readonly urlWithParams: string;
   readonly reportProgress: boolean;
   readonly withCredentials: boolean;
 
   constructor(
-    public readonly method: 'DELETE' | 'GET' | 'HEAD' | 'POST' | 'OPTIONS' | 'PUT' | 'PATCH',
+    public readonly method: HttpMethod,
     public readonly url: string,
     options?: {
       body?: T,

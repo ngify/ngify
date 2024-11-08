@@ -1,14 +1,14 @@
 import type { SafeAny } from '@ngify/core';
 import { concatMap, filter, map, Observable, of } from 'rxjs';
 import type { HttpBackend, HttpHandler } from './backend';
-import { config } from './config';
 import type { HttpContext } from './context';
+import { HttpFeature, HttpFeatureKind } from './feature';
 import type { HttpHeaders } from './headers';
-import { HttpInterceptorHandler, type HttpInterceptor } from './interceptor';
+import { HttpInterceptorFn, HttpInterceptorHandler, legacyInterceptorFnFactory } from './interceptor';
 import type { HttpParams } from './params';
 import { HttpRequest } from './request';
 import { HttpResponse, type HttpEvent } from './response';
-import { HttpXhrBackend } from './xhr';
+import { config } from './setup';
 
 type Body = HttpRequest<SafeAny>['body'];
 type Params = ConstructorParameters<typeof HttpParams>[0] | HttpParams | null;
@@ -28,35 +28,31 @@ interface RequestOptions<T extends ResponseType = ResponseType> {
 export class HttpClient {
   private handler: HttpHandler;
 
-  constructor(backend?: HttpBackend);
-  constructor(interceptors?: ReadonlyArray<HttpInterceptor>);
-  constructor(options?: { interceptors?: ReadonlyArray<HttpInterceptor>, backend?: HttpBackend });
-  constructor(options?: { interceptors?: ReadonlyArray<HttpInterceptor>, backend?: HttpBackend } | ReadonlyArray<HttpInterceptor> | HttpBackend) {
-    let interceptors: ReadonlyArray<HttpInterceptor> | undefined = undefined;
-    let backend: HttpBackend | undefined = undefined;
+  constructor(...features: HttpFeature[]) {
+    let interceptorFns: HttpInterceptorFn[] = config.interceptorFns;
+    let backend: HttpBackend = config.backend;
 
-    if (options) {
-      if (Array.isArray(options)) {
-        interceptors = options;
-      } else if ('handle' in options) {
-        backend = options;
-      } else if ('interceptors' in options || 'backend' in options) {
-        interceptors = options.interceptors;
-        backend = options.backend;
+    for (const { kind, value } of features) {
+      switch (kind) {
+        case HttpFeatureKind.Backend:
+          backend = value;
+          break;
+
+        case HttpFeatureKind.Interceptors:
+          interceptorFns = interceptorFns.concat(value);
+          break;
+
+        case HttpFeatureKind.LegacyInterceptors:
+          interceptorFns = interceptorFns.concat(legacyInterceptorFnFactory(value));
+          break;
+
+        case HttpFeatureKind.XsrfProtection:
+          interceptorFns.push(value);
+          break
       }
     }
 
-    if (!backend) {
-      backend = config.backend ?? new HttpXhrBackend();
-    }
-
-    if (interceptors) {
-      this.handler = interceptors.reduceRight((next, interceptor) => (
-        new HttpInterceptorHandler(interceptor, next)
-      ), backend);
-    } else {
-      this.handler = backend;
-    }
+    this.handler = new HttpInterceptorHandler(backend, interceptorFns);
   }
 
   request<R>(request: HttpRequest<SafeAny>, options?: { observe?: 'body' }): Observable<R>
@@ -64,8 +60,12 @@ export class HttpClient {
   request<R>(request: HttpRequest<SafeAny>, options?: { observe?: 'response' }): Observable<HttpResponse<R>>
   request<R>(request: HttpRequest<SafeAny>, options?: { observe?: 'body' | 'events' | 'response' }): Observable<R | HttpEvent<R> | HttpResponse<R>>
   request(request: HttpRequest<SafeAny>, options: { observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
-    const events$ = of(request).pipe(concatMap((req: HttpRequest<SafeAny>) => this.handler.handle(req)));
-    const res$ = events$.pipe(filter((event: HttpEvent<SafeAny>) => event instanceof HttpResponse)) as Observable<HttpResponse<SafeAny>>;
+    const events$ = of(request).pipe(
+      concatMap((req: HttpRequest<unknown>) => this.handler.handle(req))
+    );
+    const res$ = events$.pipe(
+      filter((event: HttpEvent<unknown>) => event instanceof HttpResponse)
+    ) as Observable<HttpResponse<unknown>>;
 
     switch (options.observe || 'body') {
       case 'body':
