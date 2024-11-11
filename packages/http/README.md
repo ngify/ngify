@@ -390,7 +390,7 @@ export function cachingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerF
 When making requests via the `HttpClient` API, you can provide values for `HttpContextToken`s:
 
 ```ts
-const data$ = http.get('/sensitive/data', {
+const data$ = http.get('/sensitive/data', params, {
   context: new HttpContext().set(CACHING_ENABLED, false),
 });
 ```
