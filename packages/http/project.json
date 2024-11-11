@@ -15,7 +15,8 @@
         "main": "packages/http/src/index.ts",
         "tsConfig": "packages/http/tsconfig.lib.json",
         "assets": [
-          "packages/http/*.md"
+          "packages/http/*.md",
+          "LICENSE"
         ],
         "additionalEntryPoints": [
           "packages/http/src/testing/index.ts"

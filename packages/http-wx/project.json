@@ -15,7 +15,8 @@
         "main": "packages/http-wx/src/index.ts",
         "tsConfig": "packages/http-wx/tsconfig.lib.json",
         "assets": [
-          "packages/http-wx/*.md"
+          "packages/http-wx/*.md",
+          "LICENSE"
         ],
         "generateExportsField": true
       }

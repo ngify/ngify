@@ -391,7 +391,7 @@ export function cachingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerF
 通过 `HttpClient` API 发出请求时，您可以为 `HttpContextToken` 提供值：
 
 ```ts
-const data$ = http.get('/sensitive/data', {
+const data$ = http.get('/sensitive/data', params, {
   context: new HttpContext().set(CACHING_ENABLED, false),
 });
 ```

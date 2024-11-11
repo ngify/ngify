@@ -1,11 +1,26 @@
 {
   "name": "@ngify/http",
-  "version": "0.0.1",
+  "version": "0.0.0",
+  "description": "A reactive HTTP client",
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngify/ngify.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ngify/ngify/issues"
+  },
+  "homepage": "https://github.com/ngify/ngify",
+  "keywords": [
+    "angular-http",
+    "rxjs-http",
+    "http-client"
+  ],
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@ngify/core": "0.0.1",
+    "@ngify/core": "0.0.0",
     "tslib": "^2.3.0"
   },
   "peerDependencies": {

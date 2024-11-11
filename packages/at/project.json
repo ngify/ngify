@@ -15,7 +15,8 @@
         "main": "packages/at/src/index.ts",
         "tsConfig": "packages/at/tsconfig.lib.json",
         "assets": [
-          "packages/at/*.md"
+          "packages/at/*.md",
+          "LICENSE"
         ],
         "generateExportsField": true
       }
