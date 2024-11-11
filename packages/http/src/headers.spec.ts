@@ -6,14 +6,14 @@ describe('HttpHeaders', () => {
       const httpHeaders = {
         'Content-Type': 'image/jpeg',
         'Accept-Charset': 'utf-8',
-        'X-My-Custom-Header': 'Zeke are cool',
+        'X-My-Custom-Header': 'Zeke are cool'
       };
       const secondHeaders = new HttpHeaders(httpHeaders);
       expect(secondHeaders.get('Content-Type')).toEqual('image/jpeg');
     });
 
     it('should merge values in provided dictionary', () => {
-      const headers = new HttpHeaders({ 'foo': 'bar' });
+      const headers = new HttpHeaders({ foo: 'bar' });
       expect(headers.get('foo')).toEqual('bar');
       expect(headers.getAll('foo')).toEqual(['bar']);
     });
@@ -31,8 +31,8 @@ describe('HttpHeaders', () => {
 
     it('should keep the last value when initialized from an object', () => {
       const headers = new HttpHeaders({
-        'foo': 'first',
-        'fOo': 'second',
+        foo: 'first',
+        fOo: 'second'
       });
 
       expect(headers.getAll('foo')).toEqual(['second']);
@@ -41,7 +41,7 @@ describe('HttpHeaders', () => {
     it('should keep all values when initialized from a Headers object with duplicate headers', () => {
       const standardHeaders = new Headers([
         ['Set-Cookie', 'cookie1=foo'],
-        ['Set-Cookie', 'cookie2=bar'],
+        ['Set-Cookie', 'cookie2=bar']
       ]);
       const headers = new HttpHeaders(standardHeaders);
 
@@ -89,7 +89,7 @@ describe('HttpHeaders', () => {
 
   describe('.set()', () => {
     it('should clear all values and re-set for the provided key', () => {
-      const headers = new HttpHeaders({ 'foo': 'bar' });
+      const headers = new HttpHeaders({ foo: 'bar' });
       expect(headers.get('foo')).toEqual('bar');
 
       const second = headers.set('foo', 'baz');
@@ -109,7 +109,7 @@ describe('HttpHeaders', () => {
 
   describe('.get()', () => {
     it('should be case insensitive', () => {
-      const headers = new HttpHeaders({ 'foo': 'baz' });
+      const headers = new HttpHeaders({ foo: 'baz' });
       expect(headers.get('foo')).toEqual('baz');
       expect(headers.get('FOO')).toEqual('baz');
     });
@@ -136,7 +136,7 @@ describe('HttpHeaders', () => {
 
   describe('.delete', () => {
     it('should be case insensitive', () => {
-      const headers = new HttpHeaders({ 'foo': 'baz' });
+      const headers = new HttpHeaders({ foo: 'baz' });
       expect(headers.has('foo')).toEqual(true);
       const second = headers.delete('foo');
       expect(second.has('foo')).toEqual(false);

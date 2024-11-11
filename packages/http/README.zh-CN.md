@@ -112,14 +112,14 @@ http.post<Config>('/api/config', newConfig).subscribe(config => {
 
 可以提供许多不同类型的值作为请求的 `body`，并且 `HttpClient` 将相应地序列化它们：
 
-| Body type                                                                                               | Serialization as                                           |
-| ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| `string`                                                                                                | 纯文本                                                     |
-| `number`、`boolean`、`Array` 或 `object`                                                                | JSON 字符串                                                |
-| [`ArrayBuffer`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | 来自 buffer 的原始数据                                     |
-| [`Blob`](https://developer.mozilla.org/docs/Web/API/Blob)                                               | 具有 `Blob` 内容类型的原始数据                             |
-| [`FormData`](https://developer.mozilla.org/docs/Web/API/FormData)                                       | `multipart/form-data` 表单数据                             |
-| `HttpParams` 或 [`URLSearchParams`](https://developer.mozilla.org/docs/Web/API/URLSearchParams)         | `application/x-www-form-urlencoded formatted` 格式化字符串 |
+| Body type                                                                                               | Serialization as                                 |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| `string`                                                                                                | 纯文本                                           |
+| `number`、`boolean`、`Array` 或 `object`                                                                | JSON 字符串                                      |
+| [`ArrayBuffer`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | 来自 buffer 的原始数据                           |
+| [`Blob`](https://developer.mozilla.org/docs/Web/API/Blob)                                               | 具有 `Blob` 内容类型的原始数据                   |
+| [`FormData`](https://developer.mozilla.org/docs/Web/API/FormData)                                       | `multipart/form-data` 表单数据                   |
+| `HttpParams` 或 [`URLSearchParams`](https://developer.mozilla.org/docs/Web/API/URLSearchParams)         | `application/x-www-form-urlencoded` 格式化字符串 |
 
 ### 设置 URL 参数
 

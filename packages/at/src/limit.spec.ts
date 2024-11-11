@@ -4,8 +4,10 @@ describe('Limit', () => {
   it('multi', () => {
     const obj = new class {
       @Limit(2)
-      limit(value: number) { return value; }
-    }
+      limit(value: number) {
+        return value;
+      }
+    }();
 
     let result = obj.limit(1);
     result = obj.limit(2);
@@ -17,8 +19,10 @@ describe('Limit', () => {
   it('once', () => {
     const obj = new class {
       @Once()
-      once(value: number) { return value; }
-    }
+      once(value: number) {
+        return value;
+      }
+    }();
 
     let result = obj.once(1);
     result = obj.once(2);

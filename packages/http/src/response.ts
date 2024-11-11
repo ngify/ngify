@@ -16,7 +16,7 @@ export enum HttpEventType {
   /** The full response including the body was received. */
   Response,
   /** A custom event from an interceptor or a backend. */
-  User,
+  User
 }
 
 /** Base interface for progress events. */
@@ -67,10 +67,10 @@ export abstract class HttpResponseBase {
   readonly type!: HttpEventType.Response | HttpEventType.ResponseHeader;
 
   constructor(options: {
-    url?: string,
-    status?: number,
-    statusText?: string,
-    headers?: HttpHeaders,
+    url?: string;
+    status?: number;
+    statusText?: string;
+    headers?: HttpHeaders;
   }, defaultStatus: number = HttpStatusCode.Ok, defaultStatusText = 'OK') {
     this.url = options.url || null;
     this.status = options.status !== undefined ? options.status : defaultStatus;
@@ -84,10 +84,10 @@ export class HttpHeaderResponse extends HttpResponseBase {
   override readonly type: HttpEventType.ResponseHeader = HttpEventType.ResponseHeader;
 
   constructor(options: {
-    url?: string,
-    status?: number,
-    statusText?: string,
-    headers?: HttpHeaders,
+    url?: string;
+    status?: number;
+    statusText?: string;
+    headers?: HttpHeaders;
   } = {}) {
     super(options);
   }
@@ -97,7 +97,7 @@ export class HttpHeaderResponse extends HttpResponseBase {
       url: update.url || this.url || undefined,
       status: update.status !== undefined ? update.status : this.status,
       statusText: update.statusText || this.statusText,
-      headers: update.headers || this.headers,
+      headers: update.headers || this.headers
     });
   }
 }
@@ -107,11 +107,11 @@ export class HttpResponse<T> extends HttpResponseBase {
   override readonly type: HttpEventType.Response = HttpEventType.Response;
 
   constructor(options: {
-    url?: string,
-    body?: T | null,
-    status?: number,
+    url?: string;
+    body?: T | null;
+    status?: number;
     statusText?: string;
-    headers?: HttpHeaders,
+    headers?: HttpHeaders;
   } = {}) {
     super(options);
     this.body = options.body !== undefined ? options.body : null;
@@ -123,7 +123,7 @@ export class HttpResponse<T> extends HttpResponseBase {
       body: (update.body !== undefined ? update.body : this.body) as D,
       status: update.status || this.status,
       statusText: update.statusText || this.statusText,
-      headers: update.headers || this.headers,
+      headers: update.headers || this.headers
     });
   }
 }
@@ -135,11 +135,11 @@ export class HttpErrorResponse extends HttpResponseBase implements Error {
   override readonly ok = false;
 
   constructor(options: {
-    url?: string,
-    error?: SafeAny,
-    headers?: HttpHeaders,
-    status?: number,
-    statusText?: string,
+    url?: string;
+    error?: SafeAny;
+    headers?: HttpHeaders;
+    status?: number;
+    statusText?: string;
   }) {
     super(options, 0, 'Unknown Error');
 

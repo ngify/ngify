@@ -1,23 +1,15 @@
-/**
- * @license
- * Copyright Google LLC All Rights Reserved.
- *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
- */
-
 import type { SafeAny } from '@ngify/core';
-import { HttpErrorResponse, HttpEvent, HttpHeaders, HttpRequest, HttpResponse, HttpStatusCode } from '@ngify/http';
 import type { Observer } from 'rxjs';
+import { HttpErrorResponse, HttpEvent, HttpHeaders, HttpRequest, HttpResponse, HttpStatusCode } from '@ngify/http';
 
 /**
  * Type that describes options that can be used to create an error
  * in `TestRequest`.
  */
 type TestRequestErrorOptions = {
-  headers?: HttpHeaders | { [name: string]: string | string[] },
-  status?: number,
-  statusText?: string,
+  headers?: HttpHeaders | { [name: string]: string | string[] };
+  status?: number;
+  statusText?: string;
 };
 
 /**
@@ -55,9 +47,9 @@ export class TestRequest {
     body: ArrayBuffer | Blob | boolean | string | number | Object | (boolean | string | number | Object | null)[] |
       null,
     opts: {
-      headers?: HttpHeaders | { [name: string]: string | string[] },
-      status?: number,
-      statusText?: string,
+      headers?: HttpHeaders | { [name: string]: string | string[] };
+      status?: number;
+      statusText?: string;
     } = {}): void {
     if (this.cancelled) {
       throw new Error('Cannot flush a cancelled request.');
@@ -110,7 +102,7 @@ export class TestRequest {
       headers,
       status: opts.status || 0,
       statusText: opts.statusText || '',
-      url: this.request.urlWithParams,
+      url: this.request.urlWithParams
     }));
   }
 
@@ -125,7 +117,6 @@ export class TestRequest {
     this.observer.next(event);
   }
 }
-
 
 /**
  * Helper function to convert a response body to an ArrayBuffer.

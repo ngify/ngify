@@ -7,7 +7,7 @@ const STANDARD_ENCODING_REPLACEMENTS: { [x: string]: string } = {
   '3B': ';',
   '3D': '=',
   '3F': '?',
-  '2F': '/',
+  '2F': '/'
 };
 
 /**

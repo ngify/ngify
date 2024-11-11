@@ -13,6 +13,6 @@ export function Delay(delay: number) {
       setTimeout(() => {
         target.apply(this, args);
       }, delay);
-    }
-  }
+    };
+  };
 }

@@ -40,5 +40,19 @@
         "targetName": "lint"
       }
     }
-  ]
+  ],
+  "release": {
+    "changelog": {
+      "workspaceChangelog": {
+        "createRelease": "github"
+      },
+      "projectChangelogs": true
+    },
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "dist/{projectName}",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  }
 }

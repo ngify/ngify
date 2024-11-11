@@ -1,9 +1,10 @@
 import { Observable, Observer } from 'rxjs';
 
+import { SafeAny } from '@ngify/core';
 import { HttpBackend } from './backend';
 import { HttpHeaders } from './headers';
 import { HttpRequest } from './request';
-import { HTTP_STATUS_CODE_OK, HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpResponse, } from './response';
+import { HTTP_STATUS_CODE_OK, HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpResponse } from './response';
 
 const XSSI_PREFIX = /^\)\]\}',?\n/;
 
@@ -34,28 +35,27 @@ function getResponseUrl(response: Response): string | null {
  * @publicApi
  */
 export class HttpFetchBackend implements HttpBackend {
-
   constructor(
     // We use an arrow function to always reference the current global implementation of `fetch`.
     // This is helpful for cases when the global `fetch` implementation is modified by external code,
     // see https://github.com/angular/angular/issues/57527.
-    private fetchImpl: typeof fetch = ((...args) => globalThis.fetch(...args))
+    private fetchImpl: typeof fetch = (...args) => globalThis.fetch(...args)
   ) { }
 
-  handle(request: HttpRequest<any>): Observable<HttpEvent<any>> {
-    return new Observable((observer) => {
+  handle(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
+    return new Observable(observer => {
       const aborter = new AbortController();
-      this.doRequest(request, aborter.signal, observer).then(noop, (error) =>
-        observer.error(new HttpErrorResponse({ error })),
+      this.doRequest(request, aborter.signal, observer).then(noop, error =>
+        observer.error(new HttpErrorResponse({ error }))
       );
       return () => aborter.abort();
     });
   }
 
   private async doRequest(
-    request: HttpRequest<any>,
+    request: HttpRequest<SafeAny>,
     signal: AbortSignal,
-    observer: Observer<HttpEvent<any>>,
+    observer: Observer<HttpEvent<SafeAny>>
   ): Promise<void> {
     const init = this.createRequestInit(request);
     let response;
@@ -72,15 +72,15 @@ export class HttpFetchBackend implements HttpBackend {
       observer.next({ type: HttpEventType.Sent });
 
       response = await fetchPromise;
-    } catch (error: any) {
+    } catch (error: SafeAny) {
       observer.error(
         new HttpErrorResponse({
           error,
           status: error.status ?? 0,
           statusText: error.statusText,
           url: request.urlWithParams,
-          headers: error.headers,
-        }),
+          headers: error.headers
+        })
       );
       return;
     }
@@ -127,7 +127,7 @@ export class HttpFetchBackend implements HttpBackend {
             type: HttpEventType.DownloadProgress,
             total: contentLength ? +contentLength : undefined,
             loaded: receivedLength,
-            partialText,
+            partialText
           } as HttpDownloadProgressEvent);
         }
       }
@@ -145,8 +145,8 @@ export class HttpFetchBackend implements HttpBackend {
             headers: new HttpHeaders(response.headers),
             status: response.status,
             statusText: response.statusText,
-            url: getResponseUrl(response) ?? request.urlWithParams,
-          }),
+            url: getResponseUrl(response) ?? request.urlWithParams
+          })
         );
         return;
       }
@@ -170,8 +170,8 @@ export class HttpFetchBackend implements HttpBackend {
           headers,
           status,
           statusText,
-          url,
-        }),
+          url
+        })
       );
 
       // The full body has been received and delivered, no further events
@@ -184,22 +184,23 @@ export class HttpFetchBackend implements HttpBackend {
           headers,
           status,
           statusText,
-          url,
-        }),
+          url
+        })
       );
     }
   }
 
   private parseBody(
-    request: HttpRequest<any>,
+    request: HttpRequest<SafeAny>,
     binContent: Uint8Array,
-    contentType: string,
+    contentType: string
   ): string | ArrayBuffer | Blob | object | null {
     switch (request.responseType) {
-      case 'json':
+      case 'json': {
         // stripping the XSSI when present
         const text = new TextDecoder().decode(binContent).replace(XSSI_PREFIX, '');
         return text === '' ? null : (JSON.parse(text) as object);
+      }
       case 'text':
         return new TextDecoder().decode(binContent);
       case 'blob':
@@ -209,7 +210,7 @@ export class HttpFetchBackend implements HttpBackend {
     }
   }
 
-  private createRequestInit(req: HttpRequest<any>): RequestInit {
+  private createRequestInit(req: HttpRequest<SafeAny>): RequestInit {
     // We could share some of this logic with the XhrBackend
 
     const headers: Record<string, string> = {};
@@ -236,7 +237,7 @@ export class HttpFetchBackend implements HttpBackend {
       body: req.serializeBody(),
       method: req.method,
       headers,
-      credentials,
+      credentials
     };
   }
 
@@ -252,6 +253,7 @@ export class HttpFetchBackend implements HttpBackend {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 function noop(): void { }
 
 /**

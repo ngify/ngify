@@ -1,6 +1,6 @@
 # ngify
 
-Use its features outside of Angular.
+Pretend to be using Angular.
 
 ![Node.js CI](https://github.com/ngify/ngify/workflows/Node.js%20CI/badge.svg)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
@@ -19,3 +19,13 @@ Use its features outside of Angular.
 ## API
 
 For the full API definition, please visit [https://ngify.github.io/ngify](https://ngify.github.io/ngify).
+
+##  Special thanks
+
+Thanks to [JetBrains](https://www.jetbrains.com/?from=ngify) for supporting us free open source licenses.
+
+![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)
+
+## License
+
+[MIT](https://github.com/ngify/ngify/blob/main/LICENSE)

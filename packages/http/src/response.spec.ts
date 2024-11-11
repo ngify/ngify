@@ -6,11 +6,11 @@ describe('HttpResponse', () => {
       const resp = new HttpResponse({
         body: 'test body',
         headers: new HttpHeaders({
-          'Test': 'Test header',
+          Test: 'Test header'
         }),
         status: HttpStatusCode.Created,
         statusText: 'Created',
-        url: '/test',
+        url: '/test'
       });
       expect(resp.body).toBe('test body');
       expect(resp.headers instanceof HttpHeaders).toBeTruthy();
@@ -49,7 +49,7 @@ describe('HttpResponse', () => {
         body: 'test',
         status: HttpStatusCode.Created,
         statusText: 'created',
-        url: '/test',
+        url: '/test'
       }).clone();
       expect(clone.body).toBe('test');
       expect(clone.status).toBe(HttpStatusCode.Created);
@@ -62,13 +62,13 @@ describe('HttpResponse', () => {
         body: 'test',
         status: HttpStatusCode.Created,
         statusText: 'created',
-        url: '/test',
+        url: '/test'
       });
       const clone = orig.clone({
         body: { data: 'test' },
         status: HttpStatusCode.Ok,
         statusText: 'Okay',
-        url: '/bar',
+        url: '/bar'
       });
       expect(clone.body).toEqual({ data: 'test' });
       expect(clone.status).toBe(HttpStatusCode.Ok);

@@ -52,13 +52,13 @@ export class HttpRequest<T> {
     public readonly method: HttpMethod,
     public readonly url: string,
     options?: {
-      body?: T,
-      params?: HttpParams | ConstructorParameters<typeof HttpParams>[0] | null,
-      headers?: HttpHeaders | ConstructorParameters<typeof HttpHeaders>[0],
-      context?: HttpContext,
-      responseType?: HttpRequest<unknown>['responseType'],
-      reportProgress?: boolean,
-      withCredentials?: boolean,
+      body?: T;
+      params?: HttpParams | ConstructorParameters<typeof HttpParams>[0] | null;
+      headers?: HttpHeaders | ConstructorParameters<typeof HttpHeaders>[0];
+      context?: HttpContext;
+      responseType?: HttpRequest<unknown>['responseType'];
+      reportProgress?: boolean;
+      withCredentials?: boolean;
     }
   ) {
     const { body, params, headers, context, responseType, reportProgress, withCredentials } = options || {};
@@ -155,7 +155,7 @@ export class HttpRequest<T> {
         context: update.context || this.context,
         responseType: update.responseType || this.responseType,
         reportProgress: update.reportProgress !== undefined ? update.reportProgress : this.reportProgress,
-        withCredentials: update.withCredentials !== undefined ? update.withCredentials : this.withCredentials,
+        withCredentials: update.withCredentials !== undefined ? update.withCredentials : this.withCredentials
       }
     );
   }

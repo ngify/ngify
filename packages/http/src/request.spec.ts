@@ -56,7 +56,7 @@ describe('HttpRequest', () => {
   });
   describe('clone() copies the request', () => {
     const headers = new HttpHeaders({
-      'Test': 'Test header',
+      Test: 'Test header'
     });
     const context = new HttpContext();
     const req = new HttpRequest('POST', TEST_URL, {
@@ -65,7 +65,7 @@ describe('HttpRequest', () => {
       context,
       reportProgress: true,
       responseType: 'text',
-      withCredentials: true,
+      withCredentials: true
       // transferCache: true,
     });
     it('in the base case', () => {
@@ -159,7 +159,7 @@ describe('HttpRequest', () => {
       const withParams = baseReq.clone({ body: params });
       expect(withParams.serializeBody()).toEqual('first=value&second=other');
       expect(withParams.detectContentTypeHeader()).toEqual(
-        'application/x-www-form-urlencoded;charset=UTF-8',
+        'application/x-www-form-urlencoded;charset=UTF-8'
       );
     });
   });

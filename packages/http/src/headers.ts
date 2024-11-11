@@ -132,7 +132,9 @@ export class HttpHeaders {
    * @param normalized normalized name
    */
   private setNormalizedName(key: string, normalized: string) {
-    this.normalizedNames.has(key) || this.normalizedNames.set(key, normalized);
+    if (!this.normalizedNames.has(key)) {
+      this.normalizedNames.set(key, normalized);
+    }
   }
 
   private addHeaderEntry(key: string, value: string) {
@@ -142,5 +144,4 @@ export class HttpHeaders {
       this.headers.set(key, [value]);
     }
   }
-
 }

@@ -118,7 +118,7 @@ Many different types of values can be provided as the request `body`, and `HttpC
 | [`ArrayBuffer`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | Raw data from the buffer                             |
 | [`Blob`](https://developer.mozilla.org/docs/Web/API/Blob)                                               | Raw data with `Blob` content type                    |
 | [`FormData`](https://developer.mozilla.org/docs/Web/API/FormData)                                       | `multipart/form-data` form data                      |
-| `HttpParams` or [`URLSearchParams`](https://developer.mozilla.org/docs/Web/API/URLSearchParams)         | `application/x-www-form-urlencoded formatted` string |
+| `HttpParams` or [`URLSearchParams`](https://developer.mozilla.org/docs/Web/API/URLSearchParams)         | `application/x-www-form-urlencoded` formatted string |
 
 ### Setting URL Parameters
 

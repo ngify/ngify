@@ -1,9 +1,10 @@
+import { SafeAny } from '@ngify/core';
+import { Observable } from 'rxjs';
 import { HttpClient, HttpEvent, HttpFeatureKind, HttpHandler, HttpInterceptor, HttpInterceptorFn, HttpRequest, withInterceptors, withLegacyInterceptors, withXsrfProtection } from '@ngify/http';
 import { HttpClientTestingBackend } from '@ngify/http/testing';
-import { Observable } from 'rxjs';
 
 describe('HttpFeature', () => {
-  let controller: HttpClientTestingBackend
+  let controller: HttpClientTestingBackend;
 
   beforeEach(() => {
     controller = new HttpClientTestingBackend();
@@ -25,7 +26,7 @@ describe('HttpFeature', () => {
       { kind: HttpFeatureKind.Backend, value: controller },
       withLegacyInterceptors([
         makeLegacyTagInterceptor('alpha'),
-        makeLegacyTagInterceptor('beta'),
+        makeLegacyTagInterceptor('beta')
       ])
     );
     client.get('/test', null, { responseType: 'text' }).subscribe();
@@ -40,8 +41,8 @@ describe('HttpFeature', () => {
         { kind: HttpFeatureKind.Backend, value: controller },
         withInterceptors([
           makeLiteralTagInterceptorFn('alpha'),
-          makeLiteralTagInterceptorFn('beta'),
-        ]),
+          makeLiteralTagInterceptorFn('beta')
+        ])
       );
       client.get('/test', null, { responseType: 'text' }).subscribe();
       const req = controller.expectOne('/test');
@@ -53,7 +54,7 @@ describe('HttpFeature', () => {
       const client = new HttpClient(
         { kind: HttpFeatureKind.Backend, value: controller },
         withInterceptors([makeLiteralTagInterceptorFn('alpha')]),
-        withInterceptors([makeLiteralTagInterceptorFn('beta')]),
+        withInterceptors([makeLiteralTagInterceptorFn('beta')])
       );
       client.get('/test', null, { responseType: 'text' }).subscribe();
       const req = controller.expectOne('/test');
@@ -65,7 +66,7 @@ describe('HttpFeature', () => {
       const client = new HttpClient(
         { kind: HttpFeatureKind.Backend, value: controller },
         withInterceptors([makeLiteralTagInterceptorFn('functional')]),
-        withLegacyInterceptors([makeLegacyTagInterceptor('legacy')]),
+        withLegacyInterceptors([makeLegacyTagInterceptor('legacy')])
       );
       client.get('/test', null, { responseType: 'text' }).subscribe();
       const req = controller.expectOne('/test');
@@ -77,7 +78,7 @@ describe('HttpFeature', () => {
       const client = new HttpClient(
         { kind: HttpFeatureKind.Backend, value: controller },
         withLegacyInterceptors([makeLegacyTagInterceptor('legacy')]),
-        withInterceptors([makeLiteralTagInterceptorFn('functional')]),
+        withInterceptors([makeLiteralTagInterceptorFn('functional')])
       );
       client.get('/test', null, { responseType: 'text' }).subscribe();
       const req = controller.expectOne('/test');
@@ -106,7 +107,7 @@ describe('HttpFeature', () => {
         { kind: HttpFeatureKind.Backend, value: controller },
         withXsrfProtection({
           cookieName: 'XSRF-CUSTOM-COOKIE',
-          headerName: 'X-Custom-Xsrf-Header',
+          headerName: 'X-Custom-Xsrf-Header'
         })
       );
 
@@ -139,16 +140,16 @@ function setXsrfToken(token: string): void {
 function setCookie(cookie: string): void {
   Object.defineProperty(globalThis.document ??= {} as Document, 'cookie', {
     get: () => cookie,
-    configurable: true,
+    configurable: true
   });
 }
 
 function makeLegacyTagInterceptor(tag: string): HttpInterceptor {
   return {
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    intercept(req: HttpRequest<SafeAny>, next: HttpHandler): Observable<HttpEvent<SafeAny>> {
       return next.handle(addTagToRequest(req, tag));
     }
-  }
+  };
 }
 
 function makeLiteralTagInterceptorFn(tag: string): HttpInterceptorFn {

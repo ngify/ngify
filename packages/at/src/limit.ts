@@ -15,10 +15,9 @@ export function Limit(limit: number) {
         return lastReturn = target.apply(this, args);
       }
       return lastReturn;
-    }
-  }
+    };
+  };
 }
-
 
 /**
  * Once decorator for class methods

@@ -45,7 +45,7 @@ export function withLegacyInterceptors(interceptors: HttpInterceptor[]) {
   } as const;
 }
 
-export function withXsrfProtection(options?: { cookieName?: string; headerName?: string, tokenExtractor?: () => string | null }) {
+export function withXsrfProtection(options?: { cookieName?: string, headerName?: string, tokenExtractor?: () => string | null }) {
   return {
     kind: HttpFeatureKind.XsrfProtection,
     value: xsrfInterceptor(options)

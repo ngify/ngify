@@ -1,16 +1,8 @@
-/**
- * @license
- * Copyright Google LLC All Rights Reserved.
- *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
- */
-
 import type { SafeAny } from '@ngify/core';
-import { HttpBackend, HttpEvent, HttpEventType, HttpRequest } from '@ngify/http';
 import { Observable, Observer } from 'rxjs';
 import type { HttpTestingController, RequestMatch } from './api';
 import { TestRequest } from './request';
+import { HttpBackend, HttpEvent, HttpEventType, HttpRequest } from '@ngify/http';
 
 /**
  * A testing backend for `HttpClient` which both acts as an `HttpBackend`
@@ -23,7 +15,6 @@ import { TestRequest } from './request';
  *
  *
  */
-
 export class HttpClientTestingBackend implements HttpBackend, HttpTestingController {
   /**
    * List of pending requests which have not yet been expected.
@@ -81,8 +72,7 @@ export class HttpClientTestingBackend implements HttpBackend, HttpTestingControl
    * Requests returned through this API will no longer be in the list of open requests,
    * and thus will not match twice.
    */
-  expectOne(match: string | RequestMatch | ((req: HttpRequest<SafeAny>) => boolean), description?: string):
-    TestRequest {
+  expectOne(match: string | RequestMatch | ((req: HttpRequest<SafeAny>) => boolean), description?: string): TestRequest {
     description = description || this.descriptionFromMatcher(match);
     const matches = this.match(match);
     if (matches.length > 1) {
@@ -110,8 +100,7 @@ export class HttpClientTestingBackend implements HttpBackend, HttpTestingControl
    * Expect that no outstanding requests match the given matcher, and throw an error
    * if any do.
    */
-  expectNone(match: string | RequestMatch | ((req: HttpRequest<SafeAny>) => boolean), description?: string):
-    void {
+  expectNone(match: string | RequestMatch | ((req: HttpRequest<SafeAny>) => boolean), description?: string): void {
     description = description || this.descriptionFromMatcher(match);
     const matches = this.match(match);
     if (matches.length > 0) {

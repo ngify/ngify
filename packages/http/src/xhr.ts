@@ -22,9 +22,8 @@ function getResponseUrl(xhr: SafeAny): string | null {
 }
 
 export class HttpXhrBackend implements HttpBackend {
-
   constructor(
-    private factory: () => XMLHttpRequest = (() => new XMLHttpRequest())
+    private factory: () => XMLHttpRequest = () => new XMLHttpRequest()
   ) { }
 
   /**
@@ -110,6 +109,7 @@ export class HttpXhrBackend implements HttpBackend {
       // First up is the load event, which represents a response being fully available.
       const onLoad = () => {
         // Read response state from the memoized partial data.
+        // eslint-disable-next-line prefer-const
         let { headers, status, statusText, url } = partialFromXhr();
 
         // The body will be read out if present.
@@ -164,7 +164,7 @@ export class HttpXhrBackend implements HttpBackend {
             headers,
             status,
             statusText,
-            url: url || undefined,
+            url: url || undefined
           }));
           // The full body has been received and delivered, no further events
           // are possible. This request is complete.
@@ -177,7 +177,7 @@ export class HttpXhrBackend implements HttpBackend {
             headers,
             status,
             statusText,
-            url: url || undefined,
+            url: url || undefined
           }));
         }
       };
@@ -191,7 +191,7 @@ export class HttpXhrBackend implements HttpBackend {
           error,
           status: xhr.status || 0,
           statusText: xhr.statusText || 'Unknown Error',
-          url: url || undefined,
+          url: url || undefined
         });
         observer.error(res);
       };
@@ -215,7 +215,7 @@ export class HttpXhrBackend implements HttpBackend {
         // event stream.
         const progressEvent: HttpDownloadProgressEvent = {
           type: HttpEventType.DownloadProgress,
-          loaded: event.loaded,
+          loaded: event.loaded
         };
 
         // Set the total number of bytes in the event if it's available.
@@ -241,7 +241,7 @@ export class HttpXhrBackend implements HttpBackend {
         // event.
         const progress: HttpUploadProgressEvent = {
           type: HttpEventType.UploadProgress,
-          loaded: event.loaded,
+          loaded: event.loaded
         };
 
         // If the total number of bytes being uploaded is available, include

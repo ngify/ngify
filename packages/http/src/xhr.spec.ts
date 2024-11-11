@@ -1,48 +1,49 @@
-import { HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpHeaders, HttpRequest, HttpResponse, HttpResponseBase, HttpStatusCode, HttpUploadProgressEvent, HttpXhrBackend } from '@ngify/http';
+import { SafeAny } from '@ngify/core';
 import { Observable, toArray } from 'rxjs';
+import { HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpHeaders, HttpRequest, HttpResponse, HttpResponseBase, HttpStatusCode, HttpUploadProgressEvent, HttpXhrBackend } from '@ngify/http';
 
 export class MockXhrFactory {
   // TODO(issue/24571): remove '!'.
   mock!: MockXMLHttpRequest;
 
   build(): XMLHttpRequest {
-    return (this.mock = new MockXMLHttpRequest()) as any;
+    return (this.mock = new MockXMLHttpRequest()) as unknown as XMLHttpRequest;
   }
 }
 
 export class MockXMLHttpRequestUpload {
   constructor(private mock: MockXMLHttpRequest) { }
 
-  addEventListener(event: 'progress', handler: Function) {
+  addEventListener(_event: 'progress', handler: (...args: SafeAny) => SafeAny) {
     this.mock.addEventListener('uploadProgress', handler);
   }
 
-  removeEventListener(event: 'progress', handler: Function) {
+  removeEventListener(_event: 'progress', _handler: (...args: SafeAny) => SafeAny) {
     this.mock.removeEventListener('uploadProgress');
   }
 }
 
 export class MockXMLHttpRequest {
   // Set by method calls.
-  body: any;
+  body: SafeAny;
   // TODO(issue/24571): remove '!'.
   method!: string;
   // TODO(issue/24571): remove '!'.
   url!: string;
   mockHeaders: { [key: string]: string } = {};
-  mockAborted: boolean = false;
+  mockAborted = false;
 
   // Directly settable interface.
-  withCredentials: boolean = false;
-  responseType: string = 'text';
+  withCredentials = false;
+  responseType = 'text';
 
   // Mocked response interface.
-  response: any | undefined = undefined;
+  response: SafeAny | undefined = undefined;
   responseText: string | undefined = undefined;
   responseURL: string | null = null;
-  status: number = 0;
-  statusText: string = '';
-  mockResponseHeaders: string = '';
+  status = 0;
+  statusText = '';
+  mockResponseHeaders = '';
 
   listeners: {
     error?: (event: ProgressEvent) => void;
@@ -60,19 +61,19 @@ export class MockXMLHttpRequest {
     this.url = url;
   }
 
-  send(body: any): void {
+  send(body: SafeAny): void {
     this.body = body;
   }
 
   addEventListener(
     event: 'error' | 'timeout' | 'load' | 'progress' | 'uploadProgress' | 'abort',
-    handler: Function,
+    handler: (...args: SafeAny) => SafeAny
   ): void {
-    this.listeners[event] = handler as any;
+    this.listeners[event] = handler;
   }
 
   removeEventListener(
-    event: 'error' | 'timeout' | 'load' | 'progress' | 'uploadProgress' | 'abort',
+    event: 'error' | 'timeout' | 'load' | 'progress' | 'uploadProgress' | 'abort'
   ): void {
     delete this.listeners[event];
   }
@@ -102,7 +103,7 @@ export class MockXMLHttpRequest {
 
   mockDownloadProgressEvent(loaded: number, total?: number): void {
     if (this.listeners.progress) {
-      this.listeners.progress({ lengthComputable: total !== undefined, loaded, total } as any);
+      this.listeners.progress({ lengthComputable: total !== undefined, loaded, total } as SafeAny);
     }
   }
 
@@ -111,8 +112,8 @@ export class MockXMLHttpRequest {
       this.listeners.uploadProgress({
         lengthComputable: total !== undefined,
         loaded,
-        total,
-      } as any);
+        total
+      } as SafeAny);
     }
   }
 
@@ -122,13 +123,13 @@ export class MockXMLHttpRequest {
     }
   }
 
-  mockErrorEvent(error: any): void {
+  mockErrorEvent(error: SafeAny): void {
     if (this.listeners.error) {
       this.listeners.error(error);
     }
   }
 
-  mockTimeoutEvent(error: any): void {
+  mockTimeoutEvent(error: SafeAny): void {
     if (this.listeners.timeout) {
       this.listeners.timeout(error);
     }
@@ -145,27 +146,27 @@ export class MockXMLHttpRequest {
   }
 }
 
-function trackEvents(obs: Observable<HttpEvent<any>>): HttpEvent<any>[] {
-  const events: HttpEvent<any>[] = [];
+function trackEvents(obs: Observable<HttpEvent<SafeAny>>): HttpEvent<SafeAny>[] {
+  const events: HttpEvent<SafeAny>[] = [];
   obs.subscribe(
-    (event) => events.push(event),
-    (err) => events.push(err),
+    event => events.push(event),
+    err => events.push(err)
   );
   return events;
 }
 
 const TEST_POST = new HttpRequest('POST', '/test', {
   body: 'some body',
-  responseType: 'text',
+  responseType: 'text'
 });
 
 const TEST_POST_WITH_JSON_BODY = new HttpRequest(
   'POST',
   '/test',
   {
-    body: { 'some': 'body' },
-    responseType: 'text',
-  },
+    body: { some: 'body' },
+    responseType: 'text'
+  }
 );
 
 const XSSI_PREFIX = ")]}'\n";
@@ -252,10 +253,10 @@ describe('XhrBackend', () => {
     factory.mock.mockFlush(
       HttpStatusCode.InternalServerError,
       'Error',
-      JSON.stringify({ data: 'some data' }),
+      JSON.stringify({ data: 'some data' })
     );
     expect(events.length).toBe(2);
-    const res = events[1] as any as HttpErrorResponse;
+    const res = events[1] as unknown as HttpErrorResponse;
     expect(res.error!.data).toBe('some data');
   });
   it('handles a json error response with XSSI prefix', () => {
@@ -263,10 +264,10 @@ describe('XhrBackend', () => {
     factory.mock.mockFlush(
       HttpStatusCode.InternalServerError,
       'Error',
-      XSSI_PREFIX + JSON.stringify({ data: 'some data' }),
+      XSSI_PREFIX + JSON.stringify({ data: 'some data' })
     );
     expect(events.length).toBe(2);
-    const res = events[1] as any as HttpErrorResponse;
+    const res = events[1] as unknown as HttpErrorResponse;
     expect(res.error!.data).toBe('some data');
   });
   it('handles a json string response', () => {
@@ -282,7 +283,7 @@ describe('XhrBackend', () => {
     factory.mock.mockFlush(
       HttpStatusCode.Ok,
       'OK',
-      XSSI_PREFIX + JSON.stringify({ data: 'some data' }),
+      XSSI_PREFIX + JSON.stringify({ data: 'some data' })
     );
     expect(events.length).toBe(2);
     const res = events[1] as HttpResponse<{ data: string }>;
@@ -312,7 +313,7 @@ describe('XhrBackend', () => {
         expect(error.error instanceof Error).toBe(true);
         expect(error.url).toBe('/test');
         done();
-      },
+      }
     });
     factory.mock.mockTimeoutEvent(new Error('timeout'));
   }));
@@ -342,18 +343,18 @@ describe('XhrBackend', () => {
       backend
         .handle(TEST_POST.clone({ reportProgress: true }))
         .pipe(toArray())
-        .subscribe((events) => {
-          expect(events.map((event) => event.type)).toEqual([
+        .subscribe(events => {
+          expect(events.map(event => event.type)).toEqual([
             HttpEventType.Sent,
             HttpEventType.ResponseHeader,
             HttpEventType.DownloadProgress,
             HttpEventType.DownloadProgress,
-            HttpEventType.Response,
+            HttpEventType.Response
           ]);
           const [progress1, progress2, response] = [
             events[2] as HttpDownloadProgressEvent,
             events[3] as HttpDownloadProgressEvent,
-            events[4] as HttpResponse<string>,
+            events[4] as HttpResponse<string>
           ];
           expect(progress1.partialText).toBe('down');
           expect(progress1.loaded).toBe(100);
@@ -374,16 +375,16 @@ describe('XhrBackend', () => {
       backend
         .handle(TEST_POST.clone({ reportProgress: true }))
         .pipe(toArray())
-        .subscribe((events) => {
-          expect(events.map((event) => event.type)).toEqual([
+        .subscribe(events => {
+          expect(events.map(event => event.type)).toEqual([
             HttpEventType.Sent,
             HttpEventType.UploadProgress,
             HttpEventType.UploadProgress,
-            HttpEventType.Response,
+            HttpEventType.Response
           ]);
           const [progress1, progress2] = [
             events[1] as HttpUploadProgressEvent,
-            events[2] as HttpUploadProgressEvent,
+            events[2] as HttpUploadProgressEvent
           ];
           expect(progress1.loaded).toBe(100);
           expect(progress1.total).toBe(300);
@@ -399,13 +400,13 @@ describe('XhrBackend', () => {
       backend
         .handle(TEST_POST.clone({ reportProgress: true }))
         .pipe(toArray())
-        .subscribe((events) => {
-          expect(events.map((event) => event.type)).toEqual([
+        .subscribe(events => {
+          expect(events.map(event => event.type)).toEqual([
             HttpEventType.Sent,
             HttpEventType.UploadProgress,
             HttpEventType.ResponseHeader,
             HttpEventType.DownloadProgress,
-            HttpEventType.Response,
+            HttpEventType.Response
           ]);
           done();
         });
@@ -417,13 +418,13 @@ describe('XhrBackend', () => {
       backend
         .handle(TEST_POST.clone({ reportProgress: true }))
         .pipe(toArray())
-        .subscribe((events) => {
-          expect(events.map((event) => event.type)).toEqual([
+        .subscribe(events => {
+          expect(events.map(event => event.type)).toEqual([
             HttpEventType.Sent,
             HttpEventType.UploadProgress,
             HttpEventType.ResponseHeader,
             HttpEventType.DownloadProgress,
-            HttpEventType.Response,
+            HttpEventType.Response
           ]);
           done();
         });
@@ -435,12 +436,12 @@ describe('XhrBackend', () => {
       backend
         .handle(TEST_POST.clone({ reportProgress: true }))
         .pipe(toArray())
-        .subscribe((events) => {
-          expect(events.map((event) => event.type)).toEqual([
+        .subscribe(events => {
+          expect(events.map(event => event.type)).toEqual([
             HttpEventType.Sent,
             HttpEventType.ResponseHeader,
             HttpEventType.DownloadProgress,
-            HttpEventType.Response,
+            HttpEventType.Response
           ]);
           const partial = events[1] as HttpHeaderResponse;
           expect(partial.headers.get('Content-Type')).toEqual('text/plain');
@@ -461,15 +462,15 @@ describe('XhrBackend', () => {
       backend
         .handle(TEST_POST.clone({ reportProgress: true }))
         .pipe(toArray())
-        .subscribe((events) => {
+        .subscribe(events => {
           events
             .filter(
-              (event) =>
+              event =>
                 event.type === HttpEventType.Response ||
-                event.type === HttpEventType.ResponseHeader,
+                event.type === HttpEventType.ResponseHeader
             )
-            .map((event) => event as HttpResponseBase)
-            .forEach((event) => {
+            .map(event => event as HttpResponseBase)
+            .forEach(event => {
               expect(event.status).toBe(HttpStatusCode.NonAuthoritativeInformation);
               expect(event.headers.get('Test')).toEqual('This is a test');
             });
@@ -487,7 +488,7 @@ describe('XhrBackend', () => {
       backend
         .handle(TEST_POST)
         .pipe(toArray())
-        .subscribe((events) => {
+        .subscribe(events => {
           expect(events.length).toBe(2);
           expect(events[1].type).toBe(HttpEventType.Response);
           const response = events[1] as HttpResponse<string>;
@@ -501,7 +502,7 @@ describe('XhrBackend', () => {
       backend
         .handle(TEST_POST)
         .pipe(toArray())
-        .subscribe((events) => {
+        .subscribe(events => {
           expect(events.length).toBe(2);
           expect(events[1].type).toBe(HttpEventType.Response);
           const response = events[1] as HttpResponse<string>;
@@ -515,7 +516,7 @@ describe('XhrBackend', () => {
       backend
         .handle(TEST_POST)
         .pipe(toArray())
-        .subscribe((events) => {
+        .subscribe(events => {
           expect(events.length).toBe(2);
           expect(events[1].type).toBe(HttpEventType.Response);
           const response = events[1] as HttpResponse<string>;
@@ -530,7 +531,7 @@ describe('XhrBackend', () => {
       backend
         .handle(TEST_POST)
         .pipe(toArray())
-        .subscribe((events) => {
+        .subscribe(events => {
           expect(events.length).toBe(2);
           expect(events[1].type).toBe(HttpEventType.Response);
           const response = events[1] as HttpResponse<string>;

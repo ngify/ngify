@@ -1,33 +1,34 @@
-import { HttpClient, HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpHeaders, HttpParams, HttpRequest, HttpResponse, HttpStatusCode, withFetch } from '@ngify/http';
+import { SafeAny } from '@ngify/core';
 import { catchError, Observable, of, retry, scan, skip, Subject, take, toArray } from 'rxjs';
 import { MockInstance } from 'vitest';
 import { HttpFetchBackend } from './fetch';
+import { HttpClient, HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpHeaders, HttpParams, HttpRequest, HttpResponse, HttpStatusCode, withFetch } from '@ngify/http';
 
-function trackEvents(obs: Observable<any>): Promise<any[]> {
+function trackEvents(obs: Observable<SafeAny>): Promise<SafeAny[]> {
   return obs
     .pipe(
       // We don't want the promise to fail on HttpErrorResponse
-      catchError((e) => of(e)),
+      catchError(e => of(e)),
       scan((acc, event) => {
         acc.push(event);
         return acc;
-      }, [] as any[]),
+      }, [] as SafeAny[])
     )
-    .toPromise() as Promise<any[]>;
+    .toPromise() as Promise<SafeAny[]>;
 }
 
 const TEST_POST = new HttpRequest('POST', '/test', {
   body: 'some body',
-  responseType: 'text',
+  responseType: 'text'
 });
 
 const TEST_POST_WITH_JSON_BODY = new HttpRequest(
   'POST',
   '/test',
   {
-    body: { 'some': 'body' },
-    responseType: 'text',
-  },
+    body: { some: 'body' },
+    responseType: 'text'
+  }
 );
 
 const XSSI_PREFIX = ")]}'\n";
@@ -37,7 +38,7 @@ describe('FetchBackend', async () => {
   let backend: HttpFetchBackend = null!;
   let fetchSpy: MockInstance;
 
-  function callFetchAndFlush(req: HttpRequest<any>): void {
+  function callFetchAndFlush(req: HttpRequest<SafeAny>): void {
     backend.handle(req).pipe(take(1)).subscribe();
     fetchMock.mockFlush(HttpStatusCode.Ok, 'OK', 'some response');
   }
@@ -49,12 +50,12 @@ describe('FetchBackend', async () => {
   });
 
   it('emits status immediately', () => {
-    let event!: HttpEvent<any>;
+    let event!: HttpEvent<SafeAny>;
     // subscribe is sync
     backend
       .handle(TEST_POST)
       .pipe(take(1))
-      .subscribe((e) => (event = e));
+      .subscribe(e => (event = e));
     fetchMock.mockFlush(HttpStatusCode.Ok, 'OK', 'some response');
     expect(event.type).toBe(HttpEventType.Sent);
   });
@@ -70,9 +71,9 @@ describe('FetchBackend', async () => {
   it('should be able to retry', () => new Promise<void>(done => {
     const handle = backend.handle(TEST_POST);
     // Skipping both HttpSentEvent (from the 1st subscription + retry)
-    handle.pipe(retry(1), skip(2)).subscribe((response) => {
+    handle.pipe(retry(1), skip(2)).subscribe(response => {
       expect(response.type).toBe(HttpEventType.Response);
-      expect((response as HttpResponse<any>).body).toBe('some response');
+      expect((response as HttpResponse<SafeAny>).body).toBe('some response');
       done();
     });
     fetchMock.mockErrorEvent('Error 1');
@@ -91,7 +92,7 @@ describe('FetchBackend', async () => {
     const requestWithQuery = new HttpRequest('GET', '/test', {
       body: 'some body',
       params: new HttpParams({ query: 'foobar' }),
-      responseType: 'text',
+      responseType: 'text'
     });
     callFetchAndFlush(requestWithQuery);
     expect(fetchMock.request.method).toBe('GET');
@@ -135,7 +136,7 @@ describe('FetchBackend', async () => {
   it('should be case insensitive for Content-Type & Accept', () => {
     const setHeaders = {
       'accept': 'text/html',
-      'content-type': 'text/css',
+      'content-type': 'text/css'
     };
     callFetchAndFlush(TEST_POST.clone({ headers: new HttpHeaders(setHeaders) }));
     expect(fetchMock.request.headers).toEqual(setHeaders);
@@ -182,11 +183,11 @@ describe('FetchBackend', async () => {
     fetchMock.mockFlush(
       HttpStatusCode.InternalServerError,
       'Error',
-      JSON.stringify({ data: 'some data' }),
+      JSON.stringify({ data: 'some data' })
     );
     const events = await promise;
     expect(events.length).toBe(2);
-    const res = events[1] as any as HttpErrorResponse;
+    const res = events[1] as unknown as HttpErrorResponse;
     expect(res.error.data).toBe('some data');
   });
 
@@ -195,11 +196,11 @@ describe('FetchBackend', async () => {
     fetchMock.mockFlush(
       HttpStatusCode.InternalServerError,
       'Error',
-      XSSI_PREFIX + JSON.stringify({ data: 'some data' }),
+      XSSI_PREFIX + JSON.stringify({ data: 'some data' })
     );
     const events = await promise;
     expect(events.length).toBe(2);
-    const res = events[1] as any as HttpErrorResponse;
+    const res = events[1] as unknown as HttpErrorResponse;
     expect(res.error.data).toBe('some data');
   });
 
@@ -237,7 +238,7 @@ describe('FetchBackend', async () => {
         expect(err instanceof HttpErrorResponse).toBe(true);
         expect(err.error).toBe('this is the error');
         done();
-      },
+      }
     });
     fetchMock.mockFlush(HttpStatusCode.BadRequest, 'Bad Request', 'this is the error');
   }));
@@ -253,7 +254,7 @@ describe('FetchBackend', async () => {
           expect(err.error instanceof Error).toBe(true);
           expect(err.url).toBe('/test');
           done();
-        },
+        }
       });
     fetchMock.mockErrorEvent(new Error('blah'));
   }));
@@ -264,7 +265,7 @@ describe('FetchBackend', async () => {
         expect(err instanceof HttpErrorResponse).toBe(true);
         expect(err.error instanceof DOMException).toBeTruthy();
         done();
-      },
+      }
     });
     fetchMock.mockAbortEvent();
   }));
@@ -274,19 +275,19 @@ describe('FetchBackend', async () => {
       backend
         .handle(TEST_POST.clone({ reportProgress: true }))
         .pipe(toArray())
-        .subscribe((events) => {
-          expect(events.map((event) => event.type)).toEqual([
+        .subscribe(events => {
+          expect(events.map(event => event.type)).toEqual([
             HttpEventType.Sent,
             HttpEventType.ResponseHeader,
             HttpEventType.DownloadProgress,
             HttpEventType.DownloadProgress,
             HttpEventType.DownloadProgress,
-            HttpEventType.Response,
+            HttpEventType.Response
           ]);
           const [progress1, progress2, response] = [
             events[2] as HttpDownloadProgressEvent,
             events[3] as HttpDownloadProgressEvent,
-            events[5] as HttpResponse<string>,
+            events[5] as HttpResponse<string>
           ];
           expect(progress1.partialText).toBe('down');
           expect(progress1.loaded).toBe(4);
@@ -306,13 +307,13 @@ describe('FetchBackend', async () => {
       backend
         .handle(TEST_POST.clone({ reportProgress: true }))
         .pipe(toArray())
-        .subscribe((events) => {
-          expect(events.map((event) => event.type)).toEqual([
+        .subscribe(events => {
+          expect(events.map(event => event.type)).toEqual([
             HttpEventType.Sent,
             HttpEventType.ResponseHeader,
             HttpEventType.DownloadProgress,
             HttpEventType.DownloadProgress,
-            HttpEventType.Response,
+            HttpEventType.Response
           ]);
           const partial = events[1] as HttpHeaderResponse;
           expect(partial.type).toEqual(HttpEventType.ResponseHeader);
@@ -330,7 +331,7 @@ describe('FetchBackend', async () => {
       backend
         .handle(TEST_POST)
         .pipe(toArray())
-        .subscribe((events) => {
+        .subscribe(events => {
           expect(events.length).toBe(2);
           expect(events[1].type).toBe(HttpEventType.Response);
           const response = events[1] as HttpResponse<string>;
@@ -345,7 +346,7 @@ describe('FetchBackend', async () => {
       backend
         .handle(TEST_POST)
         .pipe(toArray())
-        .subscribe((events) => {
+        .subscribe(events => {
           expect(events.length).toBe(2);
           expect(events[1].type).toBe(HttpEventType.Response);
           const response = events[1] as HttpResponse<string>;
@@ -360,7 +361,7 @@ describe('FetchBackend', async () => {
       backend
         .handle(TEST_POST)
         .pipe(toArray())
-        .subscribe((events) => {
+        .subscribe(events => {
           expect(events.length).toBe(2);
           expect(events[1].type).toBe(HttpEventType.Response);
           const response = events[1] as HttpResponse<string>;
@@ -375,7 +376,7 @@ describe('FetchBackend', async () => {
       backend
         .handle(TEST_POST)
         .pipe(toArray())
-        .subscribe((events) => {
+        .subscribe(events => {
           expect(events.length).toBe(2);
           expect(events[1].type).toBe(HttpEventType.Response);
           const response = events[1] as HttpResponse<string>;
@@ -392,7 +393,7 @@ describe('FetchBackend', async () => {
           error: (error: HttpErrorResponse) => {
             expect(error.status).toBe(0);
             done();
-          },
+          }
         });
       fetchMock.mockFlush(0, 'CORS 0 status');
     }));
@@ -428,8 +429,8 @@ describe('FetchBackend', async () => {
 export class MockFetchFactory {
   public readonly response = new MockFetchResponse();
   public readonly request = new MockFetchRequest();
-  private resolve!: Function;
-  private reject!: Function;
+  private resolve!: (value: Response | PromiseLike<Response>) => void;
+  private reject!: (reason?: SafeAny) => void;
 
   private clearWarningTimeout?: VoidFunction;
 
@@ -469,7 +470,7 @@ export class MockFetchFactory {
     status: number,
     statusText: string,
     body?: string | Blob,
-    headers?: Record<string, string>,
+    headers?: Record<string, string>
   ): void {
     this.clearWarningTimeout?.();
     if (typeof body === 'string') {
@@ -479,7 +480,7 @@ export class MockFetchFactory {
     }
     const response = new Response(this.response.stream, {
       statusText,
-      headers: { ...this.response.headers, ...(headers ?? {}) },
+      headers: { ...this.response.headers, ...(headers ?? {}) }
     });
 
     // Have to be set outside the constructor because it might throw
@@ -497,7 +498,7 @@ export class MockFetchFactory {
     this.response.progress.push(loaded);
   }
 
-  mockErrorEvent(error: any) {
+  mockErrorEvent(error: SafeAny) {
     this.reject(error);
   }
 
@@ -519,7 +520,7 @@ export class MockFetchFactory {
 class MockFetchRequest {
   public url!: RequestInfo | URL;
   public method?: string;
-  public body: any;
+  public body: SafeAny;
   public credentials?: RequestCredentials;
   public headers?: HeadersInit;
 }
@@ -530,21 +531,21 @@ class MockFetchResponse {
 
   public progress: number[] = [];
 
-  private sub$ = new Subject<any>();
+  private sub$ = new Subject<SafeAny>();
   public stream = new ReadableStream({
-    start: (controller) => {
+    start: controller => {
       this.sub$.subscribe({
-        next: (val) => {
+        next: val => {
           controller.enqueue(new TextEncoder().encode(val));
         },
         complete: () => {
           controller.close();
-        },
+        }
       });
-    },
+    }
   });
 
-  public setBody(body: any) {
+  public setBody(body: SafeAny) {
     this.sub$.next(body);
     this.sub$.complete();
   }
@@ -553,7 +554,7 @@ class MockFetchResponse {
     if (body && this.progress.length) {
       this.headers['content-length'] = `${body.length}`;
       let shift = 0;
-      this.progress.forEach((loaded) => {
+      this.progress.forEach(loaded => {
         this.sub$.next(body.substring(shift, loaded));
         shift = loaded;
       });

@@ -20,7 +20,7 @@ function parseCookieValue(cookieStr: string, name: string): string | null {
 }
 
 export function xsrfTokenExtractor(options?: { cookieName?: string }): () => string | null {
-  let lastCookieString: string = '';
+  let lastCookieString = '';
   let lastToken: string | null = null;
 
   return () => {
@@ -30,10 +30,10 @@ export function xsrfTokenExtractor(options?: { cookieName?: string }): () => str
       lastCookieString = cookieString;
     }
     return lastToken;
-  }
+  };
 }
 
-export function xsrfInterceptor(options?: { cookieName?: string; headerName?: string, tokenExtractor?: () => string | null }): HttpInterceptorFn {
+export function xsrfInterceptor(options?: { cookieName?: string, headerName?: string, tokenExtractor?: () => string | null }): HttpInterceptorFn {
   const tokenExtractor = options?.tokenExtractor ?? xsrfTokenExtractor(options);
 
   return (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
@@ -60,5 +60,5 @@ export function xsrfInterceptor(options?: { cookieName?: string; headerName?: st
     }
 
     return next(req);
-  }
+  };
 }
