@@ -1,0 +1,45 @@
+{
+  "name": "http-taro",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/http-taro/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/http-taro",
+        "main": "packages/http-taro/src/index.ts",
+        "tsConfig": "packages/http-taro/tsconfig.lib.json",
+        "assets": [
+          "packages/http-taro/*.md",
+          "LICENSE"
+        ],
+        "generateExportsField": true
+      }
+    },
+    "postbuild": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "commands": [
+          "node scripts/flat.js http-taro"
+        ]
+      }
+    },
+    "_test": {
+      "executor": "@nx/vite:test",
+      "outputs": [
+        "{options.reportsDirectory}"
+      ],
+      "options": {
+        "reportsDirectory": "../../coverage/http-taro"
+      }
+    }
+  }
+}
