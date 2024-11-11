@@ -7,9 +7,9 @@ describe('Throttle', () => {
     const obj = new class {
       @Throttle(100)
       throttle() {
-        cb()
+        cb();
       }
-    }
+    }();
 
     obj.throttle();
     obj.throttle();
@@ -23,9 +23,9 @@ describe('Throttle', () => {
     const obj = new class {
       @Throttle(100, { leading: false })
       throttle() {
-        cb()
+        cb();
       }
-    }
+    }();
 
     obj.throttle();
     obj.throttle();

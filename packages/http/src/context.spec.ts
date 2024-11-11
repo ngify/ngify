@@ -2,8 +2,8 @@ import { HttpContext, HttpContextToken } from '@ngify/http';
 
 const IS_ENABLED = new HttpContextToken<boolean>(() => false);
 const UNUSED = new HttpContextToken<boolean>(() => true);
-const CACHE_OPTION = new HttpContextToken<{ cache: boolean; expiresIn?: number }>(() => ({
-  cache: false,
+const CACHE_OPTION = new HttpContextToken<{ cache: boolean, expiresIn?: number }>(() => ({
+  cache: false
 }));
 
 describe('HttpContext', () => {

@@ -7,9 +7,9 @@ describe('Debounce', () => {
     const obj = new class {
       @Debounce(100)
       debounce() {
-        cb()
+        cb();
       }
-    }
+    }();
 
     obj.debounce();
     obj.debounce();
@@ -23,9 +23,9 @@ describe('Debounce', () => {
     const obj = new class {
       @Debounce(100, { leading: true })
       debounce() {
-        cb()
+        cb();
       }
-    }
+    }();
 
     obj.debounce();
     obj.debounce();

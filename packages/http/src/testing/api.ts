@@ -1,14 +1,6 @@
-/**
- * @license
- * Copyright Google LLC All Rights Reserved.
- *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
- */
-
 import type { SafeAny } from '@ngify/core';
-import type { HttpRequest } from '@ngify/http';
 import type { TestRequest } from './request';
+import type { HttpRequest } from '@ngify/http';
 
 /**
  * Defines a matcher for requests based on URL, method, or both.
@@ -57,8 +49,7 @@ export abstract class HttpTestingController {
    * If no such request has been made, or more than one such request has been made, fail with an
    * error message including the given request description, if any.
    */
-  abstract expectOne(matchFn: ((req: HttpRequest<SafeAny>) => boolean), description?: string):
-    TestRequest;
+  abstract expectOne(matchFn: ((req: HttpRequest<SafeAny>) => boolean), description?: string): TestRequest;
 
   /**
    * Expect that a single request has been made which matches the given condition, and return
@@ -67,9 +58,7 @@ export abstract class HttpTestingController {
    * If no such request has been made, or more than one such request has been made, fail with an
    * error message including the given request description, if any.
    */
-  abstract expectOne(
-    match: string | RequestMatch | ((req: HttpRequest<SafeAny>) => boolean),
-    description?: string): TestRequest;
+  abstract expectOne(match: string | RequestMatch | ((req: HttpRequest<SafeAny>) => boolean), description?: string): TestRequest;
 
   /**
    * Expect that no requests have been made which match the given URL.
@@ -101,8 +90,7 @@ export abstract class HttpTestingController {
    * If a matching request has been made, fail with an error message including the given request
    * description, if any.
    */
-  abstract expectNone(
-    match: string | RequestMatch | ((req: HttpRequest<SafeAny>) => boolean), description?: string): void;
+  abstract expectNone(match: string | RequestMatch | ((req: HttpRequest<SafeAny>) => boolean), description?: string): void;
 
   /**
    * Verify that no unmatched requests are outstanding.

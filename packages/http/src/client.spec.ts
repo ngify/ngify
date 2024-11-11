@@ -1,6 +1,7 @@
+import { SafeAny } from '@ngify/core';
+import { toArray } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpEventType, HttpFeatureKind, HttpResponse, HttpStatusCode } from '@ngify/http';
 import { HttpClientTestingBackend } from '@ngify/http/testing';
-import { toArray } from 'rxjs';
 
 describe('HttpClient', () => {
   let client: HttpClient = null!;
@@ -14,21 +15,21 @@ describe('HttpClient', () => {
   });
   describe('makes a basic request', () => {
     it('for JSON data', () => new Promise<void>(done => {
-      client.get('/test').subscribe((res) => {
-        expect((res as any)['data']).toEqual('hello world');
+      client.get('/test').subscribe(res => {
+        expect((res as SafeAny)['data']).toEqual('hello world');
         done();
       });
-      backend.expectOne('/test').flush({ 'data': 'hello world' });
+      backend.expectOne('/test').flush({ data: 'hello world' });
     }));
     it('should allow flushing requests with a boolean value', () => new Promise<void>(done => {
-      client.get('/test').subscribe((res) => {
-        expect(res as any).toEqual(true);
+      client.get('/test').subscribe(res => {
+        expect(res as SafeAny).toEqual(true);
         done();
       });
       backend.expectOne('/test').flush(true);
     }));
     it('for text data', () => new Promise<void>(done => {
-      client.get('/test', null, { responseType: 'text' }).subscribe((res) => {
+      client.get('/test', null, { responseType: 'text' }).subscribe(res => {
         expect(res).toEqual('hello world');
         done();
       });
@@ -41,36 +42,36 @@ describe('HttpClient', () => {
       req.flush({});
     }));
     it('with string params', () => new Promise<void>(done => {
-      client.get('/test', { 'test': 'true' }).subscribe(() => done());
+      client.get('/test', { test: 'true' }).subscribe(() => done());
       backend.expectOne('/test?test=true').flush({});
     }));
     it('with an array of string params', () => new Promise<void>(done => {
-      client.get('/test', { 'test': ['a', 'b'] }).subscribe(() => done());
+      client.get('/test', { test: ['a', 'b'] }).subscribe(() => done());
       backend.expectOne('/test?test=a&test=b').flush({});
     }));
     it('with number params', () => new Promise<void>(done => {
-      client.get('/test', { 'test': 2 }).subscribe(() => done());
+      client.get('/test', { test: 2 }).subscribe(() => done());
       backend.expectOne('/test?test=2').flush({});
     }));
     it('with an array of number params', () => new Promise<void>(done => {
-      client.get('/test', { 'test': [2, 3] }).subscribe(() => done());
+      client.get('/test', { test: [2, 3] }).subscribe(() => done());
       backend.expectOne('/test?test=2&test=3').flush({});
     }));
     it('with boolean params', () => new Promise<void>(done => {
-      client.get('/test', { 'test': true }).subscribe(() => done());
+      client.get('/test', { test: true }).subscribe(() => done());
       backend.expectOne('/test?test=true').flush({});
     }));
     it('with an array of boolean params', () => new Promise<void>(done => {
-      client.get('/test', { 'test': [true, false] }).subscribe(() => done());
+      client.get('/test', { test: [true, false] }).subscribe(() => done());
       backend.expectOne('/test?test=true&test=false').flush({});
     }));
     it('with an array of params of different types', () => new Promise<void>(done => {
-      client.get('/test', { 'test': [true, 'a', 2] as const }).subscribe(() => done());
+      client.get('/test', { test: [true, 'a', 2] as const }).subscribe(() => done());
       backend.expectOne('/test?test=true&test=a&test=2').flush({});
     }));
     it('for an arraybuffer', () => new Promise<void>(done => {
       const body = new ArrayBuffer(4);
-      client.get('/test', null, { responseType: 'arraybuffer' }).subscribe((res) => {
+      client.get('/test', null, { responseType: 'arraybuffer' }).subscribe(res => {
         expect(res).toBe(body);
         done();
       });
@@ -79,7 +80,7 @@ describe('HttpClient', () => {
     if (typeof Blob !== 'undefined') {
       it('for a blob', () => new Promise<void>(done => {
         const body = new Blob([new ArrayBuffer(4)]);
-        client.get('/test', null, { responseType: 'blob' }).subscribe((res) => {
+        client.get('/test', null, { responseType: 'blob' }).subscribe(res => {
           expect(res).toBe(body);
           done();
         });
@@ -87,8 +88,8 @@ describe('HttpClient', () => {
       }));
     }
     it('that returns a response', () => new Promise<void>(done => {
-      const body = { 'data': 'hello world' };
-      client.get('/test', null, { observe: 'response' }).subscribe((res) => {
+      const body = { data: 'hello world' };
+      client.get('/test', null, { observe: 'response' }).subscribe(res => {
         expect(res instanceof HttpResponse).toBe(true);
         expect(res.body).toBe(body);
         done();
@@ -100,7 +101,7 @@ describe('HttpClient', () => {
         .get('/test', null, { observe: 'events' })
         .pipe(toArray())
         .toPromise()
-        .then((events) => {
+        .then(events => {
           expect(events!.length).toBe(2);
           // let x = HttpResponse;
           expect(events![0].type).toBe(HttpEventType.Sent);
@@ -108,7 +109,7 @@ describe('HttpClient', () => {
           expect(events![1] instanceof HttpResponse).toBeTruthy();
           done();
         });
-      backend.expectOne('/test').flush({ 'data': 'hello world' });
+      backend.expectOne('/test').flush({ data: 'hello world' });
     }));
     it('with progress events enabled', () => new Promise<void>(done => {
       client.get('/test', null, { reportProgress: true }).subscribe(() => done());
@@ -121,7 +122,7 @@ describe('HttpClient', () => {
     it('with text data', () => new Promise<void>(done => {
       client
         .post('/test', 'text body', { observe: 'response', responseType: 'text' })
-        .subscribe((res) => {
+        .subscribe(res => {
           expect(res.ok).toBeTruthy();
           expect(res.status).toBe(HttpStatusCode.Ok);
           done();
@@ -130,7 +131,7 @@ describe('HttpClient', () => {
     }));
     it('with json data', () => new Promise<void>(done => {
       const body = { data: 'json body' };
-      client.post('/test', body, { observe: 'response', responseType: 'text' }).subscribe((res) => {
+      client.post('/test', body, { observe: 'response', responseType: 'text' }).subscribe(res => {
         expect(res.ok).toBeTruthy();
         expect(res.status).toBe(HttpStatusCode.Ok);
         done();
@@ -140,7 +141,7 @@ describe('HttpClient', () => {
       testReq.flush('hello world');
     }));
     it('with a json body of false', () => new Promise<void>(done => {
-      client.post('/test', false, { observe: 'response', responseType: 'text' }).subscribe((res) => {
+      client.post('/test', false, { observe: 'response', responseType: 'text' }).subscribe(res => {
         expect(res.ok).toBeTruthy();
         expect(res.status).toBe(HttpStatusCode.Ok);
         done();
@@ -150,7 +151,7 @@ describe('HttpClient', () => {
       testReq.flush('hello world');
     }));
     it('with a json body of 0', () => new Promise<void>(done => {
-      client.post('/test', 0, { observe: 'response', responseType: 'text' }).subscribe((res) => {
+      client.post('/test', 0, { observe: 'response', responseType: 'text' }).subscribe(res => {
         expect(res.ok).toBeTruthy();
         expect(res.status).toBe(HttpStatusCode.Ok);
         done();
@@ -161,7 +162,7 @@ describe('HttpClient', () => {
     }));
     it('with an arraybuffer', () => new Promise<void>(done => {
       const body = new ArrayBuffer(4);
-      client.post('/test', body, { observe: 'response', responseType: 'text' }).subscribe((res) => {
+      client.post('/test', body, { observe: 'response', responseType: 'text' }).subscribe(res => {
         expect(res.ok).toBeTruthy();
         expect(res.status).toBe(HttpStatusCode.Ok);
         done();
@@ -176,7 +177,7 @@ describe('HttpClient', () => {
       const body = { data: 'json body' };
       client
         .delete('/test', null, { observe: 'response', responseType: 'text', body: body })
-        .subscribe((res) => {
+        .subscribe(res => {
           expect(res.ok).toBeTruthy();
           expect(res.status).toBe(200);
           done();
@@ -186,7 +187,7 @@ describe('HttpClient', () => {
       testReq.flush('hello world');
     }));
     it('without body', () => new Promise<void>(done => {
-      client.delete('/test', null, { observe: 'response', responseType: 'text' }).subscribe((res) => {
+      client.delete('/test', null, { observe: 'response', responseType: 'text' }).subscribe(res => {
         expect(res.ok).toBeTruthy();
         expect(res.status).toBe(200);
         done();
@@ -207,17 +208,18 @@ describe('HttpClient', () => {
   describe('makes a request for an error response', () => {
     it('with a JSON body', () => new Promise<void>(done => {
       client.get('/test').subscribe(
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => { },
         (res: HttpErrorResponse) => {
           expect(res.error.data).toEqual('hello world');
           done();
-        },
+        }
       );
       backend
         .expectOne('/test')
         .flush(
-          { 'data': 'hello world' },
-          { status: HttpStatusCode.InternalServerError, statusText: 'Server error' },
+          { data: 'hello world' },
+          { status: HttpStatusCode.InternalServerError, statusText: 'Server error' }
         );
     }));
   });

@@ -1,3 +1,4 @@
+import { SafeAny } from '@ngify/core';
 import { HttpClient, HttpFeatureKind, setupHttpClient, withXsrfProtection } from '@ngify/http';
 import { HttpClientTestingBackend } from '@ngify/http/testing';
 
@@ -17,11 +18,11 @@ describe('setupHttpClient', () => {
   });
 
   it('should be using global backend', () => new Promise<void>(done => {
-    client.get('/test').subscribe((res) => {
-      expect((res as any)['data']).toEqual('hello world');
+    client.get('/test').subscribe(res => {
+      expect((res as SafeAny)['data']).toEqual('hello world');
       done();
     });
-    backend.expectOne('/test').flush({ 'data': 'hello world' });
+    backend.expectOne('/test').flush({ data: 'hello world' });
   }));
 
   it('should be using global xsrf protection', () => new Promise<void>(done => {
@@ -30,5 +31,5 @@ describe('setupHttpClient', () => {
     const req = backend.expectOne('/test');
     expect(req.request.headers.get('X-XSRF-TOKEN')).toEqual('test');
     req.flush({});
-  }))
+  }));
 });

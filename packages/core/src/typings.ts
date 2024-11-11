@@ -1,5 +1,5 @@
 /** Represents a class `T` */
-export interface Type<T> extends Function {
+export interface Type<T> {
   new(...args: SafeAny[]): T;
 }
 
@@ -10,7 +10,7 @@ export interface Type<T> extends Function {
  * PickProperty<{ x: string, y: () => void }> -> { x: string }
  * ```
  */
-export type PickProperty<T> = Omit<T, { [K in keyof T]: T[K] extends Function ? K : never }[keyof T]>;
+export type PickProperty<T> = Omit<T, { [K in keyof T]: T[K] extends ((...args: SafeAny) => SafeAny) ? K : never }[keyof T]>;
 
 /**
  * Exclude properties from `T`

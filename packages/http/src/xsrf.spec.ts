@@ -2,7 +2,7 @@ import { HttpHeaders, HttpInterceptorFn, HttpRequest, xsrfInterceptor, xsrfToken
 import { HttpClientTestingBackend } from '@ngify/http/testing';
 
 function sampleTokenExtractor(token: string | null) {
-  return () => token
+  return () => token;
 }
 
 describe('HttpXsrfInterceptor', () => {
@@ -43,9 +43,9 @@ describe('HttpXsrfInterceptor', () => {
       new HttpRequest(
         'POST',
         '/test',
-        { headers: new HttpHeaders().set('X-XSRF-TOKEN', 'blah') },
+        { headers: new HttpHeaders().set('X-XSRF-TOKEN', 'blah') }
       ),
-      backend.handle.bind(backend),
+      backend.handle.bind(backend)
     ).subscribe();
     const req = backend.expectOne('/test');
     expect(req.request.headers.get('X-XSRF-TOKEN')).toEqual('blah');

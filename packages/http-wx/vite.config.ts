@@ -19,10 +19,10 @@ export default defineConfig({
     reporters: ['default'],
     coverage: {
       reportsDirectory: '../../coverage/http-wx',
-      provider: 'v8',
-    },
+      provider: 'v8'
+    }
   },
   esbuild: {
-    target: "es2022",
+    target: 'es2022'
   }
 });

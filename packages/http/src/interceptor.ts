@@ -26,12 +26,12 @@ export class HttpInterceptorHandler implements HttpHandler {
       // out.
       this.chain = interceptorFns.reduceRight(
         (nextSequencedFn, interceptorFn) => chainedInterceptorFn(nextSequencedFn, interceptorFn),
-        interceptorChainEndFn as ChainedInterceptorFn<unknown>,
+        interceptorChainEndFn as ChainedInterceptorFn<unknown>
       );
     }
 
-    return this.chain(request, (downstreamRequest) =>
-      this.backend.handle(downstreamRequest),
+    return this.chain(request, downstreamRequest =>
+      this.backend.handle(downstreamRequest)
     );
   }
 }
@@ -55,14 +55,14 @@ function interceptorChainEndFn(req: HttpRequest<SafeAny>, finalHandlerFn: HttpHa
 function adaptLegacyInterceptorToChain(chainTailFn: ChainedInterceptorFn<SafeAny>, interceptor: HttpInterceptor): ChainedInterceptorFn<SafeAny> {
   return (initialRequest, finalHandlerFn) =>
     interceptor.intercept(initialRequest, {
-      handle: (downstreamRequest) => chainTailFn(downstreamRequest, finalHandlerFn),
+      handle: downstreamRequest => chainTailFn(downstreamRequest, finalHandlerFn)
     });
 }
 
 function chainedInterceptorFn(chainTailFn: ChainedInterceptorFn<unknown>, interceptorFn: HttpInterceptorFn): ChainedInterceptorFn<unknown> {
   return (initialRequest, finalHandlerFn) =>
-    interceptorFn(initialRequest, (downstreamRequest) =>
-      chainTailFn(downstreamRequest, finalHandlerFn),
+    interceptorFn(initialRequest, downstreamRequest =>
+      chainTailFn(downstreamRequest, finalHandlerFn)
     );
 }
 
@@ -81,7 +81,7 @@ export function legacyInterceptorFnFactory(interceptors: HttpInterceptor[]): Htt
       // out.
       chain = interceptors.reduceRight(
         adaptLegacyInterceptorToChain,
-        interceptorChainEndFn as ChainedInterceptorFn<SafeAny>,
+        interceptorChainEndFn as ChainedInterceptorFn<SafeAny>
       );
     }
 

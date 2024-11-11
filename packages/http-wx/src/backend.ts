@@ -9,7 +9,7 @@ type WxUploadFileOption = Omit<
   'url' | 'header' | 'name' | 'formData' | WxCallbackName
 > & {
   /** 文件对应的 key，开发者在服务端可以通过这个 key 获取文件的二进制内容 */
-  fileName: string // 原本的 name 重命名为 fileName
+  fileName: string; // 原本的 name 重命名为 fileName
 };
 
 type WxDownloadFileOption = Omit<
@@ -53,7 +53,7 @@ function upload(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
     const onHeadersReceived: WechatMiniprogram.DownloadTaskOnHeadersReceivedCallback = ({ header }) => {
       observer.next(new HttpHeaderResponse({
         url: request.url,
-        headers: new HttpHeaders(header),
+        headers: new HttpHeaders(header)
       }));
     };
 
@@ -62,7 +62,7 @@ function upload(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
       observer.next({
         type: HttpEventType.UploadProgress,
         loaded: totalBytesSent,
-        total: totalBytesExpectedToSend,
+        total: totalBytesExpectedToSend
       } as HttpUploadProgressEvent);
     };
 
@@ -93,7 +93,7 @@ function upload(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
             url: request.url,
             body,
             status,
-            statusText,
+            statusText
           }));
           observer.complete();
         } else {
@@ -101,7 +101,7 @@ function upload(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
             url: request.url,
             error: body,
             status,
-            statusText,
+            statusText
           }));
         }
       },
@@ -142,7 +142,7 @@ function download(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>>
     const onHeadersReceived: WechatMiniprogram.DownloadTaskOnHeadersReceivedCallback = ({ header }) => {
       observer.next(new HttpHeaderResponse({
         url: request.url,
-        headers: new HttpHeaders(header),
+        headers: new HttpHeaders(header)
       }));
     };
 
@@ -151,7 +151,7 @@ function download(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>>
       observer.next({
         type: HttpEventType.DownloadProgress,
         loaded: totalBytesWritten,
-        total: totalBytesExpectedToWrite,
+        total: totalBytesExpectedToWrite
       } as HttpDownloadProgressEvent);
     };
 
@@ -173,7 +173,7 @@ function download(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>>
           observer.error(new HttpErrorResponse({
             url: request.url,
             status,
-            statusText,
+            statusText
           }));
         }
       },
@@ -218,7 +218,7 @@ function request(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> 
     const onHeadersReceived: WechatMiniprogram.RequestTaskOnHeadersReceivedCallback = ({ header }) => {
       observer.next(new HttpHeaderResponse({
         url: request.url,
-        headers: new HttpHeaders(header),
+        headers: new HttpHeaders(header)
       }));
     };
 
@@ -249,17 +249,17 @@ function request(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> 
             error: data,
             status,
             statusText,
-            headers,
+            headers
           }));
         }
       },
       fail: ({ errMsg }: WechatMiniprogram.GeneralCallbackResult) => {
         observer.error(new HttpErrorResponse({
           url: request.url,
-          statusText: errMsg,
+          statusText: errMsg
         }));
       },
-      ...request.context.get(WX_REQUSET_TOKEN),
+      ...request.context.get(WX_REQUSET_TOKEN)
     });
 
     observer.next({ type: HttpEventType.Sent } as HttpSentEvent);

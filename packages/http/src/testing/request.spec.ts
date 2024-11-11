@@ -1,11 +1,4 @@
-/**
- * @license
- * Copyright Google LLC All Rights Reserved.
- *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
- */
-
+import { SafeAny } from '@ngify/core';
 import { HttpClient, HttpFeatureKind } from '@ngify/http';
 import { HttpClientTestingBackend } from '@ngify/http/testing';
 
@@ -14,7 +7,7 @@ describe('HttpClient TestRequest', () => {
     const mock = new HttpClientTestingBackend();
     const client = new HttpClient({ kind: HttpFeatureKind.Backend, value: mock });
 
-    let resp: any;
+    let resp: SafeAny;
     client.post('/some-url', { test: 'test' }).subscribe(body => {
       resp = body;
     });
@@ -29,16 +22,13 @@ describe('HttpClient TestRequest', () => {
     const mock = new HttpClientTestingBackend();
     const client = new HttpClient({ kind: HttpFeatureKind.Backend, value: mock });
 
-    let resp: any;
-    client.get('/some-other-url').subscribe(body => {
-      resp = body;
-    });
+    client.get('/some-other-url').subscribe();
 
     try {
       // expect different URL
       mock.expectOne('/some-url').flush(null);
       assert.fail();
-    } catch (error: any) {
+    } catch (error: SafeAny) {
       expect(error.message)
         .toBe(
           'Expected one matching request for criteria "Match URL: /some-url", found none.' +
@@ -50,17 +40,14 @@ describe('HttpClient TestRequest', () => {
     const mock = new HttpClientTestingBackend();
     const client = new HttpClient({ kind: HttpFeatureKind.Backend, value: mock });
 
-    let resp: any;
     const params = { query: 'hello' };
-    client.get('/some-url', params).subscribe(body => {
-      resp = body;
-    });
+    client.get('/some-url', params).subscribe();
 
     try {
       // expect different query parameters
       mock.expectOne('/some-url?query=world').flush(null);
       assert.fail();
-    } catch (error: any) {
+    } catch (error: SafeAny) {
       expect(error.message)
         .toBe(
           'Expected one matching request for criteria "Match URL: /some-url?query=world", found none.' +
@@ -72,19 +59,14 @@ describe('HttpClient TestRequest', () => {
     const mock = new HttpClientTestingBackend();
     const client = new HttpClient({ kind: HttpFeatureKind.Backend, value: mock });
 
-    let resp: any;
-    client.get('/some-other-url?query=world').subscribe(body => {
-      resp = body;
-    });
-    client.post('/and-another-url', {}).subscribe(body => {
-      resp = body;
-    });
+    client.get('/some-other-url?query=world').subscribe();
+    client.post('/and-another-url', {}).subscribe();
 
     try {
       // expect different URL
       mock.expectOne('/some-url').flush(null);
       assert.fail();
-    } catch (error: any) {
+    } catch (error: SafeAny) {
       expect(error.message)
         .toBe(
           'Expected one matching request for criteria "Match URL: /some-url", found none.' +

@@ -26,7 +26,7 @@ export function setupHttpClient(...features: HttpSetupFeature[]) {
 
       case HttpFeatureKind.XsrfProtection:
         config.interceptorFns.push(value);
-        break
+        break;
     }
   }
 }

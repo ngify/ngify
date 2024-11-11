@@ -10,9 +10,9 @@ export function Throttle(wait: number, options?: ThrottleSettings) {
     target: (this: This, ...args: Args) => Return,
     context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Return>
   ) {
-    const fn = throttle(target, wait, options)
+    const fn = throttle(target, wait, options);
     return function (this: This, ...args: Args): void {
       fn.apply(this, args) as Return;
-    }
-  }
+    };
+  };
 }
