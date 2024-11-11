@@ -8,11 +8,13 @@ Pretend to be using Angular.
 
 ## Packages
 
-| Package                                                                       | Intro                                                         | Version                                                                                                            |
-| ----------------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| [`@ngify/http`](https://github.com/ngify/ngify/tree/main/packages/http)       | A reactive HTTP client in the form of `@angular/common/http`. | [![version](https://img.shields.io/npm/v/@ngify/http/latest.svg)](https://www.npmjs.com/package/@ngify/http)       |
-| [`@ngify/http-wx`](https://github.com/ngify/ngify/tree/main/packages/http-wx) | WeChat HTTP request adapter for `@ngify/http`.                | [![version](https://img.shields.io/npm/v/@ngify/http-wx/latest.svg)](https://www.npmjs.com/package/@ngify/http-wx) |
-| [`@ngify/at`](https://github.com/ngify/ngify/tree/main/packages/at)           | A practical decorator library (experimental).                 | [![version](https://img.shields.io/npm/v/@ngify/at/latest.svg)](https://www.npmjs.com/package/@ngify/at)           |
+| Package                                                                           | Intro                                                         | Version                                                                                                                |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| [`@ngify/http`](https://github.com/ngify/ngify/tree/main/packages/http)           | A reactive HTTP client in the form of `@angular/common/http`. | [![version](https://img.shields.io/npm/v/@ngify/http/latest.svg)](https://www.npmjs.com/package/@ngify/http)           |
+| [`@ngify/http-wx`](https://github.com/ngify/ngify/tree/main/packages/http-wx)     | WeChat HTTP request adapter for `@ngify/http`.                | [![version](https://img.shields.io/npm/v/@ngify/http-wx/latest.svg)](https://www.npmjs.com/package/@ngify/http-wx)     |
+| [`@ngify/http-taro`](https://github.com/ngify/ngify/tree/main/packages/http-taro) | Taro HTTP request adapter for `@ngify/http`.                  | [![version](https://img.shields.io/npm/v/@ngify/http-taro/latest.svg)](https://www.npmjs.com/package/@ngify/http-taro) |
+| [`@ngify/http-uni`](https://github.com/ngify/ngify/tree/main/packages/http-uni)   | Uni app HTTP request adapter for `@ngify/http`.               | [![version](https://img.shields.io/npm/v/@ngify/http-uni/latest.svg)](https://www.npmjs.com/package/@ngify/http-uni)   |
+| [`@ngify/at`](https://github.com/ngify/ngify/tree/main/packages/at)               | A practical decorator library (experimental).                 | [![version](https://img.shields.io/npm/v/@ngify/at/latest.svg)](https://www.npmjs.com/package/@ngify/at)               |
 
 &nbsp; ☝️ Click the links above to view the README for each package.
 

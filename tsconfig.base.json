@@ -31,6 +31,12 @@
       "@ngify/http-wx": [
         "packages/http-wx/src/index.ts"
       ],
+      "@ngify/http-taro": [
+        "packages/http-taro/src/index.ts"
+      ],
+      "@ngify/http-uni": [
+        "packages/http-uni/src/index.ts"
+      ],
     }
   },
   "exclude": [
