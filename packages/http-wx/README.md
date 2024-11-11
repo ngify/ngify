@@ -5,7 +5,7 @@
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 [![CodeFactor](https://www.codefactor.io/repository/github/ngify/ngify/badge)](https://www.codefactor.io/repository/github/ngify/ngify)
 
-`@ngify/http` 的微信 HTTP 请求适配器。
+`@ngify/http` 的微信小程序 HTTP 请求适配器。
 
 ## 安装
 
@@ -32,21 +32,21 @@ setupHttpClient(
 );
 ```
 
-## 小程序参数
+## 额外参数
 
 小程序请求还支持更多额外的参数，使用 `HttpContext` 来传递它们：
 
 ```ts
 import { WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http-wx';
 
-// 微信小程序开启 HTTP2
+// 开启 HTTP2
 http.get('url', params, {
   context: new HttpContext().set(WX_REQUSET_TOKEN, {
     enableHttp2: true,
   })
 });
 
-// 微信小程序文件上传
+// 文件上传
 http.post('url', params, {
   context: new HttpContext().set(WX_UPLOAD_FILE_TOKEN, {
     filePath: 'filePath',
@@ -54,7 +54,7 @@ http.post('url', params, {
   })
 });
 
-// 微信小程序文件下载
+// 文件下载
 http.get('url', params, {
   context: new HttpContext().set(WX_DOWNLOAD_FILE_TOKEN, {
     filePath: 'filePath'

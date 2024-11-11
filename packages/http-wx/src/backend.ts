@@ -32,22 +32,18 @@ export const WX_REQUSET_TOKEN = new HttpContextToken<WxRequestOption>(() => ({})
 export class HttpWxBackend implements HttpBackend {
   handle(req: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
     if (req.method === 'POST' && req.context.has(WX_UPLOAD_FILE_TOKEN)) {
-      return upload(req);
+      return doUpload(req);
     }
 
     if (req.method === 'GET' && req.context.has(WX_DOWNLOAD_FILE_TOKEN)) {
-      return download(req);
+      return doDownload(req);
     }
 
-    return request(req);
+    return doRequest(req);
   }
 }
 
-/**
- * wx upload file
- * @param request
- */
-function upload(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
+function doUpload(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
   return new Observable((observer: Observer<HttpEvent<SafeAny>>) => {
     // The response header event handler
     const onHeadersReceived: WechatMiniprogram.DownloadTaskOnHeadersReceivedCallback = ({ header }) => {
@@ -71,7 +67,7 @@ function upload(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
     const task = wx.uploadFile({
       url: request.urlWithParams,
       name: extraOptions.fileName,
-      header: buildHeaders(request),
+      header: buildHeaders(request.headers),
       formData: request.body,
       success: ({ data, statusCode: status, errMsg: statusText }) => {
         let ok = status >= 200 && status < 300;
@@ -132,11 +128,7 @@ function upload(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
   });
 }
 
-/**
- * wx download file
- * @param request
- */
-function download(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
+function doDownload(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
   return new Observable((observer: Observer<HttpEvent<SafeAny>>) => {
     // The response header event handler
     const onHeadersReceived: WechatMiniprogram.DownloadTaskOnHeadersReceivedCallback = ({ header }) => {
@@ -157,7 +149,7 @@ function download(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>>
 
     const task = wx.downloadFile({
       url: request.urlWithParams,
-      header: buildHeaders(request),
+      header: buildHeaders(request.headers),
       success: ({ statusCode: status, errMsg: statusText, ...body }) => {
         const ok = status >= 200 && status < 300;
 
@@ -204,11 +196,7 @@ function download(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>>
   });
 }
 
-/**
- * wx http request
- * @param request
- */
-function request(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
+function doRequest(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
   return new Observable((observer: Observer<HttpEvent<SafeAny>>) => {
     if (request.method === 'PATCH') {
       throw Error(`The http ${request.method} request is not supported yet`);
@@ -226,7 +214,7 @@ function request(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> 
       url: request.urlWithParams,
       method: request.method,
       data: request.body,
-      header: buildHeaders(request),
+      header: buildHeaders(request.headers),
       // wx 从 responseType 中拆分出 dataType，这里需要处理一下
       responseType: request.responseType === 'arraybuffer' ? request.responseType : 'text',
       dataType: request.responseType === 'json' ? request.responseType : '其他',
@@ -278,9 +266,9 @@ function request(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> 
   });
 }
 
-function buildHeaders(request: HttpRequest<SafeAny>): { [key: string]: string } {
-  return request.headers.keys().reduce((headers, name) => (
-    headers[name] = request.headers.getAll(name)!.join(','),
-    headers
-  ), {} as { [key: string]: string });
+function buildHeaders(headers: HttpHeaders): { [key: string]: string } {
+  return headers.keys().reduce<{ [key: string]: string }>((obj, name) => (
+    obj[name] = headers.getAll(name)!.join(','),
+    obj
+  ), {});
 }
