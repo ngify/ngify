@@ -444,11 +444,13 @@ const http = new HttpClient(
 
 `@ngify/http` 内置了以下 HTTP 请求实现：
 
-| HTTP 请求实现 | 包                                                                            | 描述                                 |
-| ------------- | ----------------------------------------------------------------------------- | ------------------------------------ |
-| `withXhr`     | `@ngify/http`                                                                 | 使用 `XMLHttpRequest` 进行 HTTP 请求 |
-| `withFetch`   | `@ngify/http`                                                                 | 使用 `Fetch API` 进行 HTTP 请求      |
-| `withWx`      | [`@ngify/http-wx`](https://github.com/ngify/ngify/blob/main/packages/http-wx) | 在 `微信小程序` 中进行 HTTP 请求     |
+| HTTP 请求实现 | 包                                                                                | 描述                                 |
+| ------------- | --------------------------------------------------------------------------------- | ------------------------------------ |
+| `withXhr`     | `@ngify/http`                                                                     | 使用 `XMLHttpRequest` 进行 HTTP 请求 |
+| `withFetch`   | `@ngify/http`                                                                     | 使用 `Fetch API` 进行 HTTP 请求      |
+| `withWx`      | [`@ngify/http-wx`](https://github.com/ngify/ngify/blob/main/packages/http-wx)     | 在 `微信小程序` 中进行 HTTP 请求     |
+| `withTaro`    | [`@ngify/http-taro`](https://github.com/ngify/ngify/blob/main/packages/http-taro) | 在 `Taro` 中进行 HTTP 请求           |
+| `withUni`     | [`@ngify/http-uni`](https://github.com/ngify/ngify/blob/main/packages/http-uni)   | 在 `Uni-app` 中进行 HTTP 请求        |
 
 `HttpClient` 默认使用 `withXhr`，您可以自行切换到其他实现：
 

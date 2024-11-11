@@ -443,11 +443,13 @@ const http = new HttpClient(
 
 `@ngify/http` comes with the following HTTP request implementations:
 
-| HTTP Request Implementation | Package                                                                       | Description                                  |
-| --------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------- |
-| `withXhr`                   | `@ngify/http`                                                                 | Uses `XMLHttpRequest` for HTTP requests      |
-| `withFetch`                 | `@ngify/http`                                                                 | Uses `Fetch API` for HTTP requests           |
-| `withWx`                    | [`@ngify/http-wx`](https://github.com/ngify/ngify/blob/main/packages/http-wx) | Uses HTTP requests in `WeChat Mini Programs` |
+| HTTP Request Implementation | Package                                                                           | Description                                  |
+| --------------------------- | --------------------------------------------------------------------------------- | -------------------------------------------- |
+| `withXhr`                   | `@ngify/http`                                                                     | Uses `XMLHttpRequest` for HTTP requests      |
+| `withFetch`                 | `@ngify/http`                                                                     | Uses `Fetch API` for HTTP requests           |
+| `withWx`                    | [`@ngify/http-wx`](https://github.com/ngify/ngify/blob/main/packages/http-wx)     | Uses HTTP requests in `WeChat Mini Programs` |
+| `withTaro`                  | [`@ngify/http-taro`](https://github.com/ngify/ngify/blob/main/packages/http-taro) | Uses HTTP requests in `Taro`                 |
+| `withUni`                   | [`@ngify/http-uni`](https://github.com/ngify/ngify/blob/main/packages/http-uni)   | Uses HTTP requests in `Uni-app`              |
 
 `HttpClient` uses `withXhr` by default, but you can switch to other implementations:
 
@@ -464,6 +466,7 @@ const fetchHttp = new HttpClient(
 const wxHttp = new HttpClient(
   withWx()
 );
+...
 ```
 
 You can also use a custom `HttpBackend` implementation:
