@@ -17,7 +17,7 @@ describe('HttpFeature', () => {
 
   it('should configure HttpClient', () => {
     const client = new HttpClient({ kind: HttpFeatureKind.Backend, value: controller });
-    client.get('/test', null, { responseType: 'text' }).subscribe();
+    client.get('/test', { responseType: 'text' }).subscribe();
     controller.expectOne('/test').flush('');
   });
 
@@ -29,7 +29,7 @@ describe('HttpFeature', () => {
         makeLegacyTagInterceptor('beta')
       ])
     );
-    client.get('/test', null, { responseType: 'text' }).subscribe();
+    client.get('/test', { responseType: 'text' }).subscribe();
     const req = controller.expectOne('/test');
     expect(req.request.headers.get('X-Tag')).toEqual('alpha,beta');
     req.flush('');
@@ -44,7 +44,7 @@ describe('HttpFeature', () => {
           makeLiteralTagInterceptorFn('beta')
         ])
       );
-      client.get('/test', null, { responseType: 'text' }).subscribe();
+      client.get('/test', { responseType: 'text' }).subscribe();
       const req = controller.expectOne('/test');
       expect(req.request.headers.get('X-Tag')).toEqual('alpha,beta');
       req.flush('');
@@ -56,7 +56,7 @@ describe('HttpFeature', () => {
         withInterceptors([makeLiteralTagInterceptorFn('alpha')]),
         withInterceptors([makeLiteralTagInterceptorFn('beta')])
       );
-      client.get('/test', null, { responseType: 'text' }).subscribe();
+      client.get('/test', { responseType: 'text' }).subscribe();
       const req = controller.expectOne('/test');
       expect(req.request.headers.get('X-Tag')).toEqual('alpha,beta');
       req.flush('');
@@ -68,7 +68,7 @@ describe('HttpFeature', () => {
         withInterceptors([makeLiteralTagInterceptorFn('functional')]),
         withLegacyInterceptors([makeLegacyTagInterceptor('legacy')])
       );
-      client.get('/test', null, { responseType: 'text' }).subscribe();
+      client.get('/test', { responseType: 'text' }).subscribe();
       const req = controller.expectOne('/test');
       expect(req.request.headers.get('X-Tag')).toEqual('functional,legacy');
       req.flush('');
@@ -80,7 +80,7 @@ describe('HttpFeature', () => {
         withLegacyInterceptors([makeLegacyTagInterceptor('legacy')]),
         withInterceptors([makeLiteralTagInterceptorFn('functional')])
       );
-      client.get('/test', null, { responseType: 'text' }).subscribe();
+      client.get('/test', { responseType: 'text' }).subscribe();
       const req = controller.expectOne('/test');
       expect(req.request.headers.get('X-Tag')).toEqual('legacy,functional');
       req.flush('');

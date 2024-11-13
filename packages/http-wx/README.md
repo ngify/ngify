@@ -40,14 +40,14 @@ setupHttpClient(
 import { WX_UPLOAD_FILE_TOKEN, WX_DOWNLOAD_FILE_TOKEN, WX_REQUSET_TOKEN } from '@ngify/http-wx';
 
 // 开启 HTTP2
-http.get('url', params, {
+http.get('/api', {
   context: new HttpContext().set(WX_REQUSET_TOKEN, {
     enableHttp2: true,
   })
 });
 
 // 文件上传
-http.post('url', params, {
+http.post('url', null, {
   context: new HttpContext().set(WX_UPLOAD_FILE_TOKEN, {
     filePath: 'filePath',
     fileName: 'fileName'
@@ -55,7 +55,7 @@ http.post('url', params, {
 });
 
 // 文件下载
-http.get('url', params, {
+http.get('/api', {
   context: new HttpContext().set(WX_DOWNLOAD_FILE_TOKEN, {
     filePath: 'filePath'
   })

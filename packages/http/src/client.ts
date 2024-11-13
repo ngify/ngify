@@ -6,21 +6,18 @@ import { HttpFeature, HttpFeatureKind } from './feature';
 import type { HttpHeaders } from './headers';
 import { HttpInterceptorFn, HttpInterceptorHandler, legacyInterceptorFnFactory } from './interceptor';
 import type { HttpParams } from './params';
-import { HttpRequest } from './request';
+import { HttpRequest, HttpResponseType } from './request';
 import { HttpResponse, type HttpEvent } from './response';
 import { config } from './setup';
 
 type Body = HttpRequest<SafeAny>['body'];
 type Params = ConstructorParameters<typeof HttpParams>[0] | HttpParams | null;
 type Headers = ConstructorParameters<typeof HttpHeaders>[0] | HttpHeaders;
-type ResponseType = HttpRequest<SafeAny>['responseType'];
 
-interface RequestOptions<T extends ResponseType = ResponseType> {
-  body?: Body;
+interface RequestOptions {
   params?: Params;
   headers?: Headers;
   context?: HttpContext;
-  responseType?: T;
   reportProgress?: boolean;
   withCredentials?: boolean;
 }
@@ -77,113 +74,86 @@ export class HttpClient {
     }
   }
 
-  delete(url: string, params?: Params, options?: Omit<RequestOptions<'arraybuffer'>, 'params'> & { observe?: 'body' }): Observable<ArrayBuffer>;
-  delete(url: string, params?: Params, options?: Omit<RequestOptions<'arraybuffer'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<ArrayBuffer>>;
-  delete(url: string, params?: Params, options?: Omit<RequestOptions<'arraybuffer'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<ArrayBuffer>>;
-  delete(url: string, params?: Params, options?: Omit<RequestOptions<'blob'>, 'params'> & { observe?: 'body' }): Observable<Blob>;
-  delete(url: string, params?: Params, options?: Omit<RequestOptions<'blob'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<Blob>>;
-  delete(url: string, params?: Params, options?: Omit<RequestOptions<'blob'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<Blob>>;
-  delete(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'body' }): Observable<string>;
-  delete(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<string>>;
-  delete(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<string>>;
-  delete(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<SafeAny>;
-  delete(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<SafeAny>>;
-  delete(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<SafeAny>>;
-  delete<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<R>;
-  delete<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<R>>;
-  delete<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<R>>;
-  delete(url: string, params?: Params, options: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
+  delete<T = SafeAny>(url: string, options?: RequestOptions & { observe?: 'body', responseType?: 'json', body?: Body }): Observable<T>;
+  delete(url: string, options?: RequestOptions & { observe?: 'body', responseType: 'arraybuffer', body?: Body }): Observable<ArrayBuffer>;
+  delete(url: string, options?: RequestOptions & { observe?: 'body', responseType: 'blob', body?: Body }): Observable<Blob>;
+  delete(url: string, options?: RequestOptions & { observe?: 'body', responseType: 'text', body?: Body }): Observable<string>;
+  delete<T = SafeAny>(url: string, options?: RequestOptions & { observe?: 'events', responseType?: 'json', body?: Body }): Observable<HttpEvent<T>>;
+  delete(url: string, options?: RequestOptions & { observe?: 'events', responseType: 'arraybuffer', body?: Body }): Observable<HttpEvent<ArrayBuffer>>;
+  delete(url: string, options?: RequestOptions & { observe?: 'events', responseType: 'blob', body?: Body }): Observable<HttpEvent<Blob>>;
+  delete(url: string, options?: RequestOptions & { observe?: 'events', responseType: 'text', body?: Body }): Observable<HttpEvent<string>>;
+  delete<T = SafeAny>(url: string, options?: RequestOptions & { observe?: 'response', responseType?: 'json', body?: Body }): Observable<HttpResponse<T>>;
+  delete(url: string, options?: RequestOptions & { observe?: 'response', responseType: 'arraybuffer', body?: Body }): Observable<HttpResponse<ArrayBuffer>>;
+  delete(url: string, options?: RequestOptions & { observe?: 'response', responseType: 'blob', body?: Body }): Observable<HttpResponse<Blob>>;
+  delete(url: string, options?: RequestOptions & { observe?: 'response', responseType: 'text', body?: Body }): Observable<HttpResponse<string>>;
+  delete(url: string, options: RequestOptions & { observe?: 'body' | 'events' | 'response', responseType?: HttpResponseType, body?: Body } = {}): Observable<SafeAny> {
     const { observe, ...requestOptions } = options;
-    return this.request<SafeAny>(new HttpRequest('DELETE', url, {
-      params,
-      ...requestOptions
-    }), { observe });
+    return this.request<SafeAny>(new HttpRequest('DELETE', url, requestOptions), { observe });
   }
 
-  get(url: string, params?: Params, options?: Omit<RequestOptions<'arraybuffer'>, 'params'> & { observe?: 'body' }): Observable<ArrayBuffer>;
-  get(url: string, params?: Params, options?: Omit<RequestOptions<'arraybuffer'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<ArrayBuffer>>;
-  get(url: string, params?: Params, options?: Omit<RequestOptions<'arraybuffer'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<ArrayBuffer>>;
-  get(url: string, params?: Params, options?: Omit<RequestOptions<'blob'>, 'params'> & { observe?: 'body' }): Observable<Blob>;
-  get(url: string, params?: Params, options?: Omit<RequestOptions<'blob'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<Blob>>;
-  get(url: string, params?: Params, options?: Omit<RequestOptions<'blob'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<Blob>>;
-  get(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'body' }): Observable<string>;
-  get(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<string>>;
-  get(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<string>>;
-  get(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<SafeAny>;
-  get(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<SafeAny>>;
-  get(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<SafeAny>>;
-  get<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<R>;
-  get<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<R>>;
-  get<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<R>>;
-  get(url: string, params?: Params, options: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
+  get<T = SafeAny>(url: string, options?: RequestOptions & { observe?: 'body', responseType?: 'json' }): Observable<T>;
+  get(url: string, options?: RequestOptions & { observe?: 'body', responseType: 'arraybuffer' }): Observable<ArrayBuffer>;
+  get(url: string, options?: RequestOptions & { observe?: 'body', responseType: 'blob' }): Observable<Blob>;
+  get(url: string, options?: RequestOptions & { observe?: 'body', responseType: 'text' }): Observable<string>;
+  get<T = SafeAny>(url: string, options?: RequestOptions & { observe?: 'events', responseType?: 'json' }): Observable<HttpEvent<T>>;
+  get(url: string, options?: RequestOptions & { observe?: 'events', responseType: 'arraybuffer' }): Observable<HttpEvent<ArrayBuffer>>;
+  get(url: string, options?: RequestOptions & { observe?: 'events', responseType: 'blob' }): Observable<HttpEvent<Blob>>;
+  get(url: string, options?: RequestOptions & { observe?: 'events', responseType: 'text' }): Observable<HttpEvent<string>>;
+  get<T = SafeAny>(url: string, options?: RequestOptions & { observe?: 'response', responseType?: 'json' }): Observable<HttpResponse<T>>;
+  get(url: string, options?: RequestOptions & { observe?: 'response', responseType: 'arraybuffer' }): Observable<HttpResponse<ArrayBuffer>>;
+  get(url: string, options?: RequestOptions & { observe?: 'response', responseType: 'blob' }): Observable<HttpResponse<Blob>>;
+  get(url: string, options?: RequestOptions & { observe?: 'response', responseType: 'text' }): Observable<HttpResponse<string>>;
+  get(url: string, options: RequestOptions & { responseType?: HttpResponseType, observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
     const { observe, ...requestOptions } = options;
-    return this.request<SafeAny>(new HttpRequest('GET', url, {
-      params,
-      ...requestOptions
-    }), { observe });
+    return this.request<SafeAny>(new HttpRequest('GET', url, requestOptions), { observe });
   }
 
-  head(url: string, params?: Params, options?: Omit<RequestOptions<'arraybuffer'>, 'params'> & { observe?: 'body' }): Observable<ArrayBuffer>;
-  head(url: string, params?: Params, options?: Omit<RequestOptions<'arraybuffer'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<ArrayBuffer>>;
-  head(url: string, params?: Params, options?: Omit<RequestOptions<'arraybuffer'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<ArrayBuffer>>;
-  head(url: string, params?: Params, options?: Omit<RequestOptions<'blob'>, 'params'> & { observe?: 'body' }): Observable<Blob>;
-  head(url: string, params?: Params, options?: Omit<RequestOptions<'blob'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<Blob>>;
-  head(url: string, params?: Params, options?: Omit<RequestOptions<'blob'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<Blob>>;
-  head(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'body' }): Observable<string>;
-  head(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<string>>;
-  head(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<string>>;
-  head(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<SafeAny>;
-  head(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<SafeAny>>;
-  head(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<SafeAny>>;
-  head<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<R>;
-  head<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<R>>;
-  head<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<R>>;
-  head(url: string, params?: Params, options: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
+  head<T = SafeAny>(url: string, options?: RequestOptions & { observe?: 'body', responseType?: 'json' }): Observable<T>;
+  head(url: string, options?: RequestOptions & { observe?: 'body', responseType: 'arraybuffer' }): Observable<ArrayBuffer>;
+  head(url: string, options?: RequestOptions & { observe?: 'body', responseType: 'blob' }): Observable<Blob>;
+  head(url: string, options?: RequestOptions & { observe?: 'body', responseType: 'text' }): Observable<string>;
+  head<T = SafeAny>(url: string, options?: RequestOptions & { observe?: 'events', responseType?: 'json' }): Observable<HttpEvent<T>>;
+  head(url: string, options?: RequestOptions & { observe?: 'events', responseType: 'arraybuffer' }): Observable<HttpEvent<ArrayBuffer>>;
+  head(url: string, options?: RequestOptions & { observe?: 'events', responseType: 'blob' }): Observable<HttpEvent<Blob>>;
+  head(url: string, options?: RequestOptions & { observe?: 'events', responseType: 'text' }): Observable<HttpEvent<string>>;
+  head<T = SafeAny>(url: string, options?: RequestOptions & { observe?: 'response', responseType?: 'json' }): Observable<HttpResponse<T>>;
+  head(url: string, options?: RequestOptions & { observe?: 'response', responseType: 'arraybuffer' }): Observable<HttpResponse<ArrayBuffer>>;
+  head(url: string, options?: RequestOptions & { observe?: 'response', responseType: 'blob' }): Observable<HttpResponse<Blob>>;
+  head(url: string, options?: RequestOptions & { observe?: 'response', responseType: 'text' }): Observable<HttpResponse<string>>;
+  head(url: string, options: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
     const { observe, ...requestOptions } = options;
-    return this.request<SafeAny>(new HttpRequest('HEAD', url, {
-      params,
-      ...requestOptions
-    }), { observe });
+    return this.request<SafeAny>(new HttpRequest('HEAD', url, requestOptions), { observe });
   }
 
-  options(url: string, params?: Params, options?: Omit<RequestOptions<'arraybuffer'>, 'params'> & { observe?: 'body' }): Observable<ArrayBuffer>;
-  options(url: string, params?: Params, options?: Omit<RequestOptions<'arraybuffer'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<ArrayBuffer>>;
-  options(url: string, params?: Params, options?: Omit<RequestOptions<'arraybuffer'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<ArrayBuffer>>;
-  options(url: string, params?: Params, options?: Omit<RequestOptions<'blob'>, 'params'> & { observe?: 'body' }): Observable<Blob>;
-  options(url: string, params?: Params, options?: Omit<RequestOptions<'blob'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<Blob>>;
-  options(url: string, params?: Params, options?: Omit<RequestOptions<'blob'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<Blob>>;
-  options(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'body' }): Observable<string>;
-  options(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<string>>;
-  options(url: string, params?: Params, options?: Omit<RequestOptions<'text'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<string>>;
-  options(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<SafeAny>;
-  options(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<SafeAny>>;
-  options(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<SafeAny>>;
-  options<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'body' }): Observable<R>;
-  options<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'events' }): Observable<HttpEvent<R>>;
-  options<R>(url: string, params?: Params, options?: Omit<RequestOptions<'json'>, 'params'> & { observe?: 'response' }): Observable<HttpResponse<R>>;
-  options(url: string, params?: Params, options: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
+  options<T = SafeAny>(url: string, options?: RequestOptions & { observe?: 'body', responseType?: 'json' }): Observable<T>;
+  options(url: string, options?: RequestOptions & { observe?: 'body', responseType: 'arraybuffer' }): Observable<ArrayBuffer>;
+  options(url: string, options?: RequestOptions & { observe?: 'body', responseType: 'blob' }): Observable<Blob>;
+  options(url: string, options?: RequestOptions & { observe?: 'body', responseType: 'text' }): Observable<string>;
+  options<T = SafeAny>(url: string, options?: RequestOptions & { observe?: 'events', responseType?: 'json' }): Observable<HttpEvent<T>>;
+  options(url: string, options?: RequestOptions & { observe?: 'events', responseType: 'arraybuffer' }): Observable<HttpEvent<ArrayBuffer>>;
+  options(url: string, options?: RequestOptions & { observe?: 'events', responseType: 'blob' }): Observable<HttpEvent<Blob>>;
+  options(url: string, options?: RequestOptions & { observe?: 'events', responseType: 'text' }): Observable<HttpEvent<string>>;
+  options<T = SafeAny>(url: string, options?: RequestOptions & { observe?: 'response', responseType?: 'json' }): Observable<HttpResponse<T>>;
+  options(url: string, options?: RequestOptions & { observe?: 'response', responseType: 'arraybuffer' }): Observable<HttpResponse<ArrayBuffer>>;
+  options(url: string, options?: RequestOptions & { observe?: 'response', responseType: 'blob' }): Observable<HttpResponse<Blob>>;
+  options(url: string, options?: RequestOptions & { observe?: 'response', responseType: 'text' }): Observable<HttpResponse<string>>;
+  options(url: string, options: Omit<RequestOptions, 'params'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
     const { observe, ...requestOptions } = options;
-    return this.request<SafeAny>(new HttpRequest('OPTIONS', url, {
-      params,
-      ...requestOptions
-    }), { observe });
+    return this.request<SafeAny>(new HttpRequest('OPTIONS', url, requestOptions), { observe });
   }
 
-  post(url: string, body?: Body, options?: Omit<RequestOptions<'arraybuffer'>, 'body'> & { observe?: 'body' }): Observable<ArrayBuffer>;
-  post(url: string, body?: Body, options?: Omit<RequestOptions<'arraybuffer'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<ArrayBuffer>>;
-  post(url: string, body?: Body, options?: Omit<RequestOptions<'arraybuffer'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<ArrayBuffer>>;
-  post(url: string, body?: Body, options?: Omit<RequestOptions<'blob'>, 'body'> & { observe?: 'body' }): Observable<Blob>;
-  post(url: string, body?: Body, options?: Omit<RequestOptions<'blob'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<Blob>>;
-  post(url: string, body?: Body, options?: Omit<RequestOptions<'blob'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<Blob>>;
-  post(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'body' }): Observable<string>;
-  post(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<string>>;
-  post(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<string>>;
-  post(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'body' }): Observable<SafeAny>;
-  post(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<SafeAny>>;
-  post(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<SafeAny>>;
-  post<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'body' }): Observable<R>;
-  post<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<R>>;
-  post<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<R>>;
+  post<T = SafeAny>(url: string, body?: Body, options?: RequestOptions & { observe?: 'body', responseType?: 'json' }): Observable<T>;
+  post(url: string, body?: Body, options?: RequestOptions & { observe?: 'body', responseType: 'arraybuffer' }): Observable<ArrayBuffer>;
+  post(url: string, body?: Body, options?: RequestOptions & { observe?: 'body', responseType: 'blob' }): Observable<Blob>;
+  post(url: string, body?: Body, options?: RequestOptions & { observe?: 'body', responseType: 'text' }): Observable<string>;
+  post<T = SafeAny>(url: string, body?: Body, options?: RequestOptions & { observe?: 'events', responseType?: 'json' }): Observable<HttpEvent<T>>;
+  post(url: string, body?: Body, options?: RequestOptions & { observe?: 'events', responseType: 'arraybuffer' }): Observable<HttpEvent<ArrayBuffer>>;
+  post(url: string, body?: Body, options?: RequestOptions & { observe?: 'events', responseType: 'blob' }): Observable<HttpEvent<Blob>>;
+  post(url: string, body?: Body, options?: RequestOptions & { observe?: 'events', responseType: 'text' }): Observable<HttpEvent<string>>;
+  post<T = SafeAny>(url: string, body?: Body, options?: RequestOptions & { observe?: 'response', responseType?: 'json' }): Observable<HttpResponse<T>>;
+  post(url: string, body?: Body, options?: RequestOptions & { observe?: 'response', responseType: 'arraybuffer' }): Observable<HttpResponse<ArrayBuffer>>;
+  post(url: string, body?: Body, options?: RequestOptions & { observe?: 'response', responseType: 'blob' }): Observable<HttpResponse<Blob>>;
+  post(url: string, body?: Body, options?: RequestOptions & { observe?: 'response', responseType: 'text' }): Observable<HttpResponse<string>>;
   post(url: string, body?: Body, options: Omit<RequestOptions, 'body'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
     const { observe, ...requestOptions } = options;
     return this.request<SafeAny>(new HttpRequest('POST', url, {
@@ -192,21 +162,18 @@ export class HttpClient {
     }), { observe });
   }
 
-  put(url: string, body?: Body, options?: Omit<RequestOptions<'arraybuffer'>, 'body'> & { observe?: 'body' }): Observable<ArrayBuffer>;
-  put(url: string, body?: Body, options?: Omit<RequestOptions<'arraybuffer'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<ArrayBuffer>>;
-  put(url: string, body?: Body, options?: Omit<RequestOptions<'arraybuffer'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<ArrayBuffer>>;
-  put(url: string, body?: Body, options?: Omit<RequestOptions<'blob'>, 'body'> & { observe?: 'body' }): Observable<Blob>;
-  put(url: string, body?: Body, options?: Omit<RequestOptions<'blob'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<Blob>>;
-  put(url: string, body?: Body, options?: Omit<RequestOptions<'blob'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<Blob>>;
-  put(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'body' }): Observable<string>;
-  put(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<string>>;
-  put(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<string>>;
-  put(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'body' }): Observable<SafeAny>;
-  put(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<SafeAny>>;
-  put(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<SafeAny>>;
-  put<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'body' }): Observable<R>;
-  put<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<R>>;
-  put<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<R>>;
+  put<T = SafeAny>(url: string, body?: Body, options?: RequestOptions & { observe?: 'body', responseType?: 'json' }): Observable<T>;
+  put(url: string, body?: Body, options?: RequestOptions & { observe?: 'body', responseType: 'arraybuffer' }): Observable<ArrayBuffer>;
+  put(url: string, body?: Body, options?: RequestOptions & { observe?: 'body', responseType: 'blob' }): Observable<Blob>;
+  put(url: string, body?: Body, options?: RequestOptions & { observe?: 'body', responseType: 'text' }): Observable<string>;
+  put<T = SafeAny>(url: string, body?: Body, options?: RequestOptions & { observe?: 'events', responseType?: 'json' }): Observable<HttpEvent<T>>;
+  put(url: string, body?: Body, options?: RequestOptions & { observe?: 'events', responseType: 'arraybuffer' }): Observable<HttpEvent<ArrayBuffer>>;
+  put(url: string, body?: Body, options?: RequestOptions & { observe?: 'events', responseType: 'blob' }): Observable<HttpEvent<Blob>>;
+  put(url: string, body?: Body, options?: RequestOptions & { observe?: 'events', responseType: 'text' }): Observable<HttpEvent<string>>;
+  put<T = SafeAny>(url: string, body?: Body, options?: RequestOptions & { observe?: 'response', responseType?: 'json' }): Observable<HttpResponse<T>>;
+  put(url: string, body?: Body, options?: RequestOptions & { observe?: 'response', responseType: 'arraybuffer' }): Observable<HttpResponse<ArrayBuffer>>;
+  put(url: string, body?: Body, options?: RequestOptions & { observe?: 'response', responseType: 'blob' }): Observable<HttpResponse<Blob>>;
+  put(url: string, body?: Body, options?: RequestOptions & { observe?: 'response', responseType: 'text' }): Observable<HttpResponse<string>>;
   put(url: string, body?: Body, options: Omit<RequestOptions, 'body'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
     const { observe, ...requestOptions } = options;
     return this.request<SafeAny>(new HttpRequest('PUT', url, {
@@ -215,21 +182,18 @@ export class HttpClient {
     }), { observe });
   }
 
-  patch(url: string, body?: Body, options?: Omit<RequestOptions<'arraybuffer'>, 'body'> & { observe?: 'body' }): Observable<ArrayBuffer>;
-  patch(url: string, body?: Body, options?: Omit<RequestOptions<'arraybuffer'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<ArrayBuffer>>;
-  patch(url: string, body?: Body, options?: Omit<RequestOptions<'arraybuffer'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<ArrayBuffer>>;
-  patch(url: string, body?: Body, options?: Omit<RequestOptions<'blob'>, 'body'> & { observe?: 'body' }): Observable<Blob>;
-  patch(url: string, body?: Body, options?: Omit<RequestOptions<'blob'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<Blob>>;
-  patch(url: string, body?: Body, options?: Omit<RequestOptions<'blob'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<Blob>>;
-  patch(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'body' }): Observable<string>;
-  patch(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<string>>;
-  patch(url: string, body?: Body, options?: Omit<RequestOptions<'text'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<string>>;
-  patch(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'body' }): Observable<SafeAny>;
-  patch(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<SafeAny>>;
-  patch(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<SafeAny>>;
-  patch<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'body' }): Observable<R>;
-  patch<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'events' }): Observable<HttpEvent<R>>;
-  patch<R>(url: string, body?: Body, options?: Omit<RequestOptions<'json'>, 'body'> & { observe?: 'response' }): Observable<HttpResponse<R>>;
+  patch<T = SafeAny>(url: string, body?: Body, options?: RequestOptions & { observe?: 'body', responseType?: 'json' }): Observable<T>;
+  patch(url: string, body?: Body, options?: RequestOptions & { observe?: 'body', responseType: 'arraybuffer' }): Observable<ArrayBuffer>;
+  patch(url: string, body?: Body, options?: RequestOptions & { observe?: 'body', responseType: 'blob' }): Observable<Blob>;
+  patch(url: string, body?: Body, options?: RequestOptions & { observe?: 'body', responseType: 'text' }): Observable<string>;
+  patch<T = SafeAny>(url: string, body?: Body, options?: RequestOptions & { observe?: 'events', responseType?: 'json' }): Observable<HttpEvent<T>>;
+  patch(url: string, body?: Body, options?: RequestOptions & { observe?: 'events', responseType: 'arraybuffer' }): Observable<HttpEvent<ArrayBuffer>>;
+  patch(url: string, body?: Body, options?: RequestOptions & { observe?: 'events', responseType: 'blob' }): Observable<HttpEvent<Blob>>;
+  patch(url: string, body?: Body, options?: RequestOptions & { observe?: 'events', responseType: 'text' }): Observable<HttpEvent<string>>;
+  patch<T = SafeAny>(url: string, body?: Body, options?: RequestOptions & { observe?: 'response', responseType?: 'json' }): Observable<HttpResponse<T>>;
+  patch(url: string, body?: Body, options?: RequestOptions & { observe?: 'response', responseType: 'arraybuffer' }): Observable<HttpResponse<ArrayBuffer>>;
+  patch(url: string, body?: Body, options?: RequestOptions & { observe?: 'response', responseType: 'blob' }): Observable<HttpResponse<Blob>>;
+  patch(url: string, body?: Body, options?: RequestOptions & { observe?: 'response', responseType: 'text' }): Observable<HttpResponse<string>>;
   patch(url: string, body?: Body, options: Omit<RequestOptions, 'body'> & { observe?: 'body' | 'events' | 'response' } = {}): Observable<SafeAny> {
     const { observe, ...requestOptions } = options;
     return this.request<SafeAny>(new HttpRequest('PATCH', url, {

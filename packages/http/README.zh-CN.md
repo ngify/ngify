@@ -39,11 +39,10 @@ import { timeout, retry } from 'rxjs';
 
 const http = new HttpClient();
 
-http.get('url', { k: 'v' }).subscribe();
+http.get('/api').subscribe();
 
-http.post<YourType>('url', 'body', {
+http.post<YourType>('/api', 'body', {
   params: { k: 'v' }
-  headers: { Authorization: 'token' }
 }).pipe(
   timeout(3000),
   retry(3),
@@ -61,7 +60,7 @@ http.post<YourType>('url', 'body', {
 
 ### 获取 JSON 数据
 
-从后端获取数据通常需要使用 `HttpClient.get()` 方法发出 GET 请求。此方法采用三个参数：要从中获取的字符串端点 URL、URL 参数，以及用于配置请求的可选选项对象。
+从后端获取数据通常需要使用 `HttpClient.get()` 方法发出 GET 请求。此方法采用两个参数：要从中获取的字符串端点 URL，以及用于配置请求的可选选项对象。
 
 例如，要使用 `HttpClient.get()` 方法从假设的 API 获取配置数据：
 
@@ -93,7 +92,7 @@ http.get<Config>('/api/config').subscribe(config => {
 例如，您可以要求 `HttpClient` 将 `.jpeg` 图像的原始字节下载到 `ArrayBuffer` 中：
 
 ```ts
-http.get('/images/dog.jpg', null, { responseType: 'arraybuffer' }).subscribe(buffer => {
+http.get('/images/dog.jpg', { responseType: 'arraybuffer' }).subscribe(buffer => {
   console.log('The image is ' + buffer.byteLength + ' bytes large');
 });
 ```
@@ -128,7 +127,9 @@ http.post<Config>('/api/config', newConfig).subscribe(config => {
 传递字面量对象是配置 URL 参数的最简单方法：
 
 ```ts
-http.get('/api/config', { filter: 'all' }).subscribe(config => {
+http.get('/api/config', {
+  params: { filter: 'all' },
+}).subscribe(config => {
   // ...
 });
 
@@ -147,7 +148,9 @@ http.post('/api/config', body, {
 ```ts
 const baseParams = new HttpParams().set('filter', 'all');
 
-http.get('/api/config', baseParams.set('details', 'enabled')).subscribe(config => {
+http.get('/api/config', {
+  params: baseParams.set('details', 'enabled')
+}).subscribe(config => {
   // ...
 });
 
@@ -167,7 +170,7 @@ http.post('/api/config', body, {
 传递字面量对象是配置请求标头的最简单方法：
 
 ```ts
-http.get('/api/config', params, {
+http.get('/api/config', {
   headers: {
     'X-Debug-Level': 'verbose',
   }
@@ -184,7 +187,7 @@ http.get('/api/config', params, {
 ```ts
 const baseHeaders = new HttpHeaders().set('X-Debug-Level', 'minimal');
 
-http.get<Config>('/api/config', params, {
+http.get<Config>('/api/config', {
   headers: baseHeaders.set('X-Debug-Level', 'verbose'),
 }).subscribe(config => {
   // ...
@@ -198,7 +201,7 @@ http.get<Config>('/api/config', params, {
 要访问整个响应，请将 `observe` 选项设置为 `'response'`：
 
 ```ts
-http.get<Config>('/api/config', params, { observe: 'response' }).subscribe(res => {
+http.get<Config>('/api/config', { observe: 'response' }).subscribe(res => {
   console.log('Response status:', res.status);
   console.log('Body:', res.body);
 });
@@ -391,7 +394,7 @@ export function cachingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerF
 通过 `HttpClient` API 发出请求时，您可以为 `HttpContextToken` 提供值：
 
 ```ts
-const data$ = http.get('/sensitive/data', params, {
+const data$ = http.get('/sensitive/data', {
   context: new HttpContext().set(CACHING_ENABLED, false),
 });
 ```
@@ -404,7 +407,7 @@ const data$ = http.get('/sensitive/data', params, {
 
 ### 构造响应
 
-大多数拦截器将在转换请求或响应时简单地调用下 `next` 处理程序，但这并不是严格的要求。本节讨论拦截器可以合并更高级行为的几种方法。
+大多数拦截器将在转换请求或响应时简单地调用下 `next` 函数，但这并不是严格的要求。本节讨论拦截器可以合并更高级行为的几种方法。
 
 拦截器不需要调用 `next`。它们可能会选择通过其他一些机制来构造响应，例如从缓存中或通过替代机制发送请求。
 
@@ -545,7 +548,6 @@ setupHttpClient(
 | 差异       | @angular/common/http                         | @ngify/http                                                 |
 | ---------- | -------------------------------------------- | ----------------------------------------------------------- |
 | JSONP      | `http.jsonp()`                               | 不受支持                                                    |
-| Params     | `http.get('url', { params: { k: 'v' } })`    | `http.get('url', { k: 'v' })`                               |
 | fromObject | `new HttpParams({ fromObject: { k: 'v' } })` | `new HttpParams({ k: 'v' })`                                |
 | fromString | `new HttpParams({ fromString: 'k=v' })`      | `new HttpParams('k=v')`                                     |
 | setParams  | `request.clone({ setParams: { k: 'v' } })`   | `request.clone({ params: request.params.set('k', 'v') })`   |
@@ -598,3 +600,11 @@ const http = new HttpClient(
 3. 如果您正在使用 `@ngify/http/fetch`，请将导入点更新为 `@ngify/http`。
 4. 如果您正在使用 `@ngify/http/wx`，请安装 [`@ngify/http-wx`](https://github.com/ngify/ngify/blob/main/packages/http-wx) 包并更新导入点。
 5. v2 仅支持 ESM，不再支持 CommonJS，如果您需要使用 CommonJS，请继续使用 v1。
+6. `.get()`、`.delete()`、`.head()`、`.options()` 的方法签名已更改，您现在需要将 `params` 参数放置到 `options` 参数中：
+
+```ts
+// before
+http.get('/api', params, options);
+// after
+http.get('/api', { params });
+```

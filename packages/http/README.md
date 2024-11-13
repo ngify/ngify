@@ -38,11 +38,10 @@ import { timeout, retry } from 'rxjs';
 
 const http = new HttpClient();
 
-http.get('url', { k: 'v' }).subscribe();
+http.get('/api').subscribe();
 
-http.post<YourType>('url', 'body', {
-  params: { k: 'v' },
-  headers: { Authorization: 'token' }
+http.post<YourType>('/api', 'body', {
+  params: { k: 'v' }
 }).pipe(
   timeout(3000),
   retry(3),
@@ -60,7 +59,7 @@ Various properties of the request and the type of the returned response can be a
 
 ### Fetching JSON Data
 
-To fetch data from the backend, use the `HttpClient.get()` method to make a GET request. This method takes three arguments: the endpoint URL as a string from which to fetch, URL params, and an optional options object to configure the request.
+To fetch data from the backend, use the `HttpClient.get()` method to make a GET request. This method takes two arguments: the endpoint URL as a string from which to fetch, and an optional options object to configure the request.
 
 For example, to fetch configuration data from a hypothetical API using the `HttpClient.get()` method:
 
@@ -92,7 +91,7 @@ By default, `HttpClient` assumes that the server will return JSON data. When int
 For example, you can ask `HttpClient` to download the raw bytes of a `.jpeg` image into an `ArrayBuffer`:
 
 ```ts
-http.get('/images/dog.jpg', null, { responseType: 'arraybuffer' }).subscribe(buffer => {
+http.get('/images/dog.jpg', { responseType: 'arraybuffer' }).subscribe(buffer => {
   console.log('The image is ' + buffer.byteLength + ' bytes large');
 });
 ```
@@ -127,7 +126,9 @@ Use the `params` option to specify request parameters to be included in the requ
 Passing a literal object is the simplest way to configure URL parameters:
 
 ```ts
-http.get('/api/config', { filter: 'all' }).subscribe(config => {
+http.get('/api/config', {
+  params: { filter: 'all' }
+}).subscribe(config => {
   // ...
 });
 
@@ -146,7 +147,9 @@ Alternatively, if you need more control over the construction or serialization o
 ```ts
 const baseParams = new HttpParams().set('filter', 'all');
 
-http.get('/api/config', baseParams.set('details', 'enabled')).subscribe(config => {
+http.get('/api/config', {
+  params: baseParams.set('details', 'enabled')
+}).subscribe(config => {
   // ...
 });
 
@@ -166,7 +169,7 @@ Use the `headers` option to specify request headers to be included in the reques
 Passing a literal object is the simplest way to configure request headers:
 
 ```ts
-http.get('/api/config', params, {
+http.get('/api/config', {
   headers: {
     'X-Debug-Level': 'verbose',
   }
@@ -183,7 +186,7 @@ Alternatively, if you need more control over the construction of the headers, pa
 ```ts
 const baseHeaders = new HttpHeaders().set('X-Debug-Level', 'minimal');
 
-http.get<Config>('/api/config', params, {
+http.get<Config>('/api/config', {
   headers: baseHeaders.set('X-Debug-Level', 'verbose'),
 }).subscribe(config => {
   // ...
@@ -197,7 +200,7 @@ For convenience, `HttpClient` returns an `Observable` of the server's response d
 To access the full response, set the `observe` option to `'response'`:
 
 ```ts
-http.get<Config>('/api/config', params, { observe: 'response' }).subscribe(res => {
+http.get<Config>('/api/config', { observe: 'response' }).subscribe(res => {
   console.log('Response status:', res.status);
   console.log('Body:', res.body);
 });
@@ -390,7 +393,7 @@ export function cachingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerF
 When making requests via the `HttpClient` API, you can provide values for `HttpContextToken`s:
 
 ```ts
-const data$ = http.get('/sensitive/data', params, {
+const data$ = http.get('/sensitive/data', {
   context: new HttpContext().set(CACHING_ENABLED, false),
 });
 ```
@@ -542,7 +545,6 @@ Although `@ngify/http` maintains a high degree of consistency with `@angular/com
 | Difference      | @angular/common/http                         | @ngify/http                                                 |
 | --------------- | -------------------------------------------- | ----------------------------------------------------------- |
 | JSONP           | `http.jsonp()`                               | Not supported                                               |
-| Params          | `http.get('url', { params: { k: 'v' } })`    | `http.get('url', { k: 'v' })`                               |
 | fromObject      | `new HttpParams({ fromObject: { k: 'v' } })` | `new HttpParams({ k: 'v' })`                                |
 | fromString      | `new HttpParams({ fromString: 'k=v' })`      | `new HttpParams('k=v')`                                     |
 | setParams       | `request.clone({ setParams: { k: 'v' } })`   | `request.clone({ params: request.params.set('k', 'v') })`   |
@@ -595,3 +597,11 @@ const http = new HttpClient(
 3. If you are using `@ngify/http/fetch`, update the import path to `@ngify/http`.
 4. If you are using `@ngify/http/wx`, install the [`@ngify/http-wx`](https://github.com/ngify/ngify/blob/main/packages/http-wx) package and update the import path.
 5. v2 only supports ESM and no longer supports CommonJS, if you need to use CommonJS, please continue to use v1.
+6. The method signatures of `.get()`, `.delete()`, `.head()`, and `.options()` have changed. You now need to place the `params` parameter into the `options` parameter:
+
+```ts
+// before
+http.get('/api', params, options);
+// after
+http.get('/api', { params });
+```

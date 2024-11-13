@@ -40,14 +40,14 @@ Taro 请求还支持更多额外的参数，使用 `HttpContext` 来传递它们
 import { TARO_UPLOAD_FILE_TOKEN, TARO_DOWNLOAD_FILE_TOKEN, TARO_REQUSET_TOKEN } from '@ngify/http-taro';
 
 // 开启 HTTP2
-http.get('url', params, {
+http.get('/api', {
   context: new HttpContext().set(TARO_REQUSET_TOKEN, {
     enableHttp2: true,
   })
 });
 
 // 文件上传
-http.post('url', params, {
+http.post('url', null, {
   context: new HttpContext().set(TARO_UPLOAD_FILE_TOKEN, {
     filePath: 'filePath',
     fileName: 'fileName'
@@ -55,7 +55,7 @@ http.post('url', params, {
 });
 
 // 文件下载
-http.get('url', params, {
+http.get('/api', {
   context: new HttpContext().set(TARO_DOWNLOAD_FILE_TOKEN, {
     filePath: 'filePath'
   })

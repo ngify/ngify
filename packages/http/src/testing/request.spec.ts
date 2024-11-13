@@ -41,7 +41,7 @@ describe('HttpClient TestRequest', () => {
     const client = new HttpClient({ kind: HttpFeatureKind.Backend, value: mock });
 
     const params = { query: 'hello' };
-    client.get('/some-url', params).subscribe();
+    client.get('/some-url', { params }).subscribe();
 
     try {
       // expect different query parameters
