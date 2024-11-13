@@ -16,20 +16,14 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ngify/core": [
-        "packages/core/src/index.ts"
-      ],
       "@ngify/at": [
         "packages/at/src/index.ts"
       ],
+      "@ngify/core": [
+        "packages/core/src/index.ts"
+      ],
       "@ngify/http": [
         "packages/http/src/index.ts"
-      ],
-      "@ngify/http/testing": [
-        "packages/http/src/testing/index.ts"
-      ],
-      "@ngify/http-wx": [
-        "packages/http-wx/src/index.ts"
       ],
       "@ngify/http-taro": [
         "packages/http-taro/src/index.ts"
@@ -37,6 +31,12 @@
       "@ngify/http-uni": [
         "packages/http-uni/src/index.ts"
       ],
+      "@ngify/http-wx": [
+        "packages/http-wx/src/index.ts"
+      ],
+      "@ngify/http/testing": [
+        "packages/http/src/testing/index.ts"
+      ]
     }
   },
   "exclude": [
