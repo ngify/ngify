@@ -28,10 +28,8 @@
       ],
       "options": {
         "commands": [
-          "node scripts/flat.js http-taro",
-          "node scripts/with-ext.js http-taro"
-        ],
-        "parallel": false
+          "node scripts/postbuild.js http-taro"
+        ]
       }
     },
     "_test": {

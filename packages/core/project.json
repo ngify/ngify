@@ -28,10 +28,8 @@
       ],
       "options": {
         "commands": [
-          "node scripts/flat.js core",
-          "node scripts/with-ext.js core"
-        ],
-        "parallel": false
+          "node scripts/postbuild.js core"
+        ]
       }
     },
     "test": {

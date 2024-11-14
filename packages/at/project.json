@@ -28,10 +28,8 @@
       ],
       "options": {
         "commands": [
-          "node scripts/flat.js at",
-          "node scripts/with-ext.js at"
-        ],
-        "parallel": false
+          "node scripts/postbuild.js at"
+        ]
       }
     },
     "test": {
