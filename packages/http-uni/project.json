@@ -28,8 +28,10 @@
       ],
       "options": {
         "commands": [
-          "node scripts/flat.js http-uni"
-        ]
+          "node scripts/flat.js http-uni",
+          "node scripts/with-ext.js http-uni"
+        ],
+        "parallel": false
       }
     },
     "test": {

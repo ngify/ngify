@@ -6,11 +6,13 @@
     "declaration": false,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "esnext",
+    "esModuleInterop": true,
+    "target": "es2022",
     "module": "esnext",
     "lib": [
-      "esnext",
-      "dom"
+      "es2022",
+      "dom",
+      "dom.iterable",
     ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,

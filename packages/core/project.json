@@ -28,8 +28,10 @@
       ],
       "options": {
         "commands": [
-          "node scripts/flat.js core"
-        ]
+          "node scripts/flat.js core",
+          "node scripts/with-ext.js core"
+        ],
+        "parallel": false
       }
     },
     "test": {
