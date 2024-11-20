@@ -64,13 +64,13 @@ export class HttpClient {
       filter((event: HttpEvent<unknown>) => event instanceof HttpResponse)
     ) as Observable<HttpResponse<unknown>>;
 
-    switch (options.observe || 'body') {
-      case 'body':
-        return res$.pipe(map(response => response.body));
+    switch (options.observe) {
       case 'events':
         return events$;
       case 'response':
         return res$;
+      default:
+        return res$.pipe(map(response => response.body));
     }
   }
 
