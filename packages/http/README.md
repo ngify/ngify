@@ -3,7 +3,7 @@
 ![Node.js CI](https://github.com/ngify/ngify/workflows/Node.js%20CI/badge.svg)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 [![CodeFactor](https://www.codefactor.io/repository/github/ngify/ngify/badge)](https://www.codefactor.io/repository/github/ngify/ngify)
-[![English](https://img.shields.io/static/v1?label=English&message=en-US&color=212121)](https://github.com/ngify/ngify/blob/main/packages/http/README.md)
+[![简体中文](https://img.shields.io/static/v1?label=简体中文&message=zh-CN&color=212121)](https://github.com/ngify/ngify/blob/main/packages/http/README.zh-CN.md)
 
 A reactive HTTP client similar to `@angular/common/http`, offering the following main features:
 
