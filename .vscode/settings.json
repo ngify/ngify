@@ -3,6 +3,7 @@
     "http",
     "http-wx",
     "http-taro",
-    "http-uni"
+    "http-uni",
+    "deps"
   ]
 }
