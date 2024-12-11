@@ -22,6 +22,10 @@ Pretend to be using Angular.
 
 For the full API definition, please visit [https://ngify.github.io/ngify](https://ngify.github.io/ngify).
 
+## Changelog
+
+[Learn about the latest improvements.](https://github.com/ngify/ngify/blob/main/CHANGELOG.md)
+
 ##  Special thanks
 
 Thanks to [JetBrains](https://www.jetbrains.com/?from=ngify) for supporting us free open source licenses.
