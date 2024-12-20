@@ -17,9 +17,6 @@
   "dependencies": {
     "@ngify/core": "0.0.0",
     "tslib": "^2.3.0",
-    "lodash-es": "^4.17.21"
-  },
-  "devDependencies": {
-    "@types/lodash-es": "^4.17.12"
+    "es-toolkit": "^1.30.0"
   }
 }

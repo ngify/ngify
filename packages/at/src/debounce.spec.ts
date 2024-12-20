@@ -21,7 +21,7 @@ describe('Debounce', () => {
     const cb = vitest.fn();
 
     const obj = new class {
-      @Debounce(100, { leading: true })
+      @Debounce(100, { edges: ['leading'] })
       debounce() {
         cb();
       }

@@ -4,6 +4,7 @@
     "http-wx",
     "http-taro",
     "http-uni",
-    "deps"
+    "deps",
+    "at"
   ]
 }

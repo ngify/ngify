@@ -21,7 +21,7 @@ describe('Throttle', () => {
     const cb = vitest.fn();
 
     const obj = new class {
-      @Throttle(100, { leading: false })
+      @Throttle(100, { edges: ['leading'] })
       throttle() {
         cb();
       }
@@ -30,6 +30,6 @@ describe('Throttle', () => {
     obj.throttle();
     obj.throttle();
 
-    expect(cb).toHaveBeenCalledTimes(0);
+    expect(cb).toHaveBeenCalledTimes(1);
   });
 });

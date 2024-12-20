@@ -38,7 +38,7 @@ module.exports = [
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     rules: {
       '@typescript-eslint/no-wrapper-object-types': 'off',
-      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'warn',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {

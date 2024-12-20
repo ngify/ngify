@@ -16,7 +16,14 @@ async function _withExt(dir) {
       await _withExt(fullPath);
     } else if (file.endsWith('.js')) {
       const content = await fs.readFile(fullPath, 'utf8');
-      const newContent = content.replaceAll(pattern, "$1$2$3.js$4")
+      const newContent = content.replace(pattern, (_, p1, p2, p3, p4) => {
+        const entryPath = path.resolve(path.dirname(fullPath), p3);
+        // 如果存在，那么就是一个目录，则需要加上 /index.js
+        if (fs.existsSync(entryPath)) {
+          return `${p1}${p2}${p3}/index.js${p4}`;
+        }
+        return `${p1}${p2}${p3}.js${p4}`;
+      })
       await fs.writeFile(fullPath, newContent, 'utf8');
     }
   }
