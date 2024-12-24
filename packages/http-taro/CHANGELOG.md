@@ -1,3 +1,7 @@
+## 2.0.3 (2024-12-24)
+
+This was a version bump only for http-taro to align it with other projects, there were no code changes.
+
 ## 2.0.2 (2024-11-14)
 
 This was a version bump only for http-taro to align it with other projects, there were no code changes.
