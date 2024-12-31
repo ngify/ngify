@@ -1,3 +1,13 @@
+## 2.0.4 (2024-12-31)
+
+### 🚀 Features
+
+- **at:** add memo decorator ([37b727f](https://github.com/ngify/ngify/commit/37b727f))
+
+### ❤️  Thank You
+
+- HyperLife1119 @HyperLife1119
+
 ## 2.0.3 (2024-12-24)
 
 This was a version bump only for at to align it with other projects, there were no code changes.
