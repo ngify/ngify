@@ -550,7 +550,7 @@ Although `@ngify/http` maintains a high degree of consistency with `@angular/com
 | setParams       | `request.clone({ setParams: { k: 'v' } })`   | `request.clone({ params: request.params.set('k', 'v') })`   |
 | setHeaders      | `request.clone({ setHeaders: { k: 'v' } })`  | `request.clone({ headers: request.headers.set('k', 'v') })` |
 | request()       | `http.request('GET', 'url')`                 | `http.request(new HttpRequest('GET', 'url'))`               |
-| XSRF Protection | Enabled by default                           | Disabled by default                                         |
+| XSRF Protection | Enabled by default                           | Enable on demand                                            |
 
 ## Migration
 

@@ -553,7 +553,7 @@ setupHttpClient(
 | setParams  | `request.clone({ setParams: { k: 'v' } })`   | `request.clone({ params: request.params.set('k', 'v') })`   |
 | setHeaders | `request.clone({ setHeaders: { k: 'v' } })`  | `request.clone({ headers: request.headers.set('k', 'v') })` |
 | request()  | `http.request('GET', 'url')`                 | `http.request(new HttpRequest('GET', 'url'))`               |
-| XSRF 防护  | 默认启用                                     | 默认禁用                                                    |
+| XSRF 防护  | 默认启用                                     | 按需启用                                                    |
 
 ## 迁移
 
