@@ -7,9 +7,9 @@
 
 A reactive HTTP client similar to `@angular/common/http`, offering the following main features:
 
-- Ability to request [typed response objects](https://angular.dev/guide/http#typed-response).
-- Simplified [error handling](https://angular.dev/guide/http#error-handling).
-- [Interception mechanism](https://angular.dev/guide/http#intercepting-requests-and-responses) for requests and responses.
+- Ability to request **typed response objects**.
+- Simplified **error handling**.
+- **Interception mechanism** for requests and responses.
 - Support for, but not limited to, `XMLHttpRequest`, `Fetch API`, and `WeChat Mini Programs`.
 
 ## Prerequisites

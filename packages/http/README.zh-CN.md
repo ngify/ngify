@@ -8,9 +8,9 @@
 
 一个形如 `@angular/common/http` 的响应式 HTTP 客户端，提供了以下主要功能：
 
-- 请求[类型化响应对象](https://angular.cn/guide/http#typed-response)的能力。
-- 简化的[错误处理](https://angular.cn/guide/http#error-handling)。
-- 请求和响应的[拦截机制](https://angular.cn/guide/http#intercepting-requests-and-responses)。
+- 请求**类型化响应对象**的能力。
+- 简化的**错误处理**。
+- 请求和响应的**拦截机制**。
 - 支持但不限于 `XMLHttpRequest` 、`Fetch API` 与 `微信小程序`。
 
 ## 先决条件
