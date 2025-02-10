@@ -550,6 +550,7 @@ setupHttpClient(
 | JSONP      | `http.jsonp()`                               | 不受支持                                                    |
 | fromObject | `new HttpParams({ fromObject: { k: 'v' } })` | `new HttpParams({ k: 'v' })`                                |
 | fromString | `new HttpParams({ fromString: 'k=v' })`      | `new HttpParams('k=v')`                                     |
+| encoder    | `new HttpParams({ encoder })`                | `new HttpParams('k=v', { encoder })`                        |
 | setParams  | `request.clone({ setParams: { k: 'v' } })`   | `request.clone({ params: request.params.set('k', 'v') })`   |
 | setHeaders | `request.clone({ setHeaders: { k: 'v' } })`  | `request.clone({ headers: request.headers.set('k', 'v') })` |
 | request()  | `http.request('GET', 'url')`                 | `http.request(new HttpRequest('GET', 'url'))`               |
