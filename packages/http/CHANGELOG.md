@@ -1,3 +1,13 @@
+## 2.0.5 (2025-04-07)
+
+### 🩹 Fixes
+
+- **http:** compatible with null values ([e2bfdc4](https://github.com/ngify/ngify/commit/e2bfdc4))
+
+### ❤️ Thank You
+
+- HyperLife1119 @HyperLife1119
+
 ## 2.0.4 (2024-12-31)
 
 This was a version bump only for http to align it with other projects, there were no code changes.

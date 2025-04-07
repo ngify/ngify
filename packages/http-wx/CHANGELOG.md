@@ -1,3 +1,13 @@
+## 2.0.5 (2025-04-07)
+
+### 🚀 Features
+
+- **http:** append the error result to the HttpErrorResponse ([bbcb941](https://github.com/ngify/ngify/commit/bbcb941))
+
+### ❤️ Thank You
+
+- HyperLife1119 @HyperLife1119
+
 ## 2.0.4 (2024-12-31)
 
 This was a version bump only for http-wx to align it with other projects, there were no code changes.

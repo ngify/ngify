@@ -1,3 +1,17 @@
+## 2.0.5 (2025-04-07)
+
+### 🚀 Features
+
+- **http:** append the error result to the HttpErrorResponse ([bbcb941](https://github.com/ngify/ngify/commit/bbcb941))
+
+### 🩹 Fixes
+
+- **http:** compatible with null values ([e2bfdc4](https://github.com/ngify/ngify/commit/e2bfdc4))
+
+### ❤️ Thank You
+
+- HyperLife1119 @HyperLife1119
+
 ## 2.0.4 (2024-12-31)
 
 ### 🚀 Features
