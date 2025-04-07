@@ -101,10 +101,11 @@ function doUpload(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>>
           }));
         }
       },
-      fail: ({ errMsg }) => {
+      fail: error => {
         observer.error(new HttpErrorResponse({
           url: request.url,
-          statusText: errMsg
+          statusText: error.errMsg,
+          error
         }));
       },
       ...extraOptions
