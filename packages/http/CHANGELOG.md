@@ -1,3 +1,7 @@
+## 2.0.6 (2025-04-07)
+
+This was a version bump only for http to align it with other projects, there were no code changes.
+
 ## 2.0.5 (2025-04-07)
 
 ### 🩹 Fixes

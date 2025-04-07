@@ -1,3 +1,13 @@
+## 2.0.6 (2025-04-07)
+
+### 🚀 Features
+
+- **http:** append the error result to the HttpErrorResponse ([23717fe](https://github.com/ngify/ngify/commit/23717fe))
+
+### ❤️ Thank You
+
+- HyperLife1119 @HyperLife1119
+
 ## 2.0.5 (2025-04-07)
 
 ### 🚀 Features
