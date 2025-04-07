@@ -1,5 +1,6 @@
 {
   "name": "@ngify/at",
+  "type": "module",
   "version": "0.0.0",
   "description": "A practical decorator library",
   "sideEffects": false,

@@ -3,7 +3,7 @@ const stylistic = require('@stylistic/eslint-plugin');
 const importPlugin = require('eslint-plugin-import');
 const { Linter } = require('eslint');
 
-/** @type Linter.Config[] */
+/** @type {import('eslint').Linter.Config[]} */
 module.exports = [
   ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
