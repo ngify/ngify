@@ -24,7 +24,7 @@ export class HttpHeaders {
     } else if (headers) {
       Object.entries(headers).forEach(([name, value]) => {
         const key = name.toLowerCase();
-        const values = (Array.isArray(value) ? value : [value]).map(value => value.toString());
+        const values = (Array.isArray(value) ? value : [value]).map(value => value?.toString() ?? '');
         this.headers.set(key, values);
         this.setNormalizedName(key, name);
       });
