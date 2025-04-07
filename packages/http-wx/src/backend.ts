@@ -101,10 +101,11 @@ function doUpload(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>>
           }));
         }
       },
-      fail: ({ errMsg }: WechatMiniprogram.GeneralCallbackResult) => {
+      fail: error => {
         observer.error(new HttpErrorResponse({
           url: request.url,
-          statusText: errMsg
+          statusText: error.errMsg,
+          error
         }));
       },
       ...extraOptions
@@ -169,10 +170,11 @@ function doDownload(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny
           }));
         }
       },
-      fail: ({ errMsg }: WechatMiniprogram.GeneralCallbackResult) => {
+      fail: error => {
         observer.error(new HttpErrorResponse({
           url: request.url,
-          statusText: errMsg
+          statusText: error.errMsg,
+          error
         }));
       },
       ...request.context.get(WX_DOWNLOAD_FILE_TOKEN)

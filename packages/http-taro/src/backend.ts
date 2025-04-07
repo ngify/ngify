@@ -171,10 +171,11 @@ function doDownload(request: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny
           }));
         }
       },
-      fail: ({ errMsg }) => {
+      fail: error => {
         observer.error(new HttpErrorResponse({
           url: request.url,
-          statusText: errMsg
+          statusText: error.errMsg,
+          error
         }));
       },
       ...request.context.get(TARO_DOWNLOAD_FILE_TOKEN)
@@ -243,10 +244,11 @@ function doRequest(req: HttpRequest<SafeAny>): Observable<HttpEvent<SafeAny>> {
           }));
         }
       },
-      fail: ({ errMsg }) => {
+      fail: error => {
         observer.error(new HttpErrorResponse({
           url: req.url,
-          statusText: errMsg
+          statusText: error.errMsg,
+          error
         }));
       },
       ...req.context.get(TARO_REQUSET_TOKEN)
