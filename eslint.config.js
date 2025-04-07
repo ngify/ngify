@@ -1,7 +1,6 @@
 const nx = require('@nx/eslint-plugin');
 const stylistic = require('@stylistic/eslint-plugin');
 const importPlugin = require('eslint-plugin-import');
-const { Linter } = require('eslint');
 
 /** @type {import('eslint').Linter.Config[]} */
 module.exports = [
