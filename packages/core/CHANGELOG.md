@@ -1,3 +1,9 @@
+## 2.0.7 (2026-10-09)
+
+### 🩹 Fixes
+
+- **deps:** update dependency es-toolkit to v1.39.8 ([#249](https://github.com/ngify/ngify/pull/249))
+
 ## 2.0.6 (2025-04-07)
 
 This was a version bump only for core to align it with other projects, there were no code changes.
