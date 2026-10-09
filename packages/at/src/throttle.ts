@@ -11,8 +11,8 @@ export function Throttle(wait: number, options?: Parameters<typeof throttle>[2])
     context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Return>
   ) {
     const fn = throttle(target, wait, options);
-    return function (this: This, ...args: Args): void {
-      fn.apply(this, args) as Return;
+    return function (this: This, ...args: Args): Return {
+      return fn.apply(this, args) as Return;
     };
   };
 }
